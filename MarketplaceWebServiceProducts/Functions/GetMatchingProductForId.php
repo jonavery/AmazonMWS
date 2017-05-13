@@ -37,21 +37,21 @@ $serviceUrl = "https://mws.amazonservices.com/Products/2011-10-01";
 //$serviceUrl = "https://mws.amazonservices.com.cn/Products/2011-10-01";
 
 
- $config = array (
-   'ServiceURL' => $serviceUrl,
-   'ProxyHost' => null,
-   'ProxyPort' => -1,
-   'ProxyUsername' => null,
-   'ProxyPassword' => null,
-   'MaxErrorRetry' => 3,
- );
+$config = array (
+    'ServiceURL' => $serviceUrl,
+    'ProxyHost' => null,
+    'ProxyPort' => -1,
+    'ProxyUsername' => null,
+    'ProxyPassword' => null,
+    'MaxErrorRetry' => 3,
+);
 
- $service = new MarketplaceWebServiceProducts_Client(
-        AWS_ACCESS_KEY_ID,
-        AWS_SECRET_ACCESS_KEY,
-        APPLICATION_NAME,
-        APPLICATION_VERSION,
-        $config);
+$service = new MarketplaceWebServiceProducts_Client(
+    AWS_ACCESS_KEY_ID,
+    AWS_SECRET_ACCESS_KEY,
+    APPLICATION_NAME,
+    APPLICATION_VERSION,
+    $config);
 
 /************************************************************************
  * Setup request parameters and uncomment invoke to try out
@@ -63,7 +63,7 @@ $serviceUrl = "https://mws.amazonservices.com/Products/2011-10-01";
 // Load XML file.
 $url = "https://script.google.com/macros/s/AKfycbxoNDu7BM4PRE1DEDVyCTd5lkMK1cGPLV0C8KujXDgc3CKNqljU/exec";
 
-// Parse data from XML into an array.
+/// Parse data from XML into an array.
 $itemsXML = file_get_contents($url);
 $items = new SimpleXMLElement($itemsXML);
 $itemArray = array();
@@ -81,9 +81,13 @@ foreach ($items->item as $item) {
 	    "Weight"=>(string)$item->Dimensions->Weight,
 	    "Length"=>(string)$item->Dimensions->Length,
 	    "Width"=>(string)$item->Dimensions->Width,
-	    "Height"=>(string)$item->Dimensions->Height)
-	);
+	    "Height"=>(string)$item->Dimensions->Height));
 }
+
+// Create request to be sent to Amazon.
+$request = new MarketplaceWebServiceProducts_Model_GetMatchingProductForIdRequest();
+$request->setSellerId(MERCHANT_ID);
+$request->setMarketplaceId(MARKETPLACE_ID);
 
 // Create array to hold UPC's
 $upcList = array();
@@ -106,15 +110,38 @@ foreach($itemArray as &$item) {
     }
     // Add UPC to the array if the array has less than
     // 5 items and new UPC is not a duplicate value.
-    
-    
-    
+    $upcCount = count($upcList);
+    if ($upcCount < 5 && !in_array($item["UPC"], $upcList)) {
+        $upcList[] = $item["UPC"];
+    }
     // If either condition fails, run array through
     // GetMatchingProductId and add ASIN's to item array.
-    
+    else {
+        $request->setIdType('UPC');
 
+        $upcObject = new MarketplaceWebServiceProducts_Model_IdListType();
+        $upcObject->setId($upcList);
+        $request->setIdList($upcObject);
+
+        $xml = invokeGetMatchingProductForId($service, $request);
+        sleep(1);
+
+        // Parse the XML response and add ASIN's to item array.
+        $asins = new SimpleXMLElement($xml);    
+        $j = 0;
+        foreach ($asins->GetMatchingProductForIdResult as $result) {
+            if (@count($result->Products)) {
+                $product = $result->Products->Product->children();
+                $item["ASIN"] = (string)$product->Identifiers->MarketplaceASIN->ASIN;
+                // $ns2 = $product->AttributeSets->children("http://mws.amazonservices.com/schema/Products/2011-10-01/default.xsd");
+                // $item["Title"] = (string)$ns2->Title;
+                // $item["ListPrice"] = (string)$ns2->ListPrice;
+            }
+            $j++;
+        } 
     // Add UPC to new empty array.
-    
+    $upcList = array();
+    }
 }
 /*
 // Create array of properly formatted UPC's.
@@ -149,12 +176,6 @@ $upcUnique = array_merge($upcUnique);
 // print_r($upcList);
 // print_r($upcUnique);
 // print_r($dups);
-
-// Create request to be sent to Amazon.
-$request = new MarketplaceWebServiceProducts_Model_GetMatchingProductForIdRequest();
-$request->setSellerId(MERCHANT_ID);
-$request->setMarketplaceId(MARKETPLACE_ID);
-
 
 // Convert UPC's into ASIN's.
 for($i=0; $i<ceil(count($upcUnique)/5); $i++) {
