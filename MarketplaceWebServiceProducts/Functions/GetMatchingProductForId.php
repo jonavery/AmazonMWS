@@ -93,7 +93,6 @@ $request->setMarketplaceId(MARKETPLACE_ID);
 $upcList = array();
 
 // Pass item array through for loop and format UPC.
-// @TODO: Loop does not pass final UPC list members through function.
 foreach($itemArray as $key => &$item) {
     switch(strlen($item["UPC"])) {
         case 11:
@@ -145,7 +144,28 @@ foreach($itemArray as $key => &$item) {
     $upcList[] = $item["UPC"];
     }
 }
-print_r($itemArray);
+$request->setIdType('UPC');
+
+$upcObject = new MarketplaceWebServiceProducts_Model_IdListType();
+$upcObject->setId($upcList);
+$request->setIdList($upcObject);
+
+$xml = invokeGetMatchingProductForId($service, $request);
+
+// Parse the XML response and add ASIN's to item array.
+$asins = new SimpleXMLElement($xml);    
+$j = $upcCount;
+foreach ($asins->GetMatchingProductForIdResult as $result) {
+    if (@count($result->Products)) {
+        $product = $result->Products->Product->children();
+        $itemArray[$key-$j]["ASIN"] = (string)$product->Identifiers->MarketplaceASIN->ASIN;
+        // $ns2 = $product->AttributeSets->children("http://mws.amazonservices.com/schema/Products/2011-10-01/default.xsd");
+        // $itemArray[$key-$j]["Title"] = (string)$ns2->Title;
+        // $itemArray[$key-$j]["ListPrice"] = (string)$ns2->ListPrice;
+    }
+    $j--;
+} 
+return $itemArray;
 
 /**
   * Get Get Matching Product For Id Action
