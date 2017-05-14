@@ -57,13 +57,13 @@ $service = new MarketplaceWebServiceProducts_Client(
  * Setup request parameters and uncomment invoke to try out
  * sample for Get Matching Product For Id Action
  ***********************************************************************/
- // @TODO: set request. Action can be passed as MarketplaceWebServiceProducts_Model_GetMatchingProductForId
+ // Set request. Action can be passed as MarketplaceWebServiceProducts_Model_GetMatchingProductForId
  // object or array of parameters
  
 // Load XML file.
 $url = "https://script.google.com/macros/s/AKfycbxoNDu7BM4PRE1DEDVyCTd5lkMK1cGPLV0C8KujXDgc3CKNqljU/exec";
 
-/// Parse data from XML into an array.
+// Parse data from XML into an array.
 $itemsXML = file_get_contents($url);
 $items = new SimpleXMLElement($itemsXML);
 $itemArray = array();
@@ -93,7 +93,8 @@ $request->setMarketplaceId(MARKETPLACE_ID);
 $upcList = array();
 
 // Pass item array through for loop and format UPC.
-foreach($itemArray as &$item) {
+// @TODO: Loop does not pass final UPC list members through function.
+foreach($itemArray as $key => &$item) {
     switch(strlen($item["UPC"])) {
         case 11:
             $item["UPC"] = "0".$item["UPC"];
@@ -105,7 +106,7 @@ foreach($itemArray as &$item) {
             $item["ASIN"] = $item["UPC"];
             continue 2;
         default:
-            $item["ASIN"] = "Error: Improper UPC";
+            $item["ASIN"] = "Error: Improper/Nonexistant UPC";
             continue 2;
     }
     // Add UPC to the array if the array has less than
@@ -124,118 +125,32 @@ foreach($itemArray as &$item) {
         $request->setIdList($upcObject);
 
         $xml = invokeGetMatchingProductForId($service, $request);
-        sleep(1);
+        usleep($upcCount * 200000);
 
         // Parse the XML response and add ASIN's to item array.
         $asins = new SimpleXMLElement($xml);    
-        $j = 0;
+        $j = $upcCount;
         foreach ($asins->GetMatchingProductForIdResult as $result) {
             if (@count($result->Products)) {
                 $product = $result->Products->Product->children();
-                $item["ASIN"] = (string)$product->Identifiers->MarketplaceASIN->ASIN;
+                $itemArray[$key-$j]["ASIN"] = (string)$product->Identifiers->MarketplaceASIN->ASIN;
                 // $ns2 = $product->AttributeSets->children("http://mws.amazonservices.com/schema/Products/2011-10-01/default.xsd");
-                // $item["Title"] = (string)$ns2->Title;
-                // $item["ListPrice"] = (string)$ns2->ListPrice;
+                // $itemArray[$key-$j]["Title"] = (string)$ns2->Title;
+                // $itemArray[$key-$j]["ListPrice"] = (string)$ns2->ListPrice;
             }
-            $j++;
+            $j--;
         } 
     // Add UPC to new empty array.
     $upcList = array();
+    $upcList[] = $item["UPC"];
     }
 }
-/*
-// Create array of properly formatted UPC's.
-$upcList = array();
-foreach ($itemArray as $item) {
-    switch(strlen($item["UPC"])) {
-        case 11:
-            $upcList[] = "0".$item["UPC"];
-            break;
-        case 12:
-            $upcList[] = $item["UPC"];
-            break;
-        case 10:
-            $upcList[] = "ASIN";
-            break;
-        default:
-            $upcList[] = "error";
-            break;
-    }
-}
-
-// Remove duplicate UPC's from array.
-$dups = array();
-$upcUnique = array_unique($upcList);
-foreach(array_keys($upcList) as $key) {
-    if(!array_key_exists($key, $upcUnique)) {
-        $dups[] = $key;
-    }
-}
-$upcUnique = array_merge($upcUnique);
-// Uncomment for testing purposes.
-// print_r($upcList);
-// print_r($upcUnique);
-// print_r($dups);
-
-// Convert UPC's into ASIN's.
-for($i=0; $i<ceil(count($upcUnique)/5); $i++) {
-    if ($i == 0) $offset = 0;
-    else $offset = 5*$i - 1;
-    $upcSlice = array_slice($upcUnique, $offset, 5);
-	$request->setIdType('UPC');
-
-    $upcObject = new MarketplaceWebServiceProducts_Model_IdListType();
-    $upcObject->setId($upcSlice);
-	$request->setIdList($upcObject);
-
-    $xml = invokeGetMatchingProductForId($service, $request);
-    sleep(1);
-
-    $asins = new SimpleXMLElement($xml);    
-    $j = 0;
-    foreach ($asins->GetMatchingProductForIdResult as $result) {
-        if (@count($result->Products)) {
-            $product = $result->Products->Product->children();
-            $itemArray[$offset+$j]["ASIN"] = (string)$product->Identifiers->MarketplaceASIN->ASIN;
-            // $ns2 = $product->AttributeSets->children("http://mws.amazonservices.com/schema/Products/2011-10-01/default.xsd");
-            // $itemArray[$offset+$j]["Title"] = (string)$ns2->Title;
-            // $itemArray[$offset+$j]["ListPrice"] = (string)$ns2->ListPrice;
-        }
-        $j++;
-    }
-}
-
-// Send all the dups back through the function one-by one.
-foreach($dups as $key => $value) { 
-	$request->setIdType('UPC');
-
-    $upcObject = new MarketplaceWebServiceProducts_Model_IdListType();
-    $upcObject->setId($upcList[$value]);
-	$request->setIdList($upcObject);
-
-    $xml = invokeGetMatchingProductForId($service, $request);
-    usleep(200000);
-
-    $asins = new SimpleXMLElement($xml);    
-    $j = 0;
-    foreach ($asins->GetMatchingProductForIdResult as $result) {
-        if (@count($result->Products)) {
-            $product = $result->Products->Product->children();
-            $itemArray[$value]["ASIN"] = (string)$product->Identifiers->MarketplaceASIN->ASIN;
-            // $ns2 = $product->AttributeSets->children("http://mws.amazonservices.com/schema/Products/2011-10-01/default.xsd");
-            // $itemArray[$offset+$j]["Title"] = (string)$ns2->Title;
-            // $itemArray[$offset+$j]["ListPrice"] = (string)$ns2->ListPrice;
-        }
-        $j++;
-    }
-}
- */
 print_r($itemArray);
 
 /**
-  * Get Get Matching Product For Id Action Sample
+  * Get Get Matching Product For Id Action
   * Gets competitive pricing and related information for a product identified by
-  * the MarketplaceId and ASIN.
+  * the MarketplaceId and UPC.
   *
   * @param MarketplaceWebServiceProducts_Interface $service instance of MarketplaceWebServiceProducts_Interface
   * @param mixed $request MarketplaceWebServiceProducts_Model_GetMatchingProductForId or array of parameters
