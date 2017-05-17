@@ -32,7 +32,7 @@ require_once('.config.inc.php');
  ***********************************************************************/
 // More endpoints are listed in the MWS Developer Guide
 // North America:
-//$serviceUrl = "https://mws.amazonservices.com/Products/2011-10-01";
+$serviceUrl = "https://mws.amazonservices.com/Products/2011-10-01";
 // Europe
 //$serviceUrl = "https://mws-eu.amazonservices.com/Products/2011-10-01";
 // Japan
@@ -58,29 +58,16 @@ require_once('.config.inc.php');
         $config);
 
 /************************************************************************
- * Uncomment to try out Mock Service that simulates MarketplaceWebServiceProducts
- * responses without calling MarketplaceWebServiceProducts service.
- *
- * Responses are loaded from local XML files. You can tweak XML files to
- * experiment with various outputs during development
- *
- * XML files available under MarketplaceWebServiceProducts/Mock tree
- *
- ***********************************************************************/
- // $service = new MarketplaceWebServiceProducts_Mock();
-
-/************************************************************************
  * Setup request parameters and uncomment invoke to try out
  * sample for List Matching Products Action
  ***********************************************************************/
- // @TODO: set request. Action can be passed as MarketplaceWebServiceProducts_Model_ListMatchingProducts
- $request = new MarketplaceWebServiceProducts_Model_ListMatchingProductsRequest();
- $request->setSellerId(MERCHANT_ID);
- // object or array of parameters
- invokeListMatchingProducts($service, $request);
+// Create new request.
+$request = new MarketplaceWebServiceProducts_Model_ListMatchingProductsRequest();
+$request->setSellerId(MERCHANT_ID);
+$request->setMarketplaceId(MARKETPLACE_ID);
 
 /**
-  * Get List Matching Products Action Sample
+  * Get List Matching Products Action
   * Gets competitive pricing and related information for a product identified by
   * the MarketplaceId and ASIN.
   *
@@ -93,15 +80,12 @@ require_once('.config.inc.php');
       try {
         $response = $service->ListMatchingProducts($request);
 
-        echo ("Service Response\n");
-        echo ("=============================================================================\n");
-
         $dom = new DOMDocument();
         $dom->loadXML($response->toXML());
         $dom->preserveWhiteSpace = false;
         $dom->formatOutput = true;
-        echo $dom->saveXML();
-        echo("ResponseHeaderMetadata: " . $response->getResponseHeaderMetadata() . "\n");
+        $response->getResponseHeaderMetadata();
+        return $dom->saveXML();
 
      } catch (MarketplaceWebServiceProducts_Exception $ex) {
         echo("Caught Exception: " . $ex->getMessage() . "\n");
@@ -114,3 +98,4 @@ require_once('.config.inc.php');
      }
  }
 
+?>
