@@ -1,5 +1,13 @@
 <?php
 
+/***********************************************************
+ * CreateItemArray.php queries the database and creates an
+ * array containing all the items ready for listing.
+ *
+ * The script then converts that array into an XML file that
+ * can be fed to Amazon via SubmitFeed calls.
+ **********************************************************/
+
 require_once('GetMatchingProductForId.php');
 $requestId = $request;
 unset($request);
