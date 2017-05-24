@@ -92,11 +92,12 @@ $config = array (
  // object or array of parameters
 
 // Note that PHP memory streams have a default limit of 2M before switching to disk. While you
-// can set the limit higher to accomidate your feed in memory, it's recommended that you store
+// can set the limit higher to accomodate your feed in memory, it's recommended that you store
 // your feed on disk and use traditional file streams to submit your feeds. For conciseness, this
-// examples uses a memory stream.
+// example uses a memory stream.
 
 $feed = <<<EOD
+B
 <?xml version="1.0" encoding="UTF-8"?>
 <AmazonEnvelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="amznenvelope.xsd">
     <Header>
