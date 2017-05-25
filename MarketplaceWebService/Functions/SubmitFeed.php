@@ -61,35 +61,38 @@ $config = array (
  * Setup request parameters and uncomment invoke to try out 
  * sample for Submit Feed Action
  ***********************************************************************/
- // @TODO: set request. Action can be passed as MarketplaceWebService_Model_SubmitFeedRequest
- // object or array of parameters
 
 // Note that PHP memory streams have a default limit of 2M before switching to disk. While you
 // can set the limit higher to accomodate your feed in memory, it's recommended that you store
 // your feed on disk and use traditional file streams to submit your feeds. For conciseness, this
 // example uses a memory stream.
 
-// Constructing the MarketplaceId array which will be passed in as the the MarketplaceIdList 
-// parameter to the SubmitFeedRequest object.
-$marketplaceIdArray = array("Id" => array(MARKETPLACE_ID));
      
-$feedHandle = @fopen('php://memory', 'rw+');
-fwrite($feedHandle, $feed);
-rewind($feedHandle);
+function makeRequest($feed) {
 
-$request = new MarketplaceWebService_Model_SubmitFeedRequest();
-$request->setMerchant(MERCHANT_ID);
-$request->setMarketplaceIdList($marketplaceIdArray);
-$request->setContentMd5(base64_encode(md5(stream_get_contents($feedHandle), true)));
-rewind($feedHandle);
-$request->setPurgeAndReplace(false);
-$request->setFeedContent($feedHandle);
-$request->setMWSAuthToken(MWS_AUTH_TOKEN);
+    $feedHandle = @fopen('php://memory', 'rw+');
+    fwrite($feedHandle, $feed);
+    rewind($feedHandle);
 
-rewind($feedHandle);
+    // Constructing the MarketplaceId array which will be passed in as the the MarketplaceIdList 
+    // parameter to the SubmitFeedRequest object.
+    $marketplaceIdArray = array("Id" => array(MARKETPLACE_ID));
+
+    $request = new MarketplaceWebService_Model_SubmitFeedRequest();
+    $request->setMerchant(MERCHANT_ID);
+    $request->setMarketplaceIdList($marketplaceIdArray);
+    $request->setContentMd5(base64_encode(md5(stream_get_contents($feedHandle), true)));
+    rewind($feedHandle);
+    $request->setPurgeAndReplace(false);
+    $request->setFeedContent($feedHandle);
+    $request->setMWSAuthToken(MWS_AUTH_TOKEN);
+
+    rewind($feedHandle);
+    return $request;
+}
                                         
 /**
-  * Submit Feed Action Sample
+  * Submit Feed Action
   * Uploads a file for processing together with the necessary
   * metadata to process the file, such as which type of feed it is.
   * PurgeAndReplace if true means that your existing e.g. inventory is
