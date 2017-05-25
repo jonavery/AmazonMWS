@@ -97,7 +97,6 @@ $config = array (
 // example uses a memory stream.
 
 $feed = <<<EOD
-B
 <?xml version="1.0" encoding="UTF-8"?>
 <AmazonEnvelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="amznenvelope.xsd">
     <Header>
@@ -125,7 +124,7 @@ EOD;
 
 // Constructing the MarketplaceId array which will be passed in as the the MarketplaceIdList 
 // parameter to the SubmitFeedRequest object.
-$marketplaceIdArray = array("Id" => array('<Marketplace_Id_1>','<Marketplace_Id_2>'));
+$marketplaceIdArray = array("Id" => array('ATVPDKIKX0DER'));
      
  // MWS request objects can be constructed two ways: either passing an array containing the 
  // required request parameters into the request constructor, or by individually setting the request
@@ -149,6 +148,7 @@ $parameters = array (
 
 rewind($feedHandle);
 
+B
 $request = new MarketplaceWebService_Model_SubmitFeedRequest($parameters);
 /********* End Comment Block *********/
 
