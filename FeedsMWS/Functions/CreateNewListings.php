@@ -26,14 +26,14 @@ require('SubmitFeed.php');
 $request->setFeedType('_POST_PRODUCT_DATA_');
 invokeSubmitFeed($service, $request);
 @fclose($feedHandle);
-unset($request, $feed)
+unset($request, $feed);
 
 $feed = file_get_contents($priceURL);
 require('SubmitFeed.php');
 $request->setFeedType('__POST_PRODUCT_PRICING_DATA_');
 invokeSubmitFeed($service, $request);
 @fclose($feedHandle);
-unset($request, $feed)
+unset($request, $feed);
 
 $feed = file_get_contents($availURL);
 require('SubmitFeed.php');
