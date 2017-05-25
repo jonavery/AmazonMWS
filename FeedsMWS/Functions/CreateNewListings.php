@@ -16,17 +16,29 @@
  * processing.
  *******************************************************************/
 
-// @TODO: Create new tab in Work that includes information
-// @TODO: obtained through the Products API and load that instead.
-// Load XML file.
-$productURL = "";
-$priceURL = "";
-$availURL = "";
+// Load urls to XML files.
+$prdctURL = "https://script.google.com/macros/s/AKfycbxWIIZ7hy2GM77s1QP4D6qWU5ZJE-5WBT4CZPC3rbQaXHNfsZY/exec";
+$priceURL = "https://script.google.com/macros/s/AKfycbxU5dLkzjzQhip47Mc34XEEKf9MoVkzsN26da5Zn85p6pGq7pM/exec";
+$availURL = "https://script.google.com/macros/s/AKfycbx0by33ItcEbDrfcIm54VCoZRzHCyCI4kpWHfMODBb5-uoVgdx3/exec";
 
+$feed = file_get_contents($prdctURL);
+require('SubmitFeed.php');
+$request->setFeedType('_POST_PRODUCT_DATA_');
+invokeSubmitFeed($service, $request);
+@fclose($feedHandle);
+unset($request, $feed)
 
+$feed = file_get_contents($priceURL);
+require('SubmitFeed.php');
+$request->setFeedType('__POST_PRODUCT_PRICING_DATA_');
+invokeSubmitFeed($service, $request);
+@fclose($feedHandle);
+unset($request, $feed)
 
-
-
-
+$feed = file_get_contents($availURL);
+require('SubmitFeed.php');
+$request->setFeedType('__POST_INVENTORY_AVAILABILITY_DATA_');
+invokeSubmitFeed($service, $request);
+@fclose($feedHandle);
 
 ?>

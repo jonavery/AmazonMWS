@@ -8,6 +8,7 @@
     ***********************************************************************/
     define('AWS_ACCESS_KEY_ID', 'AKIAJ6JN47NKWWCYHAIQ');
     define('AWS_SECRET_ACCESS_KEY', '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');
+    define('MWS_AUTH_TOKEN', 'amzn.mws.4eaa6595-822e-8a42-3f66-b4087ba2ab0a');
 
    /************************************************************************
     * REQUIRED

@@ -96,83 +96,24 @@ $config = array (
 // your feed on disk and use traditional file streams to submit your feeds. For conciseness, this
 // example uses a memory stream.
 
-$feed = <<<EOD
-<?xml version="1.0" encoding="UTF-8"?>
-<AmazonEnvelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="amznenvelope.xsd">
-    <Header>
-        <DocumentVersion>1.01</DocumentVersion>
-        <MerchantIdentifier>MERCHANT_IDENTIFIER</MerchantIdentifier>
-    </Header>
-    <MessageType>Product</MessageType>
-    <PurgeAndReplace>false</PurgeAndReplace>
-    <Message>
-        <MessageID>1</MessageID>
-        <OperationType>Update</OperationType>
-        <Product>
-            <SKU>UNIQUE-TO-ME-1234</SKU>
-            <StandardProductID>
-                <Type>ASIN</Type>
-                <Value>B000A0S46M</Value>
-            </StandardProductID>
-            <Condition>
-                <ConditionType>New</ConditionType>
-            </Condition>
-        </Product>
-    </Message>
-</AmazonEnvelope>
-EOD;
-
 // Constructing the MarketplaceId array which will be passed in as the the MarketplaceIdList 
 // parameter to the SubmitFeedRequest object.
-$marketplaceIdArray = array("Id" => array('ATVPDKIKX0DER'));
+$marketplaceIdArray = array("Id" => array(MARKETPLACE_ID));
      
- // MWS request objects can be constructed two ways: either passing an array containing the 
- // required request parameters into the request constructor, or by individually setting the request
- // parameters via setter methods.
- // Uncomment one of the methods below.
- 
-/********* Begin Comment Block *********/
-
-$feedHandle = @fopen('php://temp', 'rw+');
+$feedHandle = @fopen('php://memory', 'rw+');
 fwrite($feedHandle, $feed);
 rewind($feedHandle);
-$parameters = array (
-  'Merchant' => MERCHANT_ID,
-  'MarketplaceIdList' => $marketplaceIdArray,
-  'FeedType' => '_POST_ORDER_FULFILLMENT_DATA_',
-  'FeedContent' => $feedHandle,
-  'PurgeAndReplace' => false,
-  'ContentMd5' => base64_encode(md5(stream_get_contents($feedHandle), true)),
-  'MWSAuthToken' => '<MWS Auth Token>', // Optional
-);
+
+$request = new MarketplaceWebService_Model_SubmitFeedRequest();
+$request->setMerchant(MERCHANT_ID);
+$request->setMarketplaceIdList($marketplaceIdArray);
+$request->setContentMd5(base64_encode(md5(stream_get_contents($feedHandle), true)));
+rewind($feedHandle);
+$request->setPurgeAndReplace(false);
+$request->setFeedContent($feedHandle);
+$request->setMWSAuthToken(MWS_AUTH_TOKEN);
 
 rewind($feedHandle);
-
-B
-$request = new MarketplaceWebService_Model_SubmitFeedRequest($parameters);
-/********* End Comment Block *********/
-
-/********* Begin Comment Block *********/
-//$feedHandle = @fopen('php://memory', 'rw+');
-//fwrite($feedHandle, $feed);
-//rewind($feedHandle);
-
-//$request = new MarketplaceWebService_Model_SubmitFeedRequest();
-//$request->setMerchant(MERCHANT_ID);
-//$request->setMarketplaceIdList($marketplaceIdArray);
-//$request->setFeedType('_POST_PRODUCT_DATA_');
-//$request->setContentMd5(base64_encode(md5(stream_get_contents($feedHandle), true)));
-//rewind($feedHandle);
-//$request->setPurgeAndReplace(false);
-//$request->setFeedContent($feedHandle);
-//$request->setMWSAuthToken('<MWS Auth Token>'); // Optional
-
-//rewind($feedHandle);
-/********* End Comment Block *********/
-
-invokeSubmitFeed($service, $request);
-
-@fclose($feedHandle);
                                         
 /**
   * Submit Feed Action Sample
