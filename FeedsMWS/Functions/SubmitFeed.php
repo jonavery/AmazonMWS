@@ -65,24 +65,13 @@ $config = array (
  * are defined in the .config.inc.php located in the same 
  * directory as this sample
  ***********************************************************************/
- $service = new MarketplaceWebService_Client(
+ $service = new FeedsMWS_Client(
      AWS_ACCESS_KEY_ID, 
      AWS_SECRET_ACCESS_KEY, 
      $config,
      APPLICATION_NAME,
      APPLICATION_VERSION);
  
-/************************************************************************
- * Uncomment to try out Mock Service that simulates MarketplaceWebService
- * responses without calling MarketplaceWebService service.
- *
- * Responses are loaded from local XML files. You can tweak XML files to
- * experiment with various outputs during development
- *
- * XML files available under MarketplaceWebService/Mock tree
- *
- ***********************************************************************/
- // $service = new MarketplaceWebService_Mock();
 
 /************************************************************************
  * Setup request parameters and uncomment invoke to try out 
@@ -104,7 +93,7 @@ $feedHandle = @fopen('php://memory', 'rw+');
 fwrite($feedHandle, $feed);
 rewind($feedHandle);
 
-$request = new MarketplaceWebService_Model_SubmitFeedRequest();
+$request = new FeedsMWS_Model_SubmitFeedRequest();
 $request->setMerchant(MERCHANT_ID);
 $request->setMarketplaceIdList($marketplaceIdArray);
 $request->setContentMd5(base64_encode(md5(stream_get_contents($feedHandle), true)));
