@@ -11,7 +11,7 @@
 require_once('GetMatchingProductForId.php');
 $requestId = $request;
 unset($request);
-require_once('GetCompetitivePricingForASIN.php');
+require_once('GetLowestOfferListingsForASIN.php');
 $requestPrice = $request;
 unset($request);
 require_once('ListMatchingProducts.php');
@@ -43,8 +43,10 @@ foreach ($items->item as $item) {
 }
 
 
-// Create request counter and an array to hold UPC's
+// Create an array to hold UPC's.
 $upcList = array();
+
+// Cache throttling parameter.
 $requestCount = 0;
 
 // Pass item array through for loop and format UPC.
@@ -66,16 +68,14 @@ foreach($itemArray as $key => &$item) {
             continue 2;
     }
     $requestCount++;
-    $requestId->setIdType('UPC');
 
+    // Set the ID and ID type to be converted to an ASIN.
+    $requestId->setIdType('UPC');
     $upcObject = new MarketplaceWebServiceProducts_Model_IdListType();
     $upcObject->setId($item["UPC"]);
     $requestId->setIdList($upcObject);
 
     $xmlId = invokeGetMatchingProductForId($service, $requestId);
-    if ($requestCount > 19) {
-        usleep(200000);
-    }
 
     // Parse the XML response and add ASIN's to item array.
     $asins = new SimpleXMLElement($xmlId);    
@@ -84,26 +84,48 @@ foreach($itemArray as $key => &$item) {
         $product = $result->Products->Product->children();
         $item["ASIN"] = (string)$product->Identifiers->MarketplaceASIN->ASIN;
     }
+    
+    // Sleep for required time to avoid throttling.
+    $time_end = microtime(true);
+    if ($requestCount > 19 && ($time_end - $time_start) > 200000) {
+        usleep(200000 - ($time_end - $time_start));
+    }
+    $time_start = microtime(true);
+}
 
+// Reset throttling parameter
+$requestCount = 0;
+
+foreach($itemArray as $key => &$item) {
     // Stop current loop iteration if no ASIN set.
     if (!array_key_exists("ASIN", $item)) {continue;}
 
-    // Use ASIN to query and cache competitive pricing.
+    // Setup request to be passed to Amazon and increment counter.
     $asinObject = new MarketplaceWebServiceProducts_Model_ASINListType();
     $asinObject->setASIN($item["ASIN"]);
     $requestPrice->setASINList($asinObject);
-    $xmlPrice = invokeGetCompetitivePricingForASIN($service, $requestPrice);
+    $requestCount++;
+
+    // Query Amazon and store returned information.
+    $xmlPrice = invokeGetLowestOfferListingsForASIN($service, $requestPrice);
     $price = new SimpleXMLElement($xmlPrice);
-    $compPrices = $price->GetCompetitivePricingForASINResult->Product->CompetitivePricing->CompetitivePrices;
-    foreach($compPrices->CompetitivePrice as $compPrice) {
-        foreach($compPrice->attributes() as $value) {
-            if($value = "Used") {
-                $item["Price"] = (string)$compPrice->Price->ListingPrice->Amount;
-            }
+    $listings = $price->GetLowestOfferListingsForASINResult->Product->LowestOfferListings;
+    foreach($listings->LowestOfferListing as $listing) {
+        if( (string)$listing->Qualifiers->FulfillmentChannel == "Amazon") {
+            $item["ListCond"] = (string)$listing->Qualifiers->ItemCondition->ItemSubcondition;
+            $item["Currency"] = (string)$listing->Price->LandedPrice->CurrencyCode;
+            $item["Price"] = (string)$listing->Price->LandedPrice->Amount;
+            break;
         }
     }
-}
 
+    // Sleep for required time to avoid throttling.
+    $time_end = microtime(true);
+    if ($requestCount > 19 && ($time_end - $time_start) > 200000) {
+        usleep(200000 - ($time_end - $time_start));
+    }
+    $time_start = microtime(true);
+}
 print_r($itemArray);
 
 ?>

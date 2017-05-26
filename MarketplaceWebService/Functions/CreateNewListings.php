@@ -10,7 +10,7 @@
  * 	+ _POST_INVENTORY_AVAILABILITY_DATA_
  *
  * For each feed, SubmitFeed is called to send the feed to Amazon.
- * Then GetFeedSubmissionList is used to check the feed's status.
+ * Then GetFeedSubmissionList is used to check the feed's status:
  *  + FeedProcessingStatus
  * Finally, GetFeedSubmissionResult is used to confirm successful
  * processing.
