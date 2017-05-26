@@ -43,8 +43,9 @@ foreach ($items->item as $item) {
 }
 
 
-// Create array to hold UPC's
+// Create request counter and an array to hold UPC's
 $upcList = array();
+$requestCount = 0;
 
 // Pass item array through for loop and format UPC.
 foreach($itemArray as $key => &$item) {
@@ -64,6 +65,7 @@ foreach($itemArray as $key => &$item) {
             $item["ASIN"] = (string)$match->ListMatchingProductsResult->Products->Product->Identifiers->MarketplaceASIN->ASIN;
             continue 2;
     }
+    $requestCount++;
     $requestId->setIdType('UPC');
 
     $upcObject = new MarketplaceWebServiceProducts_Model_IdListType();
@@ -71,7 +73,9 @@ foreach($itemArray as $key => &$item) {
     $requestId->setIdList($upcObject);
 
     $xmlId = invokeGetMatchingProductForId($service, $requestId);
-    usleep(200000);
+    if ($requestCount > 19) {
+        usleep(200000);
+    }
 
     // Parse the XML response and add ASIN's to item array.
     $asins = new SimpleXMLElement($xmlId);    
