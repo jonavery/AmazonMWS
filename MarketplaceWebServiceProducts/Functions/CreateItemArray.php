@@ -111,12 +111,10 @@ foreach($itemArray as $key => &$item) {
     $price = new SimpleXMLElement($xmlPrice);
     $listings = $price->GetLowestOfferListingsForASINResult->Product->LowestOfferListings;
     foreach($listings->LowestOfferListing as $listing) {
-        if( (string)$listing->Qualifiers->FulfillmentChannel == "Amazon") {
-            $item["ListCond"] = (string)$listing->Qualifiers->ItemCondition->ItemSubcondition;
-            $item["Currency"] = (string)$listing->Price->LandedPrice->CurrencyCode;
-            $item["Price"] = (string)$listing->Price->LandedPrice->Amount;
-            break;
-        }
+        $item["ListCond"] = (string)$listing->Qualifiers->ItemCondition->ItemSubcondition;
+        $item["Currency"] = (string)$listing->Price->LandedPrice->CurrencyCode;
+        $item["Price"] = (string)$listing->Price->LandedPrice->Amount;
+        break;
     }
 
     // Sleep for required time to avoid throttling.
