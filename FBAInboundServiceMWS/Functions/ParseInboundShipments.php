@@ -32,14 +32,13 @@ $shipmentXML = invokeListInboundShipments($service, $request);
 // Parse the new XML document.
 $shipments = new SimpleXMLElement($shipmentXML);
 $shipmentArray = array();
-print_r($shipments);
 foreach ($shipments->ListInboundShipmentsResult->ShipmentData->member as $member) {
 //    echo 'ID: ', $member->ShipmentId, PHP_EOL,
 //            'Status: ', $member->ShipmentStatus, PHP_EOL;
     // Create array of all shipments.
     $shipmentArray[] = array(
-        "ShipmentId"=>$member->ShipmentId,
-        "ShipmentStatus"=>$member->ShipmentStatus
+        "ShipmentId"=>(string)$member->ShipmentId,
+        "ShipmentStatus"=>(string)$member->ShipmentStatus
     );
 }
 
@@ -53,7 +52,6 @@ require 'ListInboundShipmentsByNextToken.php';
 
 while ($token != null) {
     $request->setNextToken($token);
-    print_r($request);
     $shipmentXML = invokeListInboundShipmentsByNextToken($service, $request);
     $shipments = new SimpleXMLElement($shipmentXML);
     foreach ($shipments->ListInboundShipmentsResult->ShipmentData->member as $member) {
@@ -61,8 +59,8 @@ while ($token != null) {
 //            'Status: ', $member->ShipmentStatus, PHP_EOL;
         // Create array of all shipments.
         $shipmentArray[] = array(
-            "ShipmentId"=>$member->ShipmentId,
-            "ShipmentStatus"=>$member->ShipmentStatus
+            "ShipmentId"=>(string)$member->ShipmentId,
+            "ShipmentStatus"=>(string)$member->ShipmentStatus
         );
     }
     $token = array("NextToken" => (string)$shipments->ListInboundShipmentsResult->NextToken);
@@ -80,10 +78,10 @@ unset($service); unset($request);
 require 'ListInboundShipmentItems.php';
 
 // @TODO: Use shipmentId for filtering shipment items
-//$inboundShipments = array('FBA4BH80BS','FBA4BQ3V9K','FBA4C2XLRT','FBA4DWLRWN');
-//$shipmentId = new FBAInboundServiceMWS_Model_ShipmentIdList();
-//$shipmentId->setmember($inboundShipments);
-//$request->setShipmentId($shipmentId);
+$inboundShipments = array('FBA4BH80BS','FBA4BQ3V9K','FBA4C2XLRT','FBA4DWLRWN');
+$shipmentId = new FBAInboundServiceMWS_Model_ShipmentIdList();
+$shipmentId->setmember($inboundShipments);
+$request->setShipmentId($shipmentId);
 
 $updatedAfter = date('Y-m-d', mktime(0, 0, 0, date("m")-1, date("d"),   date("Y")));
 $updatedBefore = date('Y-m-d');
@@ -103,11 +101,30 @@ foreach ($items->ListInboundShipmentItemsResult->ItemData->member as $member) {
             'QShipped: ', $member->QuantityShipped, PHP_EOL,
             'QReceived: ', $member->QuantityReceived, PHP_EOL;
     $itemArray[] = array(
-        "SellerSKU"=>$member->SellerSKU,
-        "QuantityShipped"=>$member->QuantityShipped,
-        "QuantityReceived"=>$member->QuantityReceived
+        "SellerSKU"=>(string)$member->SellerSKU,
+        "QuantityShipped"=>(string)$member->QuantityShipped,
+        "QuantityReceived"=>(string)$member->QuantityReceived
     );
 }
 
 // @TODO: Save token and run through ListInboundShipmentItemsByNextToken until
 // @TODO: it does not return a token.
+// Save token and run through ListInboundShipmentItemsByNextToken until
+// it does not return a token.
+$token = array("NextToken" => (string)$shipments->ListInboundShipmentItemsResult->NextToken);
+require 'ListInboundShipmentItemsByNextToken.php';
+while ($token != null) {
+    $request->setNextToken($token);
+    $itemsXML = invokeListInboundShipmentItemsByNextToken($service, $request);
+    $items = new SimpleXMLElement($shipmentXML);
+    foreach ($shipments->ListInboundShipmentItemsByNextTokenResult->ItemData->member as $member) {
+//        echo 'ID: ', $member->ShipmentId, PHP_EOL,
+//            'Status: ', $member->ShipmentStatus, PHP_EOL;
+        // Create array of all shipments.
+        $itemArray[] = array(
+            "ShipmentId"=>(string)$member->ShipmentId,
+            "ShipmentStatus"=>(string)$member->ShipmentStatus
+        );
+    }
+    $token = array("NextToken" => (string)$shipments->ListInboundShipmentsResult->NextToken);
+}
