@@ -77,7 +77,7 @@ foreach($itemArray as $key => &$item) {
 
     $xmlId = invokeGetMatchingProductForId($service, $requestId);
 
-    // Parse the XML response and add ASIN's to item array.
+    // Parse the XML response and add ASINs to item array.
     $asins = new SimpleXMLElement($xmlId);    
     $result = $asins->GetMatchingProductForIdResult;
     if (@count($result->Products)) {
@@ -124,6 +124,23 @@ foreach($itemArray as $key => &$item) {
     }
     $time_start = microtime(true);
 }
-print_r($itemArray);
+
+$itemXML = new SimpleXMLElement('<?xml version="1.0"?><items></items>');
+echo $itemXML = array_to_xml($itemArray, $itemXML);
+
+// Create function to convert array to xml.
+function array_to_xml($data, &$xml_data) {
+    foreach($data as $key => $value) {
+        if (is_numeric($key)) {
+            $key = 'item'.$key; //dealing with <0/>..<n/> issues
+        }
+        if (is_array($value)) {
+            $subnode = $xml_data->addChild($key);
+            array_to_xml($value, $subnode);
+        } else {
+            $xml_data->addChild("$key", htmlspecialchars("$value"));
+        }
+    }
+}
 
 ?>
