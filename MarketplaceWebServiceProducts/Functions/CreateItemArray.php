@@ -126,7 +126,8 @@ foreach($itemArray as $key => &$item) {
 }
 
 $itemXML = new SimpleXMLElement('<?xml version="1.0"?><items></items>');
-echo $itemXML = array_to_xml($itemArray, $itemXML);
+$itemXML = array_to_xml($itemArray, $itemXML);
+print_r($itemXML);
 
 // Create function to convert array to xml.
 function array_to_xml($data, &$xml_data) {
