@@ -125,23 +125,7 @@ foreach($itemArray as $key => &$item) {
     $time_start = microtime(true);
 }
 
-$itemXML = new SimpleXMLElement('<?xml version="1.0"?><items></items>');
-$itemXML = array_to_xml($itemArray, $itemXML);
-print_r($itemXML);
-
-// Create function to convert array to xml.
-function array_to_xml($data, &$xml_data) {
-    foreach($data as $key => $value) {
-        if (is_numeric($key)) {
-            $key = 'item'.$key; //dealing with <0/>..<n/> issues
-        }
-        if (is_array($value)) {
-            $subnode = $xml_data->addChild($key);
-            array_to_xml($value, $subnode);
-        } else {
-            $xml_data->addChild("$key", htmlspecialchars("$value"));
-        }
-    }
-}
+$itemJSON = json_encode($itemArray);
+print_r($itemJSON);
 
 ?>
