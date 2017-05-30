@@ -72,7 +72,6 @@ $parameters = array (
         '_POST_PRODUCT_PRICING_DATA_'  
     )),
     'MWSAuthToken' => MWS_Auth_Token,
-    '' =>
     'SubmittedFromDate' => date('Y-m-d'),
     'SubmittedToDate' => date('Y-m-d', mktime(0, 0, 0, date("m"), date("d")+1,   date("Y")))
 );
