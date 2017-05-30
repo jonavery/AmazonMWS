@@ -33,23 +33,7 @@ include_once ('.config.inc.php');
 // IMPORTANT: Uncomment the approiate line for the country you wish to
 // sell in:
 // United States:
-//$serviceUrl = "https://mws.amazonservices.com";
-// United Kingdom
-//$serviceUrl = "https://mws.amazonservices.co.uk";
-// Germany
-//$serviceUrl = "https://mws.amazonservices.de";
-// France
-//$serviceUrl = "https://mws.amazonservices.fr";
-// Italy
-//$serviceUrl = "https://mws.amazonservices.it";
-// Japan
-//$serviceUrl = "https://mws.amazonservices.jp";
-// China
-//$serviceUrl = "https://mws.amazonservices.com.cn";
-// Canada
-//$serviceUrl = "https://mws.amazonservices.ca";
-// India
-//$serviceUrl = "https://mws.amazonservices.in";
+$serviceUrl = "https://mws.amazonservices.com";
 
 $config = array (
   'ServiceURL' => $serviceUrl,
@@ -73,40 +57,33 @@ $config = array (
      APPLICATION_VERSION);
  
 /************************************************************************
- * Uncomment to try out Mock Service that simulates MarketplaceWebService
- * responses without calling MarketplaceWebService service.
- *
- * Responses are loaded from local XML files. You can tweak XML files to
- * experiment with various outputs during development
- *
- * XML files available under MarketplaceWebService/Mock tree
- *
- ***********************************************************************/
- // $service = new MarketplaceWebService_Mock();
-
-/************************************************************************
  * Setup request parameters and uncomment invoke to try out 
  * sample for Get Feed Submission List Action
  ***********************************************************************/
  // @TODO: set request. Action can be passed as MarketplaceWebService_Model_GetFeedSubmissionListRequest
  // object or array of parameters
  
-//$parameters = array (
-//  'Merchant' => MERCHANT_ID,
-//  'FeedProcessingStatusList' => array ('Status' => array ('_SUBMITTED_')),
-//  'MWSAuthToken' => '<MWS Auth Token>', // Optional
-//);
-//
-//$request = new MarketplaceWebService_Model_GetFeedSubmissionListRequest($parameters);
+$parameters = array (
+    'Merchant' => MERCHANT_ID,
+    'FeedTypeList' => array ('Type' => array (
+        '_POST_PRODUCT_DATA_',
+        '_POST_INVENTORY_AVAILABILITY_DATA_',
+        '_POST_PRODUCT_PRICING_DATA_'  
+    )),
+    'MWSAuthToken' => MWS_Auth_Token
+);
 
-//$request = new MarketplaceWebService_Model_GetFeedSubmissionListRequest();
-//$request->setMerchant(MERCHANT_ID);
-//$request->setMWSAuthToken('<MWS Auth Token>'); // Optional
-//
-//$statusList = new MarketplaceWebService_Model_StatusList();
-//$request->setFeedProcessingStatusList($statusList->withStatus('_SUBMITTED_'));
-//
-//invokeGetFeedSubmissionList($service, $request);
+$request = new MarketplaceWebService_Model_GetFeedSubmissionListRequest($parameters);
+
+// $request = new MarketplaceWebService_Model_GetFeedSubmissionListRequest();
+// $request->setMerchant(MERCHANT_ID);
+// $request->setMWSAuthToken('<MWS Auth Token>'); // Optional
+// 
+// $typeList = new MarketplaceWebService_Model_TypeList();
+// $request->setFeedTypeList($typeList->withType('_SUBMITTED_'));
+
+
+invokeGetFeedSubmissionList($service, $request);
 
                                                                             
 /**
