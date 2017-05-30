@@ -63,6 +63,7 @@ $config = array (
  // @TODO: set request. Action can be passed as MarketplaceWebService_Model_GetFeedSubmissionListRequest
  // object or array of parameters
  
+
 $parameters = array (
     'Merchant' => MERCHANT_ID,
     'FeedTypeList' => array ('Type' => array (
@@ -70,7 +71,10 @@ $parameters = array (
         '_POST_INVENTORY_AVAILABILITY_DATA_',
         '_POST_PRODUCT_PRICING_DATA_'  
     )),
-    'MWSAuthToken' => MWS_Auth_Token
+    'MWSAuthToken' => MWS_Auth_Token,
+    '' =>
+    'SubmittedFromDate' => date('Y-m-d'),
+    'SubmittedToDate' => date('Y-m-d', mktime(0, 0, 0, date("m"), date("d")+1,   date("Y")))
 );
 
 $request = new MarketplaceWebService_Model_GetFeedSubmissionListRequest($parameters);
