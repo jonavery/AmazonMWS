@@ -32,7 +32,7 @@ require_once('.config.inc.php');
  ***********************************************************************/
 // More endpoints are listed in the MWS Developer Guide
 // North America:
-//$serviceUrl = "https://mws.amazonservices.com/FulfillmentInboundShipment/2010-10-01";
+$serviceUrl = "https://mws.amazonservices.com/FulfillmentInboundShipment/2010-10-01";
 // Europe
 //$serviceUrl = "https://mws-eu.amazonservices.com/FulfillmentInboundShipment/2010-10-01";
 // Japan

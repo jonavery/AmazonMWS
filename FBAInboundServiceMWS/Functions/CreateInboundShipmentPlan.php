@@ -55,26 +55,8 @@ $service = new FBAInboundServiceMWS_Client(
  * Setup request parameters and uncomment invoke to try out
  * sample for Create Inbound Shipment Plan Action
  ***********************************************************************/
-// Load XML file.
-$url = "";
-
-$parameters = array (
-    'Merchant' => MERCHANT_ID,
-    'ShipFromAddress' => array (
-        'Name' => 'Kriss Sweeny',
-        'AddressLine1' => '51 N Pecos Rd #103',
-        'City' => 'Las Vegas',
-        'StateOrProvinceCode' => 'NV',
-        'PostalCode' => '89101',
-        'CountryCode' => 'US'
-    ),
-
-)
-
-
+// Create new Inbound Shipment Plan $request
 $request = new FBAInboundServiceMWS_Model_CreateInboundShipmentPlanRequest($parameters);
-// object or array of parameters
-invokeCreateInboundShipmentPlan($service, $request);
 
 /**
   * Get Create Inbound Shipment Plan Action Sample

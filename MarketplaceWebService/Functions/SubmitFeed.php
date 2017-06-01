@@ -20,7 +20,7 @@
  * Submit Feed  Sample
  */
 
-include_once ('.config.inc.php'); 
+include_once (__DIR__ . '/.config.inc.php'); 
 
 /************************************************************************
 * Uncomment to configure the client instance. Configuration settings
