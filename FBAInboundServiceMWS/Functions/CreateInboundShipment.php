@@ -74,9 +74,7 @@ $serviceUrl = "https://mws.amazonservices.com/FulfillmentInboundShipment/2010-10
  * sample for Create Inbound Shipment Action
  ***********************************************************************/
  // @TODO: set request. Action can be passed as FBAInboundServiceMWS_Model_CreateInboundShipment
- $request = new FBAInboundServiceMWS_Model_CreateInboundShipmentRequest();
- $request->setSellerId(MERCHANT_ID);
- // object or array of parameters
+ $request = new FBAInboundServiceMWS_Model_CreateInboundShipmentRequest($parameters);
  invokeCreateInboundShipment($service, $request);
 
 /**
@@ -93,15 +91,13 @@ $serviceUrl = "https://mws.amazonservices.com/FulfillmentInboundShipment/2010-10
       try {
         $response = $service->CreateInboundShipment($request);
 
-        echo ("Service Response\n");
-        echo ("=============================================================================\n");
-
         $dom = new DOMDocument();
         $dom->loadXML($response->toXML());
         $dom->preserveWhiteSpace = false;
         $dom->formatOutput = true;
-        echo $dom->saveXML();
-        echo("ResponseHeaderMetadata: " . $response->getResponseHeaderMetadata() . "\n");
+        $response->getResponseHeaderMetadata() . "\n");
+        $dom->saveXML();
+        return $dom;
 
      } catch (FBAInboundServiceMWS_Exception $ex) {
         echo("Caught Exception: " . $ex->getMessage() . "\n");

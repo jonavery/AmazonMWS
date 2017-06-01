@@ -21,32 +21,54 @@ foreach ($items->Member as $member) {
     )
 }
 
+$ShipFromAddress => array (
+    'Name' => 'Kriss Sweeney',
+    'AddressLine1' => '51 N Pecos Rd #103',
+    'City' => 'Las Vegas',
+    'StateOrProvinceCode' => 'NV',
+    'PostalCode' => '89101',
+    'CountryCode' => 'US'
+);
+
 // Enter parameters to be passed into $request
 $parameters = array (
     'Merchant' => MERCHANT_ID,
     'LabelPrepPreference' => 'SELLER_LABEL',
-    'ShipFromAddress' => array (
-        'Name' => 'Kriss Sweeney',
-        'AddressLine1' => '51 N Pecos Rd #103',
-        'City' => 'Las Vegas',
-        'StateOrProvinceCode' => 'NV',
-        'PostalCode' => '89101',
-        'CountryCode' => 'US'
-    ),
+    'ShipFromAddress' => $ShipFromAddress,
     'InboundShipmentPlanRequestItems' => $memberArray
 )
 
 require_once('CreateInboundShipmentPlan.php');
 $requestPlan = $request;
-unset($request);
+unset($request, $parameters);
+invokeCreateInboundShipmentPlan($service, $requestPlan);
+
+// @TODO: Create Google Script to import ShipmentIds into MWS tab.
+
+$parameters = array (
+    'Merchant' => MERCHANT_ID,
+    'ShipmentId' => $items->Member->ShipmentId,
+    'InboundShipmentHeader' => array(
+        'ShipmentName' => ,
+        'ShipFromAddress' => $ShipFromAddress,
+        'DestinationFulfillmentCenterId' => ,
+        'ShipmentStatus' => ,
+        'IntendedBoxContentsSource' => ,
+        'LabelPrepPreference' => ,
+    ),
+    'InboundShipmentItems' => $memberArray
+);
+
 require_once('CreateInboundShipment.php');
 $requestShip = $request;
 unset($request);
+invokeCreateInboundShipment($service, $requestShip);
+
+
 require_once(__DIR__ . '/../../../MarketplaceWebService/Functions/SubmitFeed.php');
 $requestFeed = $request;
 unset($request);
 
-invokeCreateInboundShipmentPlan($service, $request);
 
 
 ?>
