@@ -17,7 +17,7 @@ $memberArray = array();
 foreach ($items->Member as $member) {
     $memberArray[] = array(
         "SellerSKU"=>(string)$member->SellerSKU,
-        "Quantity"=>(string)$member->Quantity
+        "Quantity"=>(string)$member->Quantity,
         'PrepDetailsList' => array(
             'PrepDetails' => array(
                 'PrepInstruction' => 'Labeling',
