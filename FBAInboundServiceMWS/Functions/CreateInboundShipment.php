@@ -96,8 +96,7 @@ $serviceUrl = "https://mws.amazonservices.com/FulfillmentInboundShipment/2010-10
         $dom->preserveWhiteSpace = false;
         $dom->formatOutput = true;
         $response->getResponseHeaderMetadata() . "\n");
-        $dom->saveXML();
-        return $dom;
+        $return dom->saveXML();
 
      } catch (FBAInboundServiceMWS_Exception $ex) {
         echo("Caught Exception: " . $ex->getMessage() . "\n");

@@ -32,7 +32,7 @@ require_once('.config.inc.php');
  ***********************************************************************/
 // More endpoints are listed in the MWS Developer Guide
 // North America:
-//$serviceUrl = "https://mws.amazonservices.com/FulfillmentInboundShipment/2010-10-01";
+$serviceUrl = "https://mws.amazonservices.com/FulfillmentInboundShipment/2010-10-01";
 // Europe
 //$serviceUrl = "https://mws-eu.amazonservices.com/FulfillmentInboundShipment/2010-10-01";
 // Japan
@@ -58,26 +58,11 @@ require_once('.config.inc.php');
         $config);
 
 /************************************************************************
- * Uncomment to try out Mock Service that simulates FBAInboundServiceMWS
- * responses without calling FBAInboundServiceMWS service.
- *
- * Responses are loaded from local XML files. You can tweak XML files to
- * experiment with various outputs during development
- *
- * XML files available under FBAInboundServiceMWS/Mock tree
- *
- ***********************************************************************/
- // $service = new FBAInboundServiceMWS_Mock();
-
-/************************************************************************
  * Setup request parameters and uncomment invoke to try out
  * sample for Put Transport Content Action
  ***********************************************************************/
- // @TODO: set request. Action can be passed as FBAInboundServiceMWS_Model_PutTransportContent
- $request = new FBAInboundServiceMWS_Model_PutTransportContentRequest();
- $request->setSellerId(MERCHANT_ID);
- // object or array of parameters
- invokePutTransportContent($service, $request);
+// Create new Put Transport Content $request
+$request = new FBAInboundServiceMWS_Model_PutTransportContentRequest($parameters);
 
 /**
   * Get Put Transport Content Action Sample
@@ -93,15 +78,12 @@ require_once('.config.inc.php');
       try {
         $response = $service->PutTransportContent($request);
 
-        echo ("Service Response\n");
-        echo ("=============================================================================\n");
-
         $dom = new DOMDocument();
         $dom->loadXML($response->toXML());
         $dom->preserveWhiteSpace = false;
         $dom->formatOutput = true;
-        echo $dom->saveXML();
-        echo("ResponseHeaderMetadata: " . $response->getResponseHeaderMetadata() . "\n");
+        $response->getResponseHeaderMetadata();
+        return $dom->saveXML();
 
      } catch (FBAInboundServiceMWS_Exception $ex) {
         echo("Caught Exception: " . $ex->getMessage() . "\n");

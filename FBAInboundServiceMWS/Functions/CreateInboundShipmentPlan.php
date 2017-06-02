@@ -72,15 +72,12 @@ function invokeCreateInboundShipmentPlan(FBAInboundServiceMWS_Interface $service
      try {
        $response = $service->CreateInboundShipmentPlan($request);
 
-       echo ("Service Response\n");
-       echo ("=============================================================================\n");
-
        $dom = new DOMDocument();
        $dom->loadXML($response->toXML());
        $dom->preserveWhiteSpace = false;
        $dom->formatOutput = true;
-       echo $dom->saveXML();
-       echo("ResponseHeaderMetadata: " . $response->getResponseHeaderMetadata() . "\n");
+       $response->getResponseHeaderMetadata();
+       return $dom->saveXML();
 
     } catch (FBAInboundServiceMWS_Exception $ex) {
        echo("Caught Exception: " . $ex->getMessage() . "\n");
