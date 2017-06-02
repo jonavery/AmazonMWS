@@ -60,7 +60,7 @@ foreach($shipments->member as $member) {
     $shipmentArray[] = array(
         'Destination' => $member->DestinationFullfillmentCenterId,
         'ShipmentId' => $member->ShipmentId,
-        'ShipmentName' => 'FBA (' . date('Y-m-d') . ") - " . $n;
+        'ShipmentName' => 'FBA (' . date('Y-m-d') . ") - " . $n
     );
 }
 
