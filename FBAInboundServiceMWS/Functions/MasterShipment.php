@@ -6,7 +6,7 @@
  ************************************************************************/
 
 
-// Load XML file.
+// Cache URLs 
 $urlShip = "https://script.google.com/macros/s/AKfycbxBN9iOFmN5fJH5_iEPwEMK36a98SX7xFF4bfHaBfD0y29Ff7zN/exec";
 $urlFeed = "https://script.google.com/macros/s/AKfycbxozOUDpHwr0-szEtn2J8luT7D7cImDevIjSRyZf72ODKGy0H0O/exec"; 
 
@@ -18,9 +18,16 @@ foreach ($items->Member as $member) {
     $memberArray[] = array(
         "SellerSKU"=>(string)$member->SellerSKU,
         "Quantity"=>(string)$member->Quantity
-    )
+        'PrepDetailsList' => array(
+            'PrepDetails' => array(
+                'PrepInstruction' => 'Labeling',
+                'PrepOwner' => 'SELLER'
+            )
+        )
+    );
 }
 
+// Create address array to be passed into parameters
 $ShipFromAddress => array (
     'Name' => 'Kriss Sweeney',
     'AddressLine1' => '51 N Pecos Rd #103',
@@ -30,31 +37,45 @@ $ShipFromAddress => array (
     'CountryCode' => 'US'
 );
 
-// Enter parameters to be passed into $request
+// Enter parameters to be passed into CreateInboundShipmentPlan
 $parameters = array (
     'Merchant' => MERCHANT_ID,
     'LabelPrepPreference' => 'SELLER_LABEL',
     'ShipFromAddress' => $ShipFromAddress,
     'InboundShipmentPlanRequestItems' => $memberArray
-)
+    
+);
 
 require_once('CreateInboundShipmentPlan.php');
 $requestPlan = $request;
 unset($request, $parameters);
-invokeCreateInboundShipmentPlan($service, $requestPlan);
+$xmlPlan = invokeCreateInboundShipmentPlan($service, $requestPlan);
+$plan = new SimpleXMLElement($xmlPlan);
+
+$shipmentArray = array();
+$shipments = $plan->CreateInboundShipmentPlanResult->InboundShipmentPlans;
+$n = 0;
+foreach($shipments->member as $member) {
+    $n++;
+    $shipmentArray[] = array(
+        'Destination' => $member->DestinationFullfillmentCenterId,
+        'ShipmentId' => $member->ShipmentId
+        'ShipmentName' => 'FBA (' . date('Y-m-d') . ") - " . $n;
+    );
+}
 
 // @TODO: Create Google Script to import ShipmentIds into MWS tab.
 
+// Enter parameters to be passed into CreateInboundShipment
 $parameters = array (
     'Merchant' => MERCHANT_ID,
-    'ShipmentId' => $items->Member->ShipmentId,
+    'ShipmentId' => $shipmentId
     'InboundShipmentHeader' => array(
-        'ShipmentName' => ,
+        'ShipmentName' => $shipmentArray[0]['ShipmentName'],
         'ShipFromAddress' => $ShipFromAddress,
-        'DestinationFulfillmentCenterId' => ,
-        'ShipmentStatus' => ,
-        'IntendedBoxContentsSource' => ,
-        'LabelPrepPreference' => ,
+        'DestinationFulfillmentCenterId' => $shipmentArray[0]['Destination'],
+        'ShipmentStatus' => 'WORKING',
+        'LabelPrepPreference' => 'SELLER_LABEL',
     ),
     'InboundShipmentItems' => $memberArray
 );
@@ -62,7 +83,8 @@ $parameters = array (
 require_once('CreateInboundShipment.php');
 $requestShip = $request;
 unset($request, $parameters);
-invokeCreateInboundShipment($service, $requestShip);
+$xmlShip = invokeCreateInboundShipment($service, $requestShip);
+$shipment = new SimpleXMLElement($xmlShip);
 
 $memberDimensionArray = array();
 foreach ($items->Member as $member) {
@@ -77,33 +99,34 @@ foreach ($items->Member as $member) {
             'Height'=>(string)$member->Dimensions->Height,
             'Unit' => 'inches'
         )
-    )
+    );
 }
 
+// Enter parameters to be passed into PutTransportContent
 $parameters = array (
     'Merchant' => MERCHANT_ID,
-    'ShipmentId' => $items->Member->ShipmentId,
+    'ShipmentId' => $shipmentId
     'IsPartnered' => 'true',
     'ShipmentType' => 'SP',
     'TransportDetails' => array(
         'PartneredSmallParcelData' => array(
             'CarrierName' => 'UNITED_PARCEL_SERVICE_INC',
             'PackageList' => $memberDimensionArray 
-    
-require_once('PutTransportContent.php');
-$requestPut = $request;
-
-invokePutTransportContent($service, $requestPut);
-
+        )
+    )
+);
 
 require_once(__DIR__ . '/../../../MarketplaceWebService/Functions/SubmitFeed.php');
 $feed = file_get_contents($urlShip);
-$requestFeed = makeRequest($feed); 
+$requestFeed = makeRequest($feed);
 $requestFeed->setFeedType('_POST_FBA_INBOUND_CARTON_CONTENTS_');
 invokeSubmitFeed($service, $requestFeed);
 @fclose($feedHandle);
 unset($request);
-
-
+    
+require_once('PutTransportContent.php');
+$requestPut = $request;
+$xmlTransport = invokePutTransportContent($service, $requestPut);
+$transport = new SimpleXMLElement($xmlTransport);
 
 ?>
