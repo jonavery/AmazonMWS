@@ -28,7 +28,7 @@ foreach ($items->Member as $member) {
 }
 
 // Create address array to be passed into parameters
-$ShipFromAddress => array (
+$ShipFromAddress = array (
     'Name' => 'Kriss Sweeney',
     'AddressLine1' => '51 N Pecos Rd #103',
     'City' => 'Las Vegas',
