@@ -56,7 +56,7 @@ $service = new FBAInboundServiceMWS_Client(
  * sample for Get Prep Instructions For SKU Action
  ***********************************************************************/
 // Create request. Action can be passed as FBAInboundServiceMWS_Model_GetPrepInstructionsForSKU
-$request = new FBAInboundServiceMWS_Model_GetPrepInstructionsForSKURequest($parameters);
+// $request = new FBAInboundServiceMWS_Model_GetPrepInstructionsForSKURequest($parameters);
 
 /**
   * Get Get Prep Instructions For SKU Action Sample

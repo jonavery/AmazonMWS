@@ -31,30 +31,35 @@ foreach ($items->Member as $member) {
 $i = 0;
 // Chunk $memberArray into 50-item pieces
 $chunkedSKUs = array_chunk($skuArray, 50);
+
 // Pass chunks through GetPrepInstructionsForSKU
+require_once('GetPrepInstructionsForSKU.php');
 foreach($chunkedSKUs as $chunk) {
     $parameters = array (
-        'Merchant' => MERCHANT_ID,
+        'SellerId' => MERCHANT_ID,
         'SellerSKUList' => array('Id' => $chunk),
         'ShipToCountryCode' => 'US'
     );
-    require ('GetPrepInstructionsForSKU.php');
-    $xmlPrep = invokeGetPrepInstructionsForSKU($service, $request);
+
+    $request = new FBAInboundServiceMWS_Model_GetPrepInstructionsForSKURequest($parameters);
+    $requestPrep = $request;
+    $xmlPrep = invokeGetPrepInstructionsForSKU($service, $requestPrep);
+    unset($request, $parameters);
     $prep = new SimpleXMLElement($xmlPrep);
 
     // Add prep instructions to member array
     foreach ($prep->GetPrepInstructionsForSKUResult->SKUPrepInstructionsList->SKUPrepInstructions as $instructions) {
-        foreach ($instructions->PrepInstructionList->PrepInstructionList as $instruction) {
+        foreach ($instructions->PrepInstructionList->PrepInstruction as $instruction) {
             $memberArray[$i]['PrepDetailsList']['PrepDetails'][] = array(
                 'PrepInstruction' => $instruction,
-                'PrepOwner' => 'SELLER'
+                'PrepOwner' => 'AMAZON'
             );
         }
         $i++;
     }
 }
     
-
+print_r($memberArray);
 
 // Create address array to be passed into parameters
 $ShipFromAddress = array (
@@ -74,7 +79,7 @@ $parameters = array (
     
 );
 
-print_r($parameters);
+// print_r($parameters);
 
 require_once('CreateInboundShipmentPlan.php');
 $requestPlan = $request;
