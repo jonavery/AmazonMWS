@@ -18,46 +18,66 @@ unset($request);
 // Load XML file.
 $url = "https://script.google.com/macros/s/AKfycbwFxIlDhKpBIkJywpzz9iSbkWeO50EXLS5Oj7xS7IYzCoK-jxND/exec";
 
+// Set throttling parameter to zero.
+$requestCount = 0;
 
-// @TODO: FIX THE ARRAY!!
 // Parse data from XML into an array.
 $itemsXML = file_get_contents($url);
 $items = new SimpleXMLElement($itemsXML);
 $itemArray = array();
-foreach ($items->item as &$item) {
-    $itemArray[] = array(
-	"Title"=>(string)$item->Title,
+foreach ($items->item as $key => $item) {
     switch (strlen((string)$item->UPC)) {
         case 11:
-            ["UPC"] = "0".$item->UPC;
+            $upc = "0".(string)$item->UPC;
+            $asin = "";
             break;
         case 12:
-            ["UPC"] = $item->UPC;
+            $upc = (string)$item->UPC;
+            $asin = "";
             break;
         default:
-            ["UPC"] = "";
-            if ((string)$item->ASIN == "") {
-                $requestMatch->setQuery((string)$item->Title);
-                $xmlMatch = invokeListMatchingProducts($service, $requestMatch);
-                $match = new SimpleXMLElement($xmlMatch);
-                ["ASIN"] = (string)$match->ListMatchingProductsResult->Products->Product->Identifiers->MarketplaceASIN->ASIN;
-                continue 2;
-            } else {
-                ["ASIN"] = $item->ASIN;
+            $upc = "";
+            if (substr((string)$item->Title, 1, 6) == "ssorted") {
+                $upc = "";
+                $asin = "";
+                break;
             }
+            if ((string)$item->ASIN == "") {
+            //    // Sleep for required time to avoid throttling.
+            //    $requestCount++; 
+            //    $time_end = microtime(true);
+            //    if ($requestCount > 19 && ($time_end - $time_start) > 5000000) {
+            //        usleep(5000000 - ($time_end - $time_start));
+            //    }
+            //    $time_start = microtime(true);
+
+            //    $requestMatch->setQuery((string)$item->Title);
+            //    $xmlMatch = invokeListMatchingProducts($service, $requestMatch);
+            //    $match = new SimpleXMLElement($xmlMatch);
+            //    $asin = (string)$match->ListMatchingProductsResult->Products->Product->Identifiers->MarketplaceASIN->ASIN;
+
+                $upc = "";
+                $asin = "";
+                break;
+            }
+            $asin = (string)$item->ASIN;
+            break;
     }
+    $itemArray[] = array(
+        "Title"=>(string)$item->Title,
+        "UPC"=>$upc,
+        "ASIN"=>$asin
+    );
 }
 
+print_r($itemArray);
 
-// Create an array to hold UPC's.
-$upcList = array();
-
-// Cache throttling parameter.
+// Set throttling parameter to zero.
 $requestCount = 0;
 
 // Pass item array to Amazon and cache ASIN.
 foreach($itemArray as $key => &$item) {
-    if ($item["UPC"] == "") {continue};
+    if ($item["UPC"] == "") {continue;}
     $requestCount++;
 
     // Set the ID and ID type to be converted to an ASIN.
