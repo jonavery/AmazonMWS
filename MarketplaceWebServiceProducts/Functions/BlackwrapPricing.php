@@ -15,10 +15,11 @@ require_once('ListMatchingProducts.php');
 $requestMatch = $request;
 unset($request);
 
-// @TODO: Replace URL
 // Load XML file.
-$url = "https://script.google.com/macros/s/AKfycbxoNDu7BM4PRE1DEDVyCTd5lkMK1cGPLV0C8KujXDgc3CKNqljU/exec";
+$url = "https://script.google.com/macros/s/AKfycbwFxIlDhKpBIkJywpzz9iSbkWeO50EXLS5Oj7xS7IYzCoK-jxND/exec";
 
+
+// @TODO: FIX THE ARRAY!!
 // Parse data from XML into an array.
 $itemsXML = file_get_contents($url);
 $items = new SimpleXMLElement($itemsXML);
@@ -26,22 +27,24 @@ $itemArray = array();
 foreach ($items->item as &$item) {
     $itemArray[] = array(
 	"Title"=>(string)$item->Title,
-    switch(strlen($(string)$item->ASIN)) {
+    switch (strlen((string)$item->UPC)) {
         case 11:
-            ["UPC"] = "0".$item->ASIN;
+            ["UPC"] = "0".$item->UPC;
             break;
         case 12:
-            ["UPC"] = $item->ASIN;
+            ["UPC"] = $item->UPC;
             break;
-        case 10:
-            $item["ASIN"] = $item->ASIN;
-            continue 2;
         default:
-            $requestMatch->setQuery($item["Title"]);
-            $xmlMatch = invokeListMatchingProducts($service, $requestMatch);
-            $match = new SimpleXMLElement($xmlMatch);
-            $item["ASIN"] = (string)$match->ListMatchingProductsResult->Products->Product->Identifiers->MarketplaceASIN->ASIN;
-            continue 2;
+            ["UPC"] = "";
+            if ((string)$item->ASIN == "") {
+                $requestMatch->setQuery((string)$item->Title);
+                $xmlMatch = invokeListMatchingProducts($service, $requestMatch);
+                $match = new SimpleXMLElement($xmlMatch);
+                ["ASIN"] = (string)$match->ListMatchingProductsResult->Products->Product->Identifiers->MarketplaceASIN->ASIN;
+                continue 2;
+            } else {
+                ["ASIN"] = $item->ASIN;
+            }
     }
 }
 
@@ -54,7 +57,7 @@ $requestCount = 0;
 
 // Pass item array to Amazon and cache ASIN.
 foreach($itemArray as $key => &$item) {
-    if ($item["ASIN"] != "") {continue};
+    if ($item["UPC"] == "") {continue};
     $requestCount++;
 
     // Set the ID and ID type to be converted to an ASIN.
