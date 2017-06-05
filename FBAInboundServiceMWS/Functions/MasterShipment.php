@@ -5,6 +5,8 @@
  * create a shipment to be sent to Amazon.
  ************************************************************************/
 
+// Initialize configuration file
+require_once(__DIR__ . '/../../MarketplaceWebService/Functions/.config.inc.php');
 
 // Cache URLs 
 $urlShip = "https://script.google.com/macros/s/AKfycbxBN9iOFmN5fJH5_iEPwEMK36a98SX7xFF4bfHaBfD0y29Ff7zN/exec";
@@ -13,19 +15,30 @@ $urlFeed = "https://script.google.com/macros/s/AKfycbxozOUDpHwr0-szEtn2J8luT7D7c
 // Parse XML file and create member array
 $itemsXML = file_get_contents($urlShip);
 $items = new SimpleXMLElement($itemsXML);
+
 $memberArray = array();
 foreach ($items->Member as $member) {
     $memberArray[] = array(
-        "SellerSKU"=>(string)$member->SellerSKU,
-        "Quantity"=>(string)$member->Quantity,
-        'PrepDetailsList' => array(
-            'PrepDetails' => array(
-                'PrepInstruction' => 'Labeling',
-                'PrepOwner' => 'SELLER'
-            )
+        'member' => array(
+            "SellerSKU"=>(string)$member->SellerSKU,
+            "Quantity"=>(string)$member->Quantity,
         )
     );
 }
+
+// Chunk $memberArray into 50-item pieces
+$chunkedArray = array_chunk($memberArray, 50);
+// Pass chunks through GetPrepInstructionsForSKU
+// Add prep instructions 
+// $i = 0;
+// foreach (GetPrepInstructionsForSKUResult->SKUPrepInstructionsList->SKUPrepInstructions as $instructions) {
+//     foreach ($instructions->PrepInstructionList->PrepInstructionList as $instruction) {
+//         $memberArray[$i]['PrepDetailsList']['PrepDetails'] = array(
+//             'PrepInstruction' => $instruction,
+//             'PrepOwner' => 'SELLER'
+//         )
+//     }
+// }
 
 // Create address array to be passed into parameters
 $ShipFromAddress = array (
@@ -39,12 +52,13 @@ $ShipFromAddress = array (
 
 // Enter parameters to be passed into CreateInboundShipmentPlan
 $parameters = array (
-    'Merchant' => MERCHANT_ID,
     'LabelPrepPreference' => 'SELLER_LABEL',
     'ShipFromAddress' => $ShipFromAddress,
     'InboundShipmentPlanRequestItems' => $memberArray
     
 );
+
+print_r($parameters);
 
 require_once('CreateInboundShipmentPlan.php');
 $requestPlan = $request;
@@ -69,7 +83,7 @@ foreach($shipments->member as $member) {
 // Enter parameters to be passed into CreateInboundShipment
 $parameters = array (
     'Merchant' => MERCHANT_ID,
-    'ShipmentId' => $shipmentId
+    'ShipmentId' => $shipmentId,
     'InboundShipmentHeader' => array(
         'ShipmentName' => $shipmentArray[0]['ShipmentName'],
         'ShipFromAddress' => $ShipFromAddress,
@@ -105,7 +119,7 @@ foreach ($items->Member as $member) {
 // Enter parameters to be passed into PutTransportContent
 $parameters = array (
     'Merchant' => MERCHANT_ID,
-    'ShipmentId' => $shipmentId
+    'ShipmentId' => $shipmentId,
     'IsPartnered' => 'true',
     'ShipmentType' => 'SP',
     'TransportDetails' => array(
@@ -116,7 +130,7 @@ $parameters = array (
     )
 );
 
-require_once(__DIR__ . '/../../../MarketplaceWebService/Functions/SubmitFeed.php');
+require_once(__DIR__ . '/../../MarketplaceWebService/Functions/SubmitFeed.php');
 $feed = file_get_contents($urlShip);
 $requestFeed = makeRequest($feed);
 $requestFeed->setFeedType('_POST_FBA_INBOUND_CARTON_CONTENTS_');
