@@ -17,6 +17,7 @@ $itemsXML = file_get_contents($urlShip);
 $items = new SimpleXMLElement($itemsXML);
 
 $memberArray = array();
+$skuArray = array();
 foreach ($items->Member as $member) {
     $memberArray[] = array(
         'member' => array(
@@ -24,21 +25,36 @@ foreach ($items->Member as $member) {
             "Quantity"=>(string)$member->Quantity,
         )
     );
+    $skuArray[] = (string)$member->SellerSKU;
 }
 
+$i = 0;
 // Chunk $memberArray into 50-item pieces
-$chunkedArray = array_chunk($memberArray, 50);
+$chunkedSKUs = array_chunk($skuArray, 50);
 // Pass chunks through GetPrepInstructionsForSKU
-// Add prep instructions 
-// $i = 0;
-// foreach (GetPrepInstructionsForSKUResult->SKUPrepInstructionsList->SKUPrepInstructions as $instructions) {
-//     foreach ($instructions->PrepInstructionList->PrepInstructionList as $instruction) {
-//         $memberArray[$i]['PrepDetailsList']['PrepDetails'] = array(
-//             'PrepInstruction' => $instruction,
-//             'PrepOwner' => 'SELLER'
-//         )
-//     }
-// }
+foreach($chunkedSKUs as $chunk) {
+    $parameters = array (
+        'Merchant' => MERCHANT_ID,
+        'SellerSKUList' => array('Id' => $chunk),
+        'ShipToCountryCode' => 'US'
+    );
+    require ('GetPrepInstructionsForSKU.php');
+    $xmlPrep = invokeGetPrepInstructionsForSKU($service, $request);
+    $prep = new SimpleXMLElement($xmlPrep);
+
+    // Add prep instructions to member array
+    foreach ($prep->GetPrepInstructionsForSKUResult->SKUPrepInstructionsList->SKUPrepInstructions as $instructions) {
+        foreach ($instructions->PrepInstructionList->PrepInstructionList as $instruction) {
+            $memberArray[$i]['PrepDetailsList']['PrepDetails'][] = array(
+                'PrepInstruction' => $instruction,
+                'PrepOwner' => 'SELLER'
+            );
+        }
+        $i++;
+    }
+}
+    
+
 
 // Create address array to be passed into parameters
 $ShipFromAddress = array (
