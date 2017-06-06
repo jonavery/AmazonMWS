@@ -56,8 +56,6 @@ $service = new FBAInboundServiceMWS_Client(
  * Setup request parameters and uncomment invoke to try out
  * sample for Create Inbound Shipment Plan Action
  ***********************************************************************/
-// Create new Inbound Shipment Plan $request
-$request = new FBAInboundServiceMWS_Model_CreateInboundShipmentPlanRequest($parameters);
 
 /**
   * Get Create Inbound Shipment Plan Action Sample

@@ -18,7 +18,7 @@
  */
 
 /**
- * Create Inbound Shipment Sample
+ * Create Inbound Shipment
  */
 
 // Initialize configuration file
@@ -31,55 +31,27 @@ require_once(__DIR__ . '/../../MarketplaceWebService/Functions/.config.inc.php')
  * are defined in the .config.inc.php located in the same
  * directory as this sample
  ***********************************************************************/
-// More endpoints are listed in the MWS Developer Guide
 // North America:
 $serviceUrl = "https://mws.amazonservices.com/FulfillmentInboundShipment/2010-10-01";
-// Europe
-//$serviceUrl = "https://mws-eu.amazonservices.com/FulfillmentInboundShipment/2010-10-01";
-// Japan
-//$serviceUrl = "https://mws.amazonservices.jp/FulfillmentInboundShipment/2010-10-01";
-// China
-//$serviceUrl = "https://mws.amazonservices.com.cn/FulfillmentInboundShipment/2010-10-01";
 
+$config = array (
+    'ServiceURL' => $serviceUrl,
+    'ProxyHost' => null,
+    'ProxyPort' => -1,
+    'ProxyUsername' => null,
+    'ProxyPassword' => null,
+    'MaxErrorRetry' => 3,
+);
 
- $config = array (
-   'ServiceURL' => $serviceUrl,
-   'ProxyHost' => null,
-   'ProxyPort' => -1,
-   'ProxyUsername' => null,
-   'ProxyPassword' => null,
-   'MaxErrorRetry' => 3,
- );
-
- $service = new FBAInboundServiceMWS_Client(
-        AWS_ACCESS_KEY_ID,
-        AWS_SECRET_ACCESS_KEY,
-        APPLICATION_NAME,
-        APPLICATION_VERSION,
-        $config);
-
-/************************************************************************
- * Uncomment to try out Mock Service that simulates FBAInboundServiceMWS
- * responses without calling FBAInboundServiceMWS service.
- *
- * Responses are loaded from local XML files. You can tweak XML files to
- * experiment with various outputs during development
- *
- * XML files available under FBAInboundServiceMWS/Mock tree
- *
- ***********************************************************************/
- // $service = new FBAInboundServiceMWS_Mock();
-
-/************************************************************************
- * Setup request parameters and uncomment invoke to try out
- * sample for Create Inbound Shipment Action
- ***********************************************************************/
- // @TODO: set request. Action can be passed as FBAInboundServiceMWS_Model_CreateInboundShipment
- $request = new FBAInboundServiceMWS_Model_CreateInboundShipmentRequest($parameters);
- invokeCreateInboundShipment($service, $request);
+$service = new FBAInboundServiceMWS_Client(
+    AWS_ACCESS_KEY_ID,
+    AWS_SECRET_ACCESS_KEY,
+    APPLICATION_NAME,
+    APPLICATION_VERSION,
+    $config);
 
 /**
-  * Get Create Inbound Shipment Action Sample
+  * Get Create Inbound Shipment Action
   * Gets competitive pricing and related information for a product identified by
   * the MarketplaceId and ASIN.
   *
@@ -87,26 +59,26 @@ $serviceUrl = "https://mws.amazonservices.com/FulfillmentInboundShipment/2010-10
   * @param mixed $request FBAInboundServiceMWS_Model_CreateInboundShipment or array of parameters
   */
 
-  function invokeCreateInboundShipment(FBAInboundServiceMWS_Interface $service, $request)
-  {
-      try {
-        $response = $service->CreateInboundShipment($request);
+ function invokeCreateInboundShipment(FBAInboundServiceMWS_Interface $service, $request)
+ {
+     try {
+       $response = $service->CreateInboundShipment($request);
 
-        $dom = new DOMDocument();
-        $dom->loadXML($response->toXML());
-        $dom->preserveWhiteSpace = false;
-        $dom->formatOutput = true;
-        $response->getResponseHeaderMetadata() . "\n");
-        $return dom->saveXML();
+       $dom = new DOMDocument();
+       $dom->loadXML($response->toXML());
+       $dom->preserveWhiteSpace = false;
+       $dom->formatOutput = true;
+       $response->getResponseHeaderMetadata();
+       return $dom->saveXML();
 
-     } catch (FBAInboundServiceMWS_Exception $ex) {
-        echo("Caught Exception: " . $ex->getMessage() . "\n");
-        echo("Response Status Code: " . $ex->getStatusCode() . "\n");
-        echo("Error Code: " . $ex->getErrorCode() . "\n");
-        echo("Error Type: " . $ex->getErrorType() . "\n");
-        echo("Request ID: " . $ex->getRequestId() . "\n");
-        echo("XML: " . $ex->getXML() . "\n");
-        echo("ResponseHeaderMetadata: " . $ex->getResponseHeaderMetadata() . "\n");
-     }
- }
+    } catch (FBAInboundServiceMWS_Exception $ex) {
+       echo("Caught Exception: " . $ex->getMessage() . "\n");
+       echo("Response Status Code: " . $ex->getStatusCode() . "\n");
+       echo("Error Code: " . $ex->getErrorCode() . "\n");
+       echo("Error Type: " . $ex->getErrorType() . "\n");
+       echo("Request ID: " . $ex->getRequestId() . "\n");
+       echo("XML: " . $ex->getXML() . "\n");
+       echo("ResponseHeaderMetadata: " . $ex->getResponseHeaderMetadata() . "\n");
+    }
+}
 

@@ -5,15 +5,17 @@
  * create a shipment to be sent to Amazon.
  ************************************************************************/
 
-// Initialize configuration file
-require_once(__DIR__ . '/../../MarketplaceWebService/Functions/.config.inc.php');
+// Initialize files
+require_once(__DIR__ . '/GetPrepInstructionsForSKU.php');
+require_once(__DIR__ . '/CreateInboundShipmentPlan.php');
+require_once(__DIR__ . '/CreateInboundShipment.php');
+require_once(__DIR__ . '/UpdateInboundShipment.php');
+require_once(__DIR__ . '/PutTransportContent.php');
+require_once(__DIR__ . '/../../MarketplaceWebService/Functions/SubmitFeed.php');
 
 // Cache URLs 
 $urlShip = "https://script.google.com/macros/s/AKfycbxBN9iOFmN5fJH5_iEPwEMK36a98SX7xFF4bfHaBfD0y29Ff7zN/exec";
 $urlFeed = "https://script.google.com/macros/s/AKfycbxozOUDpHwr0-szEtn2J8luT7D7cImDevIjSRyZf72ODKGy0H0O/exec"; 
-
-require_once('GetPrepInstructionsForSKU.php');
-require_once('CreateInboundShipmentPlan.php');
 
 // Parse XML file and create member array
 $itemsXML = file_get_contents($urlShip);
@@ -120,7 +122,6 @@ $parameters = array (
     'InboundShipmentItems' => $memberArray
 );
 
-require_once('CreateInboundShipment.php');
 $requestShip = new FBAInboundServiceMWS_Model_CreateInboundShipmentRequest($parameters);
 unset($parameters);
 $xmlShip = invokeCreateInboundShipment($service, $requestShip);
@@ -167,12 +168,10 @@ $xmlPut = invokePutTransportContent($service, $requestShip);
 
 // Call UpdateInboundShipment to merge duplicate combinations
 // of Destination and LabelPrepType into single shipments
-
 $requestUpdate = new FBAInboundServiceMWS_Model_UpdateInboundShipmentRequest($parameters);
 unset($parameters);
 $xmlUpdate = invokeUpdateInboundShipment($service, $requestUpdate);
 
-require_once(__DIR__ . '/../../MarketplaceWebService/Functions/SubmitFeed.php');
 $feed = file_get_contents($urlShip);
 $requestFeed = makeRequest($feed);
 $requestFeed->setFeedType('_POST_FBA_INBOUND_CARTON_CONTENTS_');
@@ -180,9 +179,5 @@ invokeSubmitFeed($service, $requestFeed);
 @fclose($feedHandle);
 unset($request);
     
-require_once('PutTransportContent.php');
-$requestPut = $request;
-$xmlTransport = invokePutTransportContent($service, $requestPut);
-$transport = new SimpleXMLElement($xmlTransport);
 
 ?>

@@ -22,7 +22,7 @@
  */
 
 // Initialize configuration file
-require_once(__DIR__ . '/../../MarketplaceWebService/Functions/.config.inc.php');
+require_once(__DIR__ . '/.config.inc.php');
 
 /************************************************************************
  * Instantiate Implementation of FBAInboundServiceMWS

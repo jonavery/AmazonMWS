@@ -62,8 +62,6 @@ $serviceUrl = "https://mws.amazonservices.com/FulfillmentInboundShipment/2010-10
  * Setup request parameters and uncomment invoke to try out
  * sample for Put Transport Content Action
  ***********************************************************************/
-// Create new Put Transport Content $request
-$request = new FBAInboundServiceMWS_Model_PutTransportContentRequest($parameters);
 
 /**
   * Get Put Transport Content Action Sample
@@ -74,26 +72,26 @@ $request = new FBAInboundServiceMWS_Model_PutTransportContentRequest($parameters
   * @param mixed $request FBAInboundServiceMWS_Model_PutTransportContent or array of parameters
   */
 
-  function invokePutTransportContent(FBAInboundServiceMWS_Interface $service, $request)
-  {
-      try {
-        $response = $service->PutTransportContent($request);
+ function invokePutTransportContent(FBAInboundServiceMWS_Interface $service, $request)
+ {
+     try {
+       $response = $service->PutTransportContent($request);
 
-        $dom = new DOMDocument();
-        $dom->loadXML($response->toXML());
-        $dom->preserveWhiteSpace = false;
-        $dom->formatOutput = true;
-        $response->getResponseHeaderMetadata();
-        return $dom->saveXML();
+       $dom = new DOMDocument();
+       $dom->loadXML($response->toXML());
+       $dom->preserveWhiteSpace = false;
+       $dom->formatOutput = true;
+       $response->getResponseHeaderMetadata();
+       return $dom->saveXML();
 
-     } catch (FBAInboundServiceMWS_Exception $ex) {
-        echo("Caught Exception: " . $ex->getMessage() . "\n");
-        echo("Response Status Code: " . $ex->getStatusCode() . "\n");
-        echo("Error Code: " . $ex->getErrorCode() . "\n");
-        echo("Error Type: " . $ex->getErrorType() . "\n");
-        echo("Request ID: " . $ex->getRequestId() . "\n");
-        echo("XML: " . $ex->getXML() . "\n");
-        echo("ResponseHeaderMetadata: " . $ex->getResponseHeaderMetadata() . "\n");
-     }
- }
+    } catch (FBAInboundServiceMWS_Exception $ex) {
+       echo("Caught Exception: " . $ex->getMessage() . "\n");
+       echo("Response Status Code: " . $ex->getStatusCode() . "\n");
+       echo("Error Code: " . $ex->getErrorCode() . "\n");
+       echo("Error Type: " . $ex->getErrorType() . "\n");
+       echo("Request ID: " . $ex->getRequestId() . "\n");
+       echo("XML: " . $ex->getXML() . "\n");
+       echo("ResponseHeaderMetadata: " . $ex->getResponseHeaderMetadata() . "\n");
+    }
+}
 
