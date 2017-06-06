@@ -11,7 +11,7 @@ require_once(__DIR__ . '/CreateInboundShipmentPlan.php');
 require_once(__DIR__ . '/CreateInboundShipment.php');
 require_once(__DIR__ . '/UpdateInboundShipment.php');
 require_once(__DIR__ . '/PutTransportContent.php');
-require_once(__DIR__ . '/../../MarketplaceWebService/Functions/SubmitFeed.php');
+// require_once(__DIR__ . '/../../MarketplaceWebService/Functions/SubmitFeed.php');
 
 // Cache URLs 
 $urlShip = "https://script.google.com/macros/s/AKfycbxBN9iOFmN5fJH5_iEPwEMK36a98SX7xFF4bfHaBfD0y29Ff7zN/exec";
@@ -60,6 +60,7 @@ foreach($chunkedSKUs as $chunk) {
     }
 }
     
+print_r($memberArray);
 
 // Create address array to be passed into parameters
 $ShipFromAddress = array (
@@ -76,9 +77,10 @@ $n = 0;
 $shipmentArray = array();
 
 // Chunk $memberArray into 200-item pieces
-$chunkedSKUs = array_chunk($skuArray, 200);
+$chunkedMember = array_chunk($memberArray, 200);
 
-foreach($memberChunked as $chunk) {
+foreach($chunkedMember as $chunk) {
+    // A
     // Enter parameters to be passed into CreateInboundShipmentPlan
     $parameters = array (
         'SellerId' => MERCHANT_ID,
