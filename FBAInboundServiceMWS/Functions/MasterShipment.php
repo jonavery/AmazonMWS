@@ -12,6 +12,9 @@ require_once(__DIR__ . '/../../MarketplaceWebService/Functions/.config.inc.php')
 $urlShip = "https://script.google.com/macros/s/AKfycbxBN9iOFmN5fJH5_iEPwEMK36a98SX7xFF4bfHaBfD0y29Ff7zN/exec";
 $urlFeed = "https://script.google.com/macros/s/AKfycbxozOUDpHwr0-szEtn2J8luT7D7cImDevIjSRyZf72ODKGy0H0O/exec"; 
 
+require_once('GetPrepInstructionsForSKU.php');
+require_once('CreateInboundShipmentPlan.php');
+
 // Parse XML file and create member array
 $itemsXML = file_get_contents($urlShip);
 $items = new SimpleXMLElement($itemsXML);
@@ -19,21 +22,18 @@ $items = new SimpleXMLElement($itemsXML);
 $memberArray = array();
 $skuArray = array();
 foreach ($items->Member as $member) {
-    $memberArray[] = array(
-        'member' => array(
-            "SellerSKU"=>(string)$member->SellerSKU,
-            "Quantity"=>(string)$member->Quantity,
-        )
+    $memberArray['member'][] = array(
+        "SellerSKU"=>(string)$member->SellerSKU,
+        "Quantity"=>(string)$member->Quantity,
     );
     $skuArray[] = (string)$member->SellerSKU;
 }
 
 $i = 0;
-// Chunk $memberArray into 50-item pieces
+// Chunk $skuArray into 50-item pieces
 $chunkedSKUs = array_chunk($skuArray, 50);
 
 // Pass chunks through GetPrepInstructionsForSKU
-require_once('GetPrepInstructionsForSKU.php');
 foreach($chunkedSKUs as $chunk) {
     $parameters = array (
         'SellerId' => MERCHANT_ID,
@@ -41,17 +41,16 @@ foreach($chunkedSKUs as $chunk) {
         'ShipToCountryCode' => 'US'
     );
 
-    $request = new FBAInboundServiceMWS_Model_GetPrepInstructionsForSKURequest($parameters);
-    $requestPrep = $request;
+    $requestPrep = new FBAInboundServiceMWS_Model_GetPrepInstructionsForSKURequest($parameters);
     $xmlPrep = invokeGetPrepInstructionsForSKU($service, $requestPrep);
-    unset($request, $parameters);
+    unset($parameters);
     $prep = new SimpleXMLElement($xmlPrep);
 
     // Add prep instructions to member array
     foreach ($prep->GetPrepInstructionsForSKUResult->SKUPrepInstructionsList->SKUPrepInstructions as $instructions) {
         foreach ($instructions->PrepInstructionList->PrepInstruction as $instruction) {
-            $memberArray[$i]['PrepDetailsList']['PrepDetails'][] = array(
-                'PrepInstruction' => $instruction,
+            $memberArray['member'][$i]['PrepDetailsList']['member'][] = array(
+                'PrepInstruction' => (string)$instruction,
                 'PrepOwner' => 'AMAZON'
             );
         }
@@ -59,7 +58,6 @@ foreach($chunkedSKUs as $chunk) {
     }
 }
     
-print_r($memberArray);
 
 // Create address array to be passed into parameters
 $ShipFromAddress = array (
@@ -71,39 +69,46 @@ $ShipFromAddress = array (
     'CountryCode' => 'US'
 );
 
-// Enter parameters to be passed into CreateInboundShipmentPlan
-$parameters = array (
-    'LabelPrepPreference' => 'SELLER_LABEL',
-    'ShipFromAddress' => $ShipFromAddress,
-    'InboundShipmentPlanRequestItems' => $memberArray
-    
-);
-
-// print_r($parameters);
-
-require_once('CreateInboundShipmentPlan.php');
-$requestPlan = $request;
-unset($request, $parameters);
-$xmlPlan = invokeCreateInboundShipmentPlan($service, $requestPlan);
-$plan = new SimpleXMLElement($xmlPlan);
-
-$shipmentArray = array();
-$shipments = $plan->CreateInboundShipmentPlanResult->InboundShipmentPlans;
+// Initialize counter variable and shipment array
 $n = 0;
-foreach($shipments->member as $member) {
-    $n++;
-    $shipmentArray[] = array(
-        'Destination' => $member->DestinationFullfillmentCenterId,
-        'ShipmentId' => $member->ShipmentId,
-        'ShipmentName' => 'FBA (' . date('Y-m-d') . ") - " . $n
+$shipmentArray = array();
+
+// Chunk $memberArray into 200-item pieces
+$chunkedSKUs = array_chunk($skuArray, 200);
+
+foreach($memberChunked as $chunk) {
+    // Enter parameters to be passed into CreateInboundShipmentPlan
+    $parameters = array (
+        'SellerId' => MERCHANT_ID,
+        'LabelPrepPreference' => 'SELLER_LABEL',
+        'ShipFromAddress' => $ShipFromAddress,
+        'InboundShipmentPlanRequestItems' => $chunk
     );
+
+    // Create new Inbound Shipment Plan $request
+    $requestPlan = new FBAInboundServiceMWS_Model_CreateInboundShipmentPlanRequest($parameters);
+    unset($parameters);
+    $xmlPlan = invokeCreateInboundShipmentPlan($service, $requestPlan);
+    $plan = new SimpleXMLElement($xmlPlan);
+
+    // Send plan to Amazon and cache shipment information
+    $shipments = $plan->CreateInboundShipmentPlanResult->InboundShipmentPlans;
+    foreach($shipments->member as $member) {
+        $n++;
+        $shipmentArray[] = array(
+            'Destination' => (string)$member->DestinationFullfillmentCenterId,
+            'ShipmentId' => (string)$member->ShipmentId,
+            'ShipmentName' => 'FBA (' . date('Y-m-d') . ") - " . $n
+        );
+    }
 }
 
-// @TODO: Create Google Script to import ShipmentIds into MWS tab.
+// Call CreateInboundShipment to create shipments for each unique
+// combination of Destination and LabelPrepType
 
 // Enter parameters to be passed into CreateInboundShipment
 $parameters = array (
-    'Merchant' => MERCHANT_ID,
+    'SellerId' => MERCHANT_ID,
     'ShipmentId' => $shipmentId,
     'InboundShipmentHeader' => array(
         'ShipmentName' => $shipmentArray[0]['ShipmentName'],
@@ -116,11 +121,15 @@ $parameters = array (
 );
 
 require_once('CreateInboundShipment.php');
-$requestShip = $request;
-unset($request, $parameters);
+$requestShip = new FBAInboundServiceMWS_Model_CreateInboundShipmentRequest($parameters);
+unset($parameters);
 $xmlShip = invokeCreateInboundShipment($service, $requestShip);
 $shipment = new SimpleXMLElement($xmlShip);
 
+// Call PutTransportContent to add dimensions to all items in
+// each shipment.
+
+// @TODO: Create dimension array for each shipment.
 $memberDimensionArray = array();
 foreach ($items->Member as $member) {
     $memberDimensionArray[] = array(
@@ -139,7 +148,7 @@ foreach ($items->Member as $member) {
 
 // Enter parameters to be passed into PutTransportContent
 $parameters = array (
-    'Merchant' => MERCHANT_ID,
+    'SellerId' => MERCHANT_ID,
     'ShipmentId' => $shipmentId,
     'IsPartnered' => 'true',
     'ShipmentType' => 'SP',
@@ -150,6 +159,18 @@ $parameters = array (
         )
     )
 );
+
+// Send dimensions to Amazon
+$requestPut = new FBAInboundServiceMWS_Model_PutTransportContentRequest($parameters);
+unset($parameters);
+$xmlPut = invokePutTransportContent($service, $requestShip);
+
+// Call UpdateInboundShipment to merge duplicate combinations
+// of Destination and LabelPrepType into single shipments
+
+$requestUpdate = new FBAInboundServiceMWS_Model_UpdateInboundShipmentRequest($parameters);
+unset($parameters);
+$xmlUpdate = invokeUpdateInboundShipment($service, $requestUpdate);
 
 require_once(__DIR__ . '/../../MarketplaceWebService/Functions/SubmitFeed.php');
 $feed = file_get_contents($urlShip);
