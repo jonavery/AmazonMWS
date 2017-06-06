@@ -21,7 +21,8 @@
  * Put Transport Content Sample
  */
 
-require_once('.config.inc.php');
+// Initialize configuration file
+require_once(__DIR__ . '/../../MarketplaceWebService/Functions/.config.inc.php');
 
 /************************************************************************
  * Instantiate Implementation of FBAInboundServiceMWS

@@ -18,7 +18,7 @@
  */
 
 /**
- * Get Prep Instructions For SKU Sample
+ * Get Inbound Guidance For ASIN Sample
  */
 
 require_once('.config.inc.php');
@@ -71,27 +71,27 @@ require_once('.config.inc.php');
 
 /************************************************************************
  * Setup request parameters and uncomment invoke to try out
- * sample for Get Prep Instructions For SKU Action
+ * sample for Get Inbound Guidance For ASIN Action
  ***********************************************************************/
- // @TODO: set request. Action can be passed as FBAInboundServiceMWS_Model_GetPrepInstructionsForSKU
- $request = new FBAInboundServiceMWS_Model_GetPrepInstructionsForSKURequest();
+ // @TODO: set request. Action can be passed as FBAInboundServiceMWS_Model_GetInboundGuidanceForASIN
+ $request = new FBAInboundServiceMWS_Model_GetInboundGuidanceForASINRequest();
  $request->setSellerId(MERCHANT_ID);
  // object or array of parameters
- invokeGetPrepInstructionsForSKU($service, $request);
+ invokeGetInboundGuidanceForASIN($service, $request);
 
 /**
-  * Get Get Prep Instructions For SKU Action Sample
+  * Get Get Inbound Guidance For ASIN Action Sample
   * Gets competitive pricing and related information for a product identified by
   * the MarketplaceId and ASIN.
   *
   * @param FBAInboundServiceMWS_Interface $service instance of FBAInboundServiceMWS_Interface
-  * @param mixed $request FBAInboundServiceMWS_Model_GetPrepInstructionsForSKU or array of parameters
+  * @param mixed $request FBAInboundServiceMWS_Model_GetInboundGuidanceForASIN or array of parameters
   */
 
-  function invokeGetPrepInstructionsForSKU(FBAInboundServiceMWS_Interface $service, $request)
+  function invokeGetInboundGuidanceForASIN(FBAInboundServiceMWS_Interface $service, $request)
   {
       try {
-        $response = $service->GetPrepInstructionsForSKU($request);
+        $response = $service->GetInboundGuidanceForASIN($request);
 
         echo ("Service Response\n");
         echo ("=============================================================================\n");

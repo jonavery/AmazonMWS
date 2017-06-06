@@ -18,11 +18,10 @@
  */
 
 /**
- * Create Inbound Shipment Sample
+ * Confirm Preorder Sample
  */
 
-// Initialize configuration file
-require_once(__DIR__ . '/../../MarketplaceWebService/Functions/.config.inc.php');
+require_once('.config.inc.php');
 
 /************************************************************************
  * Instantiate Implementation of FBAInboundServiceMWS
@@ -33,7 +32,7 @@ require_once(__DIR__ . '/../../MarketplaceWebService/Functions/.config.inc.php')
  ***********************************************************************/
 // More endpoints are listed in the MWS Developer Guide
 // North America:
-$serviceUrl = "https://mws.amazonservices.com/FulfillmentInboundShipment/2010-10-01";
+//$serviceUrl = "https://mws.amazonservices.com/FulfillmentInboundShipment/2010-10-01";
 // Europe
 //$serviceUrl = "https://mws-eu.amazonservices.com/FulfillmentInboundShipment/2010-10-01";
 // Japan
@@ -72,32 +71,37 @@ $serviceUrl = "https://mws.amazonservices.com/FulfillmentInboundShipment/2010-10
 
 /************************************************************************
  * Setup request parameters and uncomment invoke to try out
- * sample for Create Inbound Shipment Action
+ * sample for Confirm Preorder Action
  ***********************************************************************/
- // @TODO: set request. Action can be passed as FBAInboundServiceMWS_Model_CreateInboundShipment
- $request = new FBAInboundServiceMWS_Model_CreateInboundShipmentRequest($parameters);
- invokeCreateInboundShipment($service, $request);
+ // @TODO: set request. Action can be passed as FBAInboundServiceMWS_Model_ConfirmPreorder
+ $request = new FBAInboundServiceMWS_Model_ConfirmPreorderRequest();
+ $request->setSellerId(MERCHANT_ID);
+ // object or array of parameters
+ invokeConfirmPreorder($service, $request);
 
 /**
-  * Get Create Inbound Shipment Action Sample
+  * Get Confirm Preorder Action Sample
   * Gets competitive pricing and related information for a product identified by
   * the MarketplaceId and ASIN.
   *
   * @param FBAInboundServiceMWS_Interface $service instance of FBAInboundServiceMWS_Interface
-  * @param mixed $request FBAInboundServiceMWS_Model_CreateInboundShipment or array of parameters
+  * @param mixed $request FBAInboundServiceMWS_Model_ConfirmPreorder or array of parameters
   */
 
-  function invokeCreateInboundShipment(FBAInboundServiceMWS_Interface $service, $request)
+  function invokeConfirmPreorder(FBAInboundServiceMWS_Interface $service, $request)
   {
       try {
-        $response = $service->CreateInboundShipment($request);
+        $response = $service->ConfirmPreorder($request);
+
+        echo ("Service Response\n");
+        echo ("=============================================================================\n");
 
         $dom = new DOMDocument();
         $dom->loadXML($response->toXML());
         $dom->preserveWhiteSpace = false;
         $dom->formatOutput = true;
-        $response->getResponseHeaderMetadata() . "\n");
-        $return dom->saveXML();
+        echo $dom->saveXML();
+        echo("ResponseHeaderMetadata: " . $response->getResponseHeaderMetadata() . "\n");
 
      } catch (FBAInboundServiceMWS_Exception $ex) {
         echo("Caught Exception: " . $ex->getMessage() . "\n");
