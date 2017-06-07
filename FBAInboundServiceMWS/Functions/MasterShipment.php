@@ -14,7 +14,6 @@ require_once(__DIR__ . '/PutTransportContent.php');
 
 // Cache URLs 
 $urlShip = "https://script.google.com/macros/s/AKfycbxBN9iOFmN5fJH5_iEPwEMK36a98SX7xFF4bfHaBfD0y29Ff7zN/exec";
-$urlFeed = "https://script.google.com/macros/s/AKfycbxozOUDpHwr0-szEtn2J8luT7D7cImDevIjSRyZf72ODKGy0H0O/exec"; 
 
 // Parse XML file and create member array
 $itemsXML = file_get_contents($urlShip);
@@ -209,18 +208,13 @@ foreach($shipmentArray as $shipment) {
 }
 
 // @TODO: See below
-// Call UpdateInboundShipment to merge duplicate combinations
-// of Destination and LabelPrepType into single shipments
+/*************************************************************
+*  Call UpdateInboundShipment to merge duplicate combinations
+*  of Destination and LabelPrepType into single shipments.
+*************************************************************/
+ 
 $requestUpdate = new FBAInboundServiceMWS_Model_UpdateInboundShipmentRequest($parameters);
 unset($parameters);
 $xmlUpdate = invokeUpdateInboundShipment($service, $requestUpdate);
 
-// Call SubmitFeed to send information to Amazon
-require_once(__DIR__ . '/../../MarketplaceWebService/Functions/SubmitFeed.php');
-$feed = file_get_contents($urlShip);
-$requestFeed = makeRequest($feed);
-$requestFeed->setFeedType('_POST_FBA_INBOUND_CARTON_CONTENTS_');
-invokeSubmitFeed($service, $requestFeed);
-@fclose($feedHandle);
-unset($request);
-
+?>
