@@ -65,6 +65,12 @@ foreach($itemArray as $key => &$item) {
             $xmlMatch = invokeListMatchingProducts($service, $requestMatch);
             $match = new SimpleXMLElement($xmlMatch);
             $item["ASIN"] = (string)$match->ListMatchingProductsResult->Products->Product->Identifiers->MarketplaceASIN->ASIN;
+            // Sleep for required time to avoid throttling.
+    	    $match_end = microtime(true);
+    	    if ($requestCount > 19 && ($match_end - $match_start) > 5000000) {
+       	        usleep(5000000 - ($match_end - $match_start));
+    	    }
+    	    $match_start = microtime(true);
             continue 2;
     }
     $requestCount++;
@@ -125,7 +131,7 @@ foreach($itemArray as $key => &$item) {
     $time_start = microtime(true);
 }
 
-$itemJSON = json_encode($itemArray);
-print_r($itemJSON);
+echo $itemJSON = json_encode($itemArray);
+file_put_contents("test.json", $itemJSON);
 
 ?>
