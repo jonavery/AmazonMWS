@@ -43,18 +43,18 @@ foreach ($items->item as $key => $item) {
                 break;
             }
             if ((string)$item->ASIN == "") {
-            //    // Sleep for required time to avoid throttling.
-            //    $requestCount++; 
-            //    $time_end = microtime(true);
-            //    if ($requestCount > 19 && ($time_end - $time_start) > 5000000) {
-            //        usleep(5000000 - ($time_end - $time_start));
-            //    }
-            //    $time_start = microtime(true);
+                // Sleep for required time to avoid throttling.
+                $requestCount++; 
+                $time_end = microtime(true);
+                if ($requestCount > 19 && ($time_end - $time_start) < 5000000) {
+                    usleep(5000000 - ($time_end - $time_start));
+                }
+                $time_start = microtime(true);
 
-            //    $requestMatch->setQuery((string)$item->Title);
-            //    $xmlMatch = invokeListMatchingProducts($service, $requestMatch);
-            //    $match = new SimpleXMLElement($xmlMatch);
-            //    $asin = (string)$match->ListMatchingProductsResult->Products->Product->Identifiers->MarketplaceASIN->ASIN;
+                $requestMatch->setQuery((string)$item->Title);
+                $xmlMatch = invokeListMatchingProducts($service, $requestMatch);
+                $match = new SimpleXMLElement($xmlMatch);
+                $asin = (string)$match->ListMatchingProductsResult->Products->Product->Identifiers->MarketplaceASIN->ASIN;
 
                 $upc = "";
                 $asin = "";
