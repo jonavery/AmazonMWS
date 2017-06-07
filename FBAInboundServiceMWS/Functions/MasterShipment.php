@@ -121,6 +121,9 @@ foreach($chunkedMember as $key => $chunk) {
 * Call CreateInboundShipment to create shipments for each unique
 * combination of Destination and LabelPrepType
 ****************************************************************/
+
+//@TODO: Filter out redundant Destinations so those shipments
+//@TODO: are never created
 foreach($shipmentArray as $shipment) {
 
     // Create array of items in shipment
@@ -207,14 +210,51 @@ foreach($shipmentArray as $shipment) {
     $xmlPut = invokePutTransportContent($service, $requestShip);
 }
 
-// @TODO: See below
 /*************************************************************
 *  Call UpdateInboundShipment to merge duplicate combinations
 *  of Destination and LabelPrepType into single shipments.
 *************************************************************/
+
+// @TODO: See below
+// Determine which shipments should be merged
+
+
+// Merge appropriate shipments in $shipmentSKU array
+
+
+// Filter $shipmentArray to only contain updated shipments
  
-$requestUpdate = new FBAInboundServiceMWS_Model_UpdateInboundShipmentRequest($parameters);
-unset($parameters);
-$xmlUpdate = invokeUpdateInboundShipment($service, $requestUpdate);
+
+// foreach($mergedShipments as $shipment) {
+// 
+//     // Create array of updated shipment items
+//     $shipmentId = $shipment['ShipmentId'];
+//     $shipmentItems = array();
+//     foreach($shipmentSKU[$shipmentId] as $sku) {
+//         $item = array_filter($memberArray['member'], function ($var) use ($sku) {
+//             return ($var['SellerSKU'] == $sku);
+//         });
+//         $shipmentItems[] = $item[array_keys($item)[0]];
+//     }
+// 
+//     // Enter parameters to be passed into UpdateInboundShipment
+//     $parameters = array (
+//         'SellerId' => MERCHANT_ID,
+//         'ShipmentId' => $shipmentId,
+//         'InboundShipmentHeader' => array(
+//             'ShipmentName' => $shipment['ShipmentName'],
+//             'ShipFromAddress' => $ShipFromAddress,
+//             'DestinationFulfillmentCenterId' => $shipment['Destination'],
+//             'ShipmentStatus' => 'WORKING',
+//             'LabelPrepPreference' => 'SELLER_LABEL',
+//         ),
+//         'InboundShipmentItems' => array('member' => $shipmentItems)
+//     );
+// 
+//     // Pass updated shipment information to Amazon
+//     $requestUpdate = new FBAInboundServiceMWS_Model_UpdateInboundShipmentRequest($parameters);
+//     unset($parameters);
+//     $xmlUpdate = invokeUpdateInboundShipment($service, $requestUpdate);
+// }
 
 ?>
