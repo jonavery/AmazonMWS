@@ -98,7 +98,7 @@ foreach($chunkedMember as $key => $chunk) {
     // Create new Inbound Shipment Plan $request
     $requestPlan = new FBAInboundServiceMWS_Model_CreateInboundShipmentPlanRequest($parameters);
     unset($parameters);
-    $xmlPlan = invokeCreateInboundShipmentPlan($service, $requestPlan);
+    echo $xmlPlan = invokeCreateInboundShipmentPlan($service, $requestPlan);
     $plan = new SimpleXMLElement($xmlPlan);
 
     // Send plan to Amazon and cache shipment information
@@ -106,7 +106,7 @@ foreach($chunkedMember as $key => $chunk) {
     foreach($shipments->member as $member) {
         $n++;
         $shipmentArray[] = array(
-            'Destination' => (string)$member->DestinationFullfillmentCenterId,
+            'Destination' => (string)$member->DestinationFulfillmentCenterId,
             'ShipmentId' => (string)$member->ShipmentId,
             'ShipmentName' => 'FBA (' . date('Y-m-d') . ") - " . $n
         );
@@ -116,6 +116,8 @@ foreach($chunkedMember as $key => $chunk) {
         }
     } 
 }
+
+print_r($shipmentArray);
 
 /****************************************************************
 * Call CreateInboundShipment to create shipments for each unique
