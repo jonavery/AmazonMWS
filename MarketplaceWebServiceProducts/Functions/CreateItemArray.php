@@ -67,7 +67,7 @@ foreach($itemArray as $key => &$item) {
             $item["ASIN"] = (string)$match->ListMatchingProductsResult->Products->Product->Identifiers->MarketplaceASIN->ASIN;
             // Sleep for required time to avoid throttling.
     	    $match_end = microtime(true);
-    	    if ($requestCount > 19 && ($match_end - $match_start) > 5000000) {
+    	    if ($requestCount > 19 && ($match_end - $match_start) < 5000000) {
        	        usleep(5000000 - ($match_end - $match_start));
     	    }
     	    $match_start = microtime(true);
@@ -93,7 +93,7 @@ foreach($itemArray as $key => &$item) {
     
     // Sleep for required time to avoid throttling.
     $time_end = microtime(true);
-    if ($requestCount > 19 && ($time_end - $time_start) > 200000) {
+    if ($requestCount > 19 && ($time_end - $time_start) < 200000) {
         usleep(200000 - ($time_end - $time_start));
     }
     $time_start = microtime(true);
@@ -125,7 +125,7 @@ foreach($itemArray as $key => &$item) {
 
     // Sleep for required time to avoid throttling.
     $time_end = microtime(true);
-    if ($requestCount > 19 && ($time_end - $time_start) > 200000) {
+    if ($requestCount > 19 && ($time_end - $time_start) < 200000) {
         usleep(200000 - ($time_end - $time_start));
     }
     $time_start = microtime(true);
