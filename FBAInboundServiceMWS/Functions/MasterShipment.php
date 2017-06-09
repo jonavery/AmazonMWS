@@ -148,6 +148,7 @@ foreach($shipmentArray as $shipment) {
             'DestinationFulfillmentCenterId' => $shipment['Destination'],
             'ShipmentStatus' => 'WORKING',
             'LabelPrepPreference' => 'SELLER_LABEL',
+	    'IntendedBoxContentsSource' => 'FEED'
         ),
         'InboundShipmentItems' => array('member' => $shipmentItems)
     );
