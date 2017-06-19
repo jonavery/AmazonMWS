@@ -94,6 +94,7 @@ foreach($itemArray as $key => &$item) {
     if (@count($result->Products)) {
         $product = $result->Products->Product->children();
         $item["ASIN"] = (string)$product->Identifiers->MarketplaceASIN->ASIN;
+        $item["Rank"] = (string)$product->SalesRankings->SalesRank->Rank;
     }
     
     // Sleep for required time to avoid throttling.
