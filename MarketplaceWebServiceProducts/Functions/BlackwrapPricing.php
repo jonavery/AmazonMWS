@@ -107,32 +107,32 @@ foreach($itemArray as $key => &$item) {
 // Reset throttling parameter
 $requestCount = 0;
 
-// foreach($itemArray as $key => &$item) {
-//     // Stop current loop iteration if no ASIN set.
-//     if (!array_key_exists("ASIN", $item)) {continue;}
-// 
-//     // Setup request to be passed to Amazon and increment counter.
-//     $asinObject = new MarketplaceWebServiceProducts_Model_ASINListType();
-//     $asinObject->setASIN($item["ASIN"]);
-//     $requestPrice->setASINList($asinObject);
-//     $requestCount++;
-// 
-//     // Query Amazon and store returned information.
-//     $xmlPrice = invokeGetLowestOfferListingsForASIN($service, $requestPrice);
-//     $price = new SimpleXMLElement($xmlPrice);
-//     $listings = $price->GetLowestOfferListingsForASINResult->Product->LowestOfferListings;
-//     foreach($listings->LowestOfferListing as $listing) {
-//         $item["Price"] = (string)$listing->Price->LandedPrice->Amount;
-//         break;
-//     }
-// 
-//     // Sleep for required time to avoid throttling.
-//     $time_end = microtime(true);
-//     if ($requestCount > 19 && ($time_end - $time_start) > 200000) {
-//         usleep(200000 - ($time_end - $time_start));
-//     }
-//     $time_start = microtime(true);
-// }
+foreach($itemArray as $key => &$item) {
+    // Stop current loop iteration if no ASIN set.
+    if (!array_key_exists("ASIN", $item)) {continue;}
+
+    // Setup request to be passed to Amazon and increment counter.
+    $asinObject = new MarketplaceWebServiceProducts_Model_ASINListType();
+    $asinObject->setASIN($item["ASIN"]);
+    $requestPrice->setASINList($asinObject);
+    $requestCount++;
+
+    // Query Amazon and store returned information.
+    $xmlPrice = invokeGetLowestOfferListingsForASIN($service, $requestPrice);
+    $price = new SimpleXMLElement($xmlPrice);
+    $listings = $price->GetLowestOfferListingsForASINResult->Product->LowestOfferListings;
+    foreach($listings->LowestOfferListing as $listing) {
+        $item["Price"] = (string)$listing->Price->LandedPrice->Amount;
+        break;
+    }
+
+    // Sleep for required time to avoid throttling.
+    $time_end = microtime(true);
+    if ($requestCount > 19 && ($time_end - $time_start) > 200000) {
+        usleep(200000 - ($time_end - $time_start));
+    }
+    $time_start = microtime(true);
+}
 
 echo $itemJSON = json_encode($itemArray);
 file_put_contents("blackwrap.json", $itemJSON);
