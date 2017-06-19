@@ -95,12 +95,10 @@ foreach($chunkedMember as $key => $chunk) {
         'InboundShipmentPlanRequestItems' => array('member' => $chunk[$key])
     );
 
-    print_r($parameters);
-
     // Create new Inbound Shipment Plan $request
     $requestPlan = new FBAInboundServiceMWS_Model_CreateInboundShipmentPlanRequest($parameters);
     unset($parameters);
-    $xmlPlan = invokeCreateInboundShipmentPlan($service, $requestPlan);
+    echo $xmlPlan = invokeCreateInboundShipmentPlan($service, $requestPlan);
     $plan = new SimpleXMLElement($xmlPlan);
 
     // Send plan to Amazon and cache shipment information
@@ -128,7 +126,7 @@ foreach($chunkedMember as $key => $chunk) {
 //@TODO: are never created
 foreach($shipmentArray as $shipment) {
 
-    // Create array of items in shipment
+    // Filter item array to only include items from this shipment
     $shipmentId = $shipment['ShipmentId'];
     $shipmentItems = array();
     foreach($shipmentSKU[$shipmentId] as $sku) {
@@ -152,7 +150,7 @@ foreach($shipmentArray as $shipment) {
         ),
         'InboundShipmentItems' => array('member' => $shipmentItems)
     );
-
+    
     print_r($parameters);
 
     // Send parameters to Amazon to create shipment
