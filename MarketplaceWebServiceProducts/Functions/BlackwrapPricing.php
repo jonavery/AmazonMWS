@@ -14,6 +14,9 @@ unset($request);
 require_once('ListMatchingProducts.php');
 $requestMatch = $request;
 unset($request);
+require_once('GetMyFeesEstimate.php');
+$requestFees = $request;
+unset($request);
 
 // Load XML file.
 $url = "https://script.google.com/macros/s/AKfycbwFxIlDhKpBIkJywpzz9iSbkWeO50EXLS5Oj7xS7IYzCoK-jxND/exec";
@@ -70,8 +73,6 @@ foreach ($items->item as $key => $item) {
     );
 }
 
-print_r($itemArray);
-
 // Set throttling parameter to zero.
 $requestCount = 0;
 
@@ -90,11 +91,16 @@ foreach($itemArray as $key => &$item) {
 
     // Parse the XML response and add ASINs to item array.
     $asins = new SimpleXMLElement($xmlId);    
+    $asins->registerXPathNamespace('ns2', "http://mws.amazonservices.com/schema/Products/2011-10-01/default.xsd");
+    $ns = $asins->GetNamespaces(true);
+    
     $result = $asins->GetMatchingProductForIdResult;
     if (@count($result->Products)) {
         $product = $result->Products->Product->children();
         $item["ASIN"] = (string)$product->Identifiers->MarketplaceASIN->ASIN;
         $item["Rank"] = (string)$product->SalesRankings->SalesRank->Rank;
+        $ns2 = $product->AttributeSets->children($ns["ns2"]);
+        $item["Weight"] = (string)$ns2->ItemAttributes->ItemDimensions->Weight;
     }
     
     // Sleep for required time to avoid throttling.
@@ -135,7 +141,9 @@ foreach($itemArray as $key => &$item) {
     $time_start = microtime(true);
 }
 
+print_r($itemArray);
+
 echo $itemJSON = json_encode($itemArray);
-file_put_contents("blackwrap.json", $itemJSON);
+// file_put_contents("blackwrap.json", $itemJSON);
 
 ?>
