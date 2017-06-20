@@ -14,9 +14,9 @@ unset($request);
 require_once('ListMatchingProducts.php');
 $requestMatch = $request;
 unset($request);
-require_once('GetMyFeesEstimate.php');
-$requestFees = $request;
-unset($request);
+// require_once('GetMyFeesEstimate.php');
+// $requestFees = $request;
+// unset($request);
 
 // Load XML file.
 $url = "https://script.google.com/macros/s/AKfycbwFxIlDhKpBIkJywpzz9iSbkWeO50EXLS5Oj7xS7IYzCoK-jxND/exec";
@@ -109,8 +109,6 @@ foreach($itemArray as $key => &$item) {
     }
     $price_start = microtime(true);
 }
-
-print_r($itemArray);
 
 echo $itemJSON = json_encode($itemArray);
 // file_put_contents("blackwrap.json", $itemJSON);
