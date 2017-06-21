@@ -21,9 +21,6 @@ unset($request);
 // Load XML file.
 $url = "https://script.google.com/macros/s/AKfycbwFxIlDhKpBIkJywpzz9iSbkWeO50EXLS5Oj7xS7IYzCoK-jxND/exec";
 
-// Set throttling parameter to zero.
-$requestCount = 0;
-
 // Parse data from XML into an array.
 $itemsXML = file_get_contents($url);
 $items = new SimpleXMLElement($itemsXML);
@@ -31,6 +28,7 @@ $itemArray = array();
 $j = 0;
 foreach ($items->item as $key => $item) {
     $j++;
+    if ($j < 401) {continue;}
     switch (strlen((string)$item->UPC)) {
         case 11:
             $upc = "0".(string)$item->UPC;
@@ -49,7 +47,7 @@ foreach ($items->item as $key => $item) {
     );
 }
 
-// Set throttling parameter to zero.
+// Set throttling parameters to zero.
 $requestCount = 0;
 $priceCount = 0;
 
