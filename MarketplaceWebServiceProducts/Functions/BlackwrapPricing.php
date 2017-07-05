@@ -28,7 +28,7 @@ $itemArray = array();
 $j = 0;
 foreach ($items->item as $key => $item) {
     $j++;
-    if ($j < 401) {continue;}
+    if ($j < 900) {continue;}
     switch (strlen((string)$item->UPC)) {
         case 11:
             $upc = "0".(string)$item->UPC;

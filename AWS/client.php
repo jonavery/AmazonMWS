@@ -1,19 +1,22 @@
 <?php
 // Include the SDK using the Composer autoloader
-require_once 'vendor/autoload.php';
+require_once __DIR__ . '/autoload.php';
 
 use Aws\Sqs\SqsClient;
 
-$client = SqsClient::factory(array(
+$config = array(
+    'version' => 'latest',
+    'region' => 'us-west-1',
     'key' => 'AKIAJJWRPHCT6ZPPFIEQ',
-    'secret' => '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',
-    'region' => 'us-west-1'
-));
+    'secret' => 'yI9POaLWvQPQ3tOzztjpMLM4Mb1JNG/pQ8JVOH2b'
+);
 
-$queueURL = 'https://sqs.us-west-1.amazonaws.com/104285975220/Subscriptions';
+$sqs = SqsClient::factory($config);
 
-$result = $client->receiveMessage(array(
-    'QueueURL' => $queueURL,
+$queueUrl = 'https://sqs.us-west-1.amazonaws.com/104285975220/Subscriptions';
+
+$result = $sqs->receiveMessage(array(
+    'QueueUrl' => $queueUrl,
     'MaxNumberOfMessages' => 3
 ));
 

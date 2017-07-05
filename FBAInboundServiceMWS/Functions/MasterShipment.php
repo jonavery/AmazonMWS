@@ -112,8 +112,8 @@ foreach($chunkedMember as $key => $chunk) {
         );
         $shipmentId = (string)$member->ShipmentId;
         foreach($member->Items->member as $item) {
-            $shipmentSKU[$shipmentId][] = (string)$item->SellerSKU;
-        }
+        $shipmentSKU[$shipmentId][] = (string)$item->SellerSKU;
+    }
     } 
 }
 
@@ -121,6 +121,7 @@ foreach($chunkedMember as $key => $chunk) {
 * Call CreateInboundShipment to create shipments for each unique
 * combination of Destination and LabelPrepType
 ****************************************************************/
+
 
 //@TODO: Filter out redundant Destinations so those shipments
 //@TODO: are never created
