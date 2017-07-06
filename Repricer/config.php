@@ -6,7 +6,6 @@
  * @license     http://opensource.org/licenses/MIT MIT License
  */
 
-//@TODO: Figure out what uses this and change all of them.
 /**
  * The name of the SQS queue
  */
