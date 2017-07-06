@@ -10,8 +10,8 @@
 require_once __DIR__ . '/config.php';
 require_once __DIR__ . '/autoload.php';
 
-use jonavery\AmazonMWS\Message;
-use jonavery\AmazonMWS\Queue;
+use jonavery\AmazonMWS\Repricer\Message;
+use jonavery\AmazonMWS\Repricer\Queue;
 
 // Array of messages to be displayed to the user.
 $warnings = array();

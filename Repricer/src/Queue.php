@@ -8,7 +8,7 @@
  * @license     http://opensource.org/licenses/MIT MIT License
  */
 
-namespace jonavery\AmazonMWS;
+namespace jonavery\AmazonMWS\Repricer;
 
 use Exception;
 use Aws\Sqs\SqsClient;

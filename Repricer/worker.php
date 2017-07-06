@@ -11,7 +11,7 @@
 require_once __DIR__ . '/config.php';
 require_once __DIR__ . '/autoload.php';
 
-use jonavery\AmazonMWS\Queue;
+use jonavery\AmazonMWS\Repricer\Queue;
 
 // Instantiate queue with aws credentials from config.
 $queue = new Queue(QUEUE_NAME, unserialize(AWS_CREDENTIALS));
