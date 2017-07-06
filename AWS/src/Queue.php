@@ -8,7 +8,7 @@
  * @license     http://opensource.org/licenses/MIT MIT License
  */
 
-namespace Gaw508\PhpSqsTutorial;
+namespace jonavery\AmazonMWS;
 
 use Exception;
 use Aws\Sqs\SqsClient;

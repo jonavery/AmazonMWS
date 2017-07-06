@@ -8,7 +8,7 @@
  * @license     http://opensource.org/licenses/MIT MIT License
  */
 
-namespace Gaw508\PhpSqsTutorial;
+namespace jonavery\AmazonMWS;
 
 class Message
 {
@@ -71,9 +71,10 @@ class Message
      * Takes the input image, creates a 300x300px thumbnail and overlays a text watermark.
      * Then deletes the input image.
      */
+
+    /*
     public function process()
     {
-        /*
         // Crete Imagick object from input image
         $image = new Imagick($this->input_file_path);
 
