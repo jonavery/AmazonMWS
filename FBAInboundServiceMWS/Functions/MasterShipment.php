@@ -137,6 +137,15 @@ foreach($shipmentArray as $shipment) {
         $shipmentItems[] = $item[array_keys($item)[0]];
     }
 
+    // Rename Quantity to QuantityShipped
+    $shipmentItems = array_map(function($shipItems) {
+        return array(
+            'SellerSKU' => $shipItems['SellerSKU'],
+            'QuantityShipped' => $shipItems['Quantity'],
+            'PrepDetailsList' => $shipItems['PrepDetailsList']
+        );
+    }, $shipmentItems);
+
     // Enter parameters to be passed into CreateInboundShipment
     $parameters = array (
         'SellerId' => MERCHANT_ID,
@@ -154,6 +163,7 @@ foreach($shipmentArray as $shipment) {
     
     print_r($parameters);
 
+    
     // Send parameters to Amazon to create shipment
     $requestShip = new FBAInboundServiceMWS_Model_CreateInboundShipmentRequest($parameters);
     unset($parameters);
@@ -165,6 +175,7 @@ foreach($shipmentArray as $shipment) {
 *  Call PutTransportContent to add dimensions to all items in
 *  each shipment.
 *************************************************************/
+
 
 // Create dimension array of all items
 $memberDimensionArray = array();
@@ -218,6 +229,7 @@ foreach($shipmentArray as $shipment) {
 *  Call UpdateInboundShipment to merge duplicate combinations
 *  of Destination and LabelPrepType into single shipments.
 *************************************************************/
+/*
 
 // @TODO: See below
 // Determine which shipments should be merged
@@ -229,36 +241,37 @@ foreach($shipmentArray as $shipment) {
 // Filter $shipmentArray to only contain updated shipments
  
 
-// foreach($mergedShipments as $shipment) {
-// 
-//     // Create array of updated shipment items
-//     $shipmentId = $shipment['ShipmentId'];
-//     $shipmentItems = array();
-//     foreach($shipmentSKU[$shipmentId] as $sku) {
-//         $item = array_filter($memberArray['member'], function ($var) use ($sku) {
-//             return ($var['SellerSKU'] == $sku);
-//         });
-//         $shipmentItems[] = $item[array_keys($item)[0]];
-//     }
-// 
-//     // Enter parameters to be passed into UpdateInboundShipment
-//     $parameters = array (
-//         'SellerId' => MERCHANT_ID,
-//         'ShipmentId' => $shipmentId,
-//         'InboundShipmentHeader' => array(
-//             'ShipmentName' => $shipment['ShipmentName'],
-//             'ShipFromAddress' => $ShipFromAddress,
-//             'DestinationFulfillmentCenterId' => $shipment['Destination'],
-//             'ShipmentStatus' => 'WORKING',
-//             'LabelPrepPreference' => 'SELLER_LABEL',
-//         ),
-//         'InboundShipmentItems' => array('member' => $shipmentItems)
-//     );
-// 
-//     // Pass updated shipment information to Amazon
-//     $requestUpdate = new FBAInboundServiceMWS_Model_UpdateInboundShipmentRequest($parameters);
-//     unset($parameters);
-//     $xmlUpdate = invokeUpdateInboundShipment($service, $requestUpdate);
-// }
+foreach($mergedShipments as $shipment) {
 
+    // Create array of updated shipment items
+    $shipmentId = $shipment['ShipmentId'];
+    $shipmentItems = array();
+    foreach($shipmentSKU[$shipmentId] as $sku) {
+        $item = array_filter($memberArray['member'], function ($var) use ($sku) {
+            return ($var['SellerSKU'] == $sku);
+        });
+        $shipmentItems[] = $item[array_keys($item)[0]];
+    }
+
+    // Enter parameters to be passed into UpdateInboundShipment
+    $parameters = array (
+        'SellerId' => MERCHANT_ID,
+        'ShipmentId' => $shipmentId,
+        'InboundShipmentHeader' => array(
+            'ShipmentName' => $shipment['ShipmentName'],
+            'ShipFromAddress' => $ShipFromAddress,
+            'DestinationFulfillmentCenterId' => $shipment['Destination'],
+            'ShipmentStatus' => 'WORKING',
+            'LabelPrepPreference' => 'SELLER_LABEL',
+        ),
+        'InboundShipmentItems' => array('member' => $shipmentItems)
+    );
+
+    // Pass updated shipment information to Amazon
+    $requestUpdate = new FBAInboundServiceMWS_Model_UpdateInboundShipmentRequest($parameters);
+    unset($parameters);
+    $xmlUpdate = invokeUpdateInboundShipment($service, $requestUpdate);
+}
+
+ */
 ?>
