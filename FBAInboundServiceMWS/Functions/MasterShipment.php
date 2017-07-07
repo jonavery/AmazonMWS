@@ -98,7 +98,7 @@ foreach($chunkedMember as $key => $chunk) {
     // Create new Inbound Shipment Plan $request
     $requestPlan = new FBAInboundServiceMWS_Model_CreateInboundShipmentPlanRequest($parameters);
     unset($parameters);
-    echo $xmlPlan = invokeCreateInboundShipmentPlan($service, $requestPlan);
+    $xmlPlan = invokeCreateInboundShipmentPlan($service, $requestPlan);
     $plan = new SimpleXMLElement($xmlPlan);
 
     // Send plan to Amazon and cache shipment information
@@ -161,9 +161,6 @@ foreach($shipmentArray as $shipment) {
         'InboundShipmentItems' => array('member' => $shipmentItems)
     );
     
-    print_r($parameters);
-
-    
     // Send parameters to Amazon to create shipment
     $requestShip = new FBAInboundServiceMWS_Model_CreateInboundShipmentRequest($parameters);
     unset($parameters);
@@ -175,7 +172,6 @@ foreach($shipmentArray as $shipment) {
 *  Call PutTransportContent to add dimensions to all items in
 *  each shipment.
 *************************************************************/
-
 
 // Create dimension array of all items
 $memberDimensionArray = array();
@@ -213,7 +209,7 @@ foreach($shipmentArray as $shipment) {
             'TransportDetails' => array(
                 'PartneredSmallParcelData' => array(
                     'CarrierName' => 'UNITED_PARCEL_SERVICE_INC',
-                    'PackageList' => $shipmentDimensions
+                    'PackageList' => array( 'member' => $shipmentDimensions)
                 )
             )
         );
@@ -222,7 +218,7 @@ foreach($shipmentArray as $shipment) {
     // Send dimensions to Amazon
     $requestPut = new FBAInboundServiceMWS_Model_PutTransportContentRequest($parameters);
     unset($parameters);
-    $xmlPut = invokePutTransportContent($service, $requestShip);
+    $xmlPut = invokePutTransportContent($service, $requestPut);
 }
 
 /*************************************************************
