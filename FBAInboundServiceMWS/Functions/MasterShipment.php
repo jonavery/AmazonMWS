@@ -182,6 +182,8 @@ foreach($shipmentArray as $shipment) {
 /*************************************************************
 *  Call UpdateInboundShipment to merge duplicate combinations
 *  of Destination and LabelPrepType into single shipments.
+*
+*  tested using sandbox: http://sandbox.onlinephpfunctions.com/code/9bc0ac26f13595b077854234b13d0d0538021b4a
 *************************************************************/
 
 $mergedShipments = array();
