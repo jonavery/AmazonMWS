@@ -42,11 +42,13 @@ $shipmentXML = invokeListInboundShipments($service, $requestShip);
 // Parse the new XML document.
 $shipments = new SimpleXMLElement($shipmentXML);
 $shipmentArray = array();
-foreach ($shipments->ListInboundShipmentsResult->ShipmentData->member as $member) {
+foreach ($shipments->ListInboundShipmentsResult->ShipmentData->member as $member) 
+{
 //    echo 'ID: ', $member->ShipmentId, PHP_EOL,
 //            'Status: ', $member->ShipmentStatus, PHP_EOL;
     // Create array of all shipments.
-    $shipmentArray[] = array(
+    $shipmentArray[] = array
+    (
         "ShipmentId"=>(string)$member->ShipmentId,
         "ShipmentStatus"=>(string)$member->ShipmentStatus
     );
@@ -60,7 +62,8 @@ unset($service); unset($request);
 $token = array("NextToken" => (string)$shipments->ListInboundShipmentsResult->NextToken);
 $requestShipToken = new FBAInboundServiceMWS_Model_ListInboundShipmentsByNextTokenRequest($parameters);
 
-while ($token != null) {
+while ($token != null) 
+{
     $requestShipToken->setNextToken($token);
     $shipmentXML = invokeListInboundShipmentsByNextToken($service, $requestShipToken);
     $shipments = new SimpleXMLElement($shipmentXML);
@@ -68,7 +71,8 @@ while ($token != null) {
 //        echo 'ID: ', $member->ShipmentId, PHP_EOL,
 //            'Status: ', $member->ShipmentStatus, PHP_EOL;
         // Create array of all shipments.
-        $shipmentArray[] = array(
+        $shipmentArray[] = array
+        (
             "ShipmentId"=>(string)$member->ShipmentId,
             "ShipmentStatus"=>(string)$member->ShipmentStatus
         );
@@ -107,12 +111,14 @@ $itemsXML = invokeListInboundShipmentItems($service, $requestItem);
 // Parse the new XML document.
 $items = new SimpleXMLElement($itemsXML);
 $itemArray = array();
-foreach ($items->ListInboundShipmentItemsResult->ItemData->member as $member) {
+foreach ($items->ListInboundShipmentItemsResult->ItemData->member as $member) 
+{
     echo 'SKU: ', $member->SellerSKU, PHP_EOL,
             'ASIN: ', $member->FulfillmentNetworkSKU, PHP_EOL,
             'QShipped: ', $member->QuantityShipped, PHP_EOL,
             'QReceived: ', $member->QuantityReceived, PHP_EOL;
-    $itemArray[] = array(
+    $itemArray[] = array
+    (
         "SellerSKU"=>(string)$member->SellerSKU,
         "QuantityShipped"=>(string)$member->QuantityShipped,
         "QuantityReceived"=>(string)$member->QuantityReceived
@@ -125,15 +131,18 @@ $token = array("NextToken" => (string)$shipments->ListInboundShipmentItemsResult
 $requestItemToken = new FBAInboundServiceMWS_Model_ListInboundShipmentItemsByNextTokenRequest($parameters);
 $request->setSellerId(MERCHANT_ID);
 
-while ($token != null) {
+while ($token != null) 
+{
     $request->setNextToken($token);
     $itemsXML = invokeListInboundShipmentItemsByNextToken($service, $requestItemToken);
     $items = new SimpleXMLElement($shipmentXML);
-    foreach ($shipments->ListInboundShipmentItemsByNextTokenResult->ItemData->member as $member) {
+    foreach ($shipments->ListInboundShipmentItemsByNextTokenResult->ItemData->member as $member) 
+    {
 //        echo 'ID: ', $member->ShipmentId, PHP_EOL,
 //            'Status: ', $member->ShipmentStatus, PHP_EOL;
         // Create array of all shipments.
-        $itemArray[] = array(
+        $itemArray[] = array
+        (
             "ShipmentId"=>(string)$member->ShipmentId,
             "ShipmentStatus"=>(string)$member->ShipmentStatus
         );
