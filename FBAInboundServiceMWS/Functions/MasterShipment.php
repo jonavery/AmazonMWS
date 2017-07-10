@@ -112,8 +112,8 @@ foreach($chunkedMember as $key => $chunk) {
         );
         $shipmentId = (string)$member->ShipmentId;
         foreach($member->Items->member as $item) {
-        $shipmentSKU[$shipmentId][] = (string)$item->SellerSKU;
-    }
+            $shipmentSKU[$shipmentId][] = (string)$item->SellerSKU;
+        }
     } 
 }
 
@@ -165,61 +165,8 @@ foreach($shipmentArray as $shipment) {
     $requestShip = new FBAInboundServiceMWS_Model_CreateInboundShipmentRequest($parameters);
     unset($parameters);
     $xmlShip = invokeCreateInboundShipment($service, $requestShip);
-    $shipment = new SimpleXMLElement($xmlShip);
 }
 
-/*************************************************************
-*  Call PutTransportContent to add dimensions to all items in
-*  each shipment.
-*************************************************************/
-
-// Create dimension array of all items
-$memberDimensionArray = array();
-foreach ($items->Member as $member) {
-    $memberDimensionArray[(string)$member->SellerSKU] = array(
-        'Weight' => array(
-            'Value'=>(string)$member->Dimensions->Weight,
-            'Unit' => 'pounds'
-        ),
-        'Dimensions' => array(
-            'Length'=>(string)$member->Dimensions->Length,
-            'Width'=>(string)$member->Dimensions->Width,
-            'Height'=>(string)$member->Dimensions->Height,
-            'Unit' => 'inches'
-        )
-    );
-}
-
-// Create dimension array for items in shipment. 
-foreach($shipmentArray as $shipment) {
-    // Create array of dimensions in shipment
-    $shipmentId = $shipment['ShipmentId'];
-    $shipmentDimensions = array();
-    foreach($shipmentSKU[$shipmentId] as $sku) {
-        $shipmentDimensions[] = $memberDimensionArray[$sku];
-    }
-
-    // Enter parameters to be passed into PutTransportContent
-    foreach($shipmentArray as $shipment) {
-        $parameters = array (
-            'SellerId' => MERCHANT_ID,
-            'ShipmentId' => $shipment['ShipmentId'],
-            'IsPartnered' => 'true',
-            'ShipmentType' => 'SP',
-            'TransportDetails' => array(
-                'PartneredSmallParcelData' => array(
-                    'CarrierName' => 'UNITED_PARCEL_SERVICE_INC',
-                    'PackageList' => array( 'member' => $shipmentDimensions)
-                )
-            )
-        );
-    }
-
-    // Send dimensions to Amazon
-    $requestPut = new FBAInboundServiceMWS_Model_PutTransportContentRequest($parameters);
-    unset($parameters);
-    $xmlPut = invokePutTransportContent($service, $requestPut);
-}
 
 /*************************************************************
 *  Call UpdateInboundShipment to merge duplicate combinations
@@ -268,6 +215,57 @@ foreach($mergedShipments as $shipment) {
     unset($parameters);
     $xmlUpdate = invokeUpdateInboundShipment($service, $requestUpdate);
 }
-
  */
+
+/*************************************************************
+*  Call PutTransportContent to add dimensions to all items in
+*  each shipment.
+*************************************************************/
+
+// Create dimension array of all items
+$memberDimensionArray = array();
+foreach ($items->Member as $member) {
+    $memberDimensionArray[(string)$member->SellerSKU] = array(
+        'Weight' => array(
+            'Value'=>(string)$member->Dimensions->Weight,
+            'Unit' => 'pounds'
+        ),
+        'Dimensions' => array(
+            'Length'=>(string)$member->Dimensions->Length,
+            'Width'=>(string)$member->Dimensions->Width,
+            'Height'=>(string)$member->Dimensions->Height,
+            'Unit' => 'inches'
+        )
+    );
+}
+
+// Create dimension array for items in shipment. 
+foreach($shipmentArray as $shipment) {
+    // Create array of dimensions in shipment
+    $shipmentId = $shipment['ShipmentId'];
+    $shipmentDimensions = array();
+    foreach($shipmentSKU[$shipmentId] as $sku) {
+        $shipmentDimensions[] = $memberDimensionArray[$sku];
+    }
+
+    // Enter parameters to be passed into PutTransportContent
+    $parameters = array (
+        'SellerId' => MERCHANT_ID,
+        'ShipmentId' => $shipment['ShipmentId'],
+        'IsPartnered' => 'true',
+        'ShipmentType' => 'SP',
+        'TransportDetails' => array(
+            'PartneredSmallParcelData' => array(
+                'CarrierName' => 'UNITED_PARCEL_SERVICE_INC',
+                'PackageList' => array( 'member' => $shipmentDimensions)
+            )
+        )
+    );
+
+    // Send dimensions to Amazon
+    $requestPut = new FBAInboundServiceMWS_Model_PutTransportContentRequest($parameters);
+    unset($parameters);
+    $xmlPut = invokePutTransportContent($service, $requestPut);
+}
+
 ?>
