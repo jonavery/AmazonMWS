@@ -103,12 +103,13 @@ foreach($chunkedMember as $key => $chunk) {
 
     // Send plan to Amazon and cache shipment information
     $shipments = $plan->CreateInboundShipmentPlanResult->InboundShipmentPlans;
+    $nameDate = date('n/j/y g:i A');
     foreach($shipments->member as $member) {
         $n++;
         $shipmentArray[] = array(
             'Destination' => (string)$member->DestinationFulfillmentCenterId,
             'ShipmentId' => (string)$member->ShipmentId,
-            'ShipmentName' => 'FBA (' . date('n/j/y g:i A') . ") - " . $n
+            'ShipmentName' => 'FBA (' . $nameDate . ") - " . $n
         );
         $shipmentId = (string)$member->ShipmentId;
         foreach($member->Items->member as $item) {
@@ -122,13 +123,23 @@ foreach($chunkedMember as $key => $chunk) {
 * combination of Destination and LabelPrepType
 ****************************************************************/
 
+//Initialize arrays for shipment filtering
+$destinations = array();
+$skipShips = array();
 
-//@TODO: Filter out redundant Destinations so those shipments
-//@TODO: are never created
 foreach($shipmentArray as $shipment) {
 
-    // Filter item array to only include items from this shipment
+    // Filter out redundant Destinations so those shipments
+    // are never created
     $shipmentId = $shipment['ShipmentId'];
+    $shipDest = $shipment['Destination'];
+    if (in_array($shipDest, $destinations)) {
+        $skipShips[] = $shipmentId;
+        continue;
+    }
+    $destinations[] = $shipDest;
+
+    // Filter item array to only include items from this shipment
     $shipmentItems = array();
     foreach($shipmentSKU[$shipmentId] as $sku) {
         $item = array_filter($memberArray['member'], function ($var) use ($sku) {
@@ -153,7 +164,7 @@ foreach($shipmentArray as $shipment) {
         'InboundShipmentHeader' => array(
             'ShipmentName' => $shipment['ShipmentName'],
             'ShipFromAddress' => $ShipFromAddress,
-            'DestinationFulfillmentCenterId' => $shipment['Destination'],
+            'DestinationFulfillmentCenterId' => $shipDest,
             'ShipmentStatus' => 'WORKING',
             'LabelPrepPreference' => 'SELLER_LABEL',
 	    'IntendedBoxContentsSource' => 'FEED'
@@ -172,17 +183,24 @@ foreach($shipmentArray as $shipment) {
 *  Call UpdateInboundShipment to merge duplicate combinations
 *  of Destination and LabelPrepType into single shipments.
 *************************************************************/
-/*
 
-// @TODO: See below
-// Determine which shipments should be merged
+$mergedShipments = array();
+foreach($skipShips as $shipmentId) {
+    
+    // Find parent of skipped shipment
+    $key = array_search($skip['Destination'], array_column($shipmentArray, 'Destination'));
+    $parent = $shipmentArray[$key]['ShipmentId'];
+    $child = $skip['ShipmentId'];
 
+    // Merge child with parent in $shipmentSKU array
+    $shipmentSKU[$parent] = array_merge($shipmentSKU[$parent], $shipmentSKU[$child]);
+    unset($shipmentSKU[$child]);
 
-// Merge appropriate shipments in $shipmentSKU array
-
-
-// Filter $shipmentArray to only contain updated shipments
- 
+    // Add parent shipment to $mergedShipments
+    if(!in_array($shipmentArray[$key], $mergedShipments)) {
+        $mergedShipments[] = $shipmentArray[$key];
+    }
+}
 
 foreach($mergedShipments as $shipment) {
 
@@ -195,6 +213,15 @@ foreach($mergedShipments as $shipment) {
         });
         $shipmentItems[] = $item[array_keys($item)[0]];
     }
+
+    // Rename Quantity to QuantityShipped
+    $shipmentItems = array_map(function($shipItems) {
+        return array(
+            'SellerSKU' => $shipItems['SellerSKU'],
+            'QuantityShipped' => $shipItems['Quantity'],
+            'PrepDetailsList' => $shipItems['PrepDetailsList']
+        );
+    }, $shipmentItems);
 
     // Enter parameters to be passed into UpdateInboundShipment
     $parameters = array (
@@ -215,14 +242,13 @@ foreach($mergedShipments as $shipment) {
     unset($parameters);
     $xmlUpdate = invokeUpdateInboundShipment($service, $requestUpdate);
 }
- */
 
 /*************************************************************
 *  Call PutTransportContent to add dimensions to all items in
 *  each shipment.
 *************************************************************/
 
-// Create dimension array of all items
+// Create dimension array of all items from XML data
 $memberDimensionArray = array();
 foreach ($items->Member as $member) {
     $memberDimensionArray[(string)$member->SellerSKU] = array(
@@ -239,8 +265,8 @@ foreach ($items->Member as $member) {
     );
 }
 
-// Create dimension array for items in shipment. 
 foreach($shipmentArray as $shipment) {
+
     // Create array of dimensions in shipment
     $shipmentId = $shipment['ShipmentId'];
     $shipmentDimensions = array();
