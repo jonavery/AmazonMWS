@@ -132,6 +132,6 @@ foreach($itemArray as $key => &$item) {
 }
 
 echo $itemJSON = json_encode($itemArray);
-file_put_contents("test.json", $itemJSON);
+file_put_contents("item.json", $itemJSON);
 
 ?>
