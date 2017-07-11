@@ -51,26 +51,6 @@ $serviceUrl = "https://mws.amazonservices.com/FulfillmentInboundShipment/2010-10
         APPLICATION_VERSION,
         $config);
 
-/************************************************************************
- * Uncomment to try out Mock Service that simulates FBAInboundServiceMWS
- * responses without calling FBAInboundServiceMWS service.
- *
- * Responses are loaded from local XML files. You can tweak XML files to
- * experiment with various outputs during development
- *
- * XML files available under FBAInboundServiceMWS/Mock tree
- *
- ***********************************************************************/
- // $service = new FBAInboundServiceMWS_Mock();
-
-/************************************************************************
- * Setup request parameters and uncomment invoke to try out
- * sample for List Inbound Shipments Action
- ***********************************************************************/
- // @TODO: set request. Action can be passed as FBAInboundServiceMWS_Model_ListInboundShipments
- $request = new FBAInboundServiceMWS_Model_ListInboundShipmentsRequest();
- $request->setSellerId(MERCHANT_ID);
-
 /**
   * Get List Inbound Shipments Action
   *     Gets list of inbound shipments as specified by the filters passed through

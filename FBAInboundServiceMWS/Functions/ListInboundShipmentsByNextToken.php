@@ -50,27 +50,6 @@ $config = array (
         APPLICATION_VERSION,
         $config);
 
-/************************************************************************
- * Uncomment to try out Mock Service that simulates FBAInboundServiceMWS
- * responses without calling FBAInboundServiceMWS service.
- *
- * Responses are loaded from local XML files. You can tweak XML files to
- * experiment with various outputs during development
- *
- * XML files available under FBAInboundServiceMWS/Mock tree
- *
- ***********************************************************************/
- // $service = new FBAInboundServiceMWS_Mock();
-
-/************************************************************************
- * Setup request parameters and uncomment invoke to try out
- * sample for List Inbound Shipments By Next Token Action
- ***********************************************************************/
- // @TODO: set request. Action can be passed as FBAInboundServiceMWS_Model_ListInboundShipmentsByNextToken 
- $request = new FBAInboundServiceMWS_Model_ListInboundShipmentsByNextTokenRequest();
- $request->setSellerId(MERCHANT_ID);
- // object or array of parameters
-
 /**
   * Get List Inbound Shipments By Next Token Action Sample
   *
@@ -81,7 +60,7 @@ $config = array (
   function invokeListInboundShipmentsByNextToken(FBAInboundServiceMWS_Interface $service, $request)
   {
       try {
-        $response = $service->ListInboundShipments($request);
+        $response = $service->ListInboundShipmentsByNextToken($request);
 
         $dom = new DOMDocument();
         $dom->loadXML($response->toXML());
