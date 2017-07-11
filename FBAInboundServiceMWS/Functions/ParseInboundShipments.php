@@ -20,7 +20,6 @@ require_once(__DIR__ . '/ListInboundShipmentItemsByNextToken.php');
  * Get a list of all inbound shipments from Amazon and
  * cache the list in an array.
  ***********************************************************************/
-// Initialize and run ListInboundShipments.
 
 // Set status array and timeframe criteria for filtering shipments
 $statusList = array('WORKING','SHIPPED','IN_TRANSIT','DELIVERED','CHECKED_IN','RECEIVING','CLOSED','CANCELLED','DELETED','ERROR');
@@ -61,6 +60,7 @@ unset($service); unset($request);
 // it does not return a token.
 $token = array("NextToken" => (string)$shipments->ListInboundShipmentsResult->NextToken);
 $requestShipToken = new FBAInboundServiceMWS_Model_ListInboundShipmentsByNextTokenRequest($parameters);
+unset($parameters);
 
 while ($token != null) 
 {
@@ -89,17 +89,21 @@ while ($token != null)
 // Destroy variables to get a clean slate.
 unset($service); unset($request);
 
-// Initialize and run ListInboundShipmentItems.
-
 // @TODO: Use shipmentId for filtering shipment items
 $inboundShipments = array('FBA4BH80BS','FBA4BQ3V9K','FBA4C2XLRT','FBA4DWLRWN');
 $shipmentId = new FBAInboundServiceMWS_Model_ShipmentIdList();
-$shipmentId->setmember($inboundShipments);
+$shipmentId->setMember($inboundShipments);
 
-$updatedAfter = date('Y-m-d', mktime(0, 0, 0, date("m")-1, date("d"),   date("Y")));
-$updatedBefore = date('Y-m-d');
+$parameters = array
+(
+    'SellerId' => MERCHANT_ID,
+    'LastUpdatedAfter' => $updatedAfter,
+    'LastUpdatedBefore' => $updatedBefore,
+
+);
 
 $requestItem = new FBAInboundServiceMWS_Model_ListInboundShipmentItemsRequest($parameters);
+unset($parameters);
 $request->setShipmentId($shipmentId);
 $request->setLastUpdatedAfter($updatedAfter);
 $request->setLastUpdatedBefore($updatedBefore);
@@ -129,6 +133,7 @@ foreach ($items->ListInboundShipmentItemsResult->ItemData->member as $member)
 // it does not return a token.
 $token = array("NextToken" => (string)$shipments->ListInboundShipmentItemsResult->NextToken);
 $requestItemToken = new FBAInboundServiceMWS_Model_ListInboundShipmentItemsByNextTokenRequest($parameters);
+unset($parameters);
 $request->setSellerId(MERCHANT_ID);
 
 while ($token != null) 
