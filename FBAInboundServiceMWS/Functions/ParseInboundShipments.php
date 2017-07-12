@@ -89,6 +89,7 @@ while ($token != null)
  * until the fuction stops returning a token.
  ***********************************************************************/
 
+$itemArray = array();
 foreach($shipmentArray as $key => &$shipment) {
     $shipmentId = $shipment['ShipmentId'];
     $name = $shipment['ShipmentName'];
@@ -108,7 +109,6 @@ foreach($shipmentArray as $key => &$shipment) {
 
     // Parse the new XML document.
     $items = new SimpleXMLElement($itemsXML);
-    $itemArray = array();
     foreach ($items->ListInboundShipmentItemsResult->ItemData->member as $member) 
     {
         $itemArray[] = array
