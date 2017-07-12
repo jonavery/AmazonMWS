@@ -27,6 +27,9 @@ require_once(__DIR__ . '/ListInboundShipmentItemsByNextToken.php');
 $statusList = array('WORKING','SHIPPED','IN_TRANSIT','DELIVERED','CHECKED_IN','RECEIVING','CLOSED','CANCELLED','DELETED','ERROR');
 $updatedAfter = date('Y-m-d', mktime(0, 0, 0, date("m")-1, date("d"),   date("Y")));
 $updatedBefore = date('Y-m-d');
+
+// Cache throttling parameter.
+$requestCount = 0;
  
 // Construct parameters to be sent to Amazon
 $parameters = array
@@ -41,6 +44,7 @@ $parameters = array
 $requestShip = new FBAInboundServiceMWS_Model_ListInboundShipmentsRequest($parameters);
 unset($parameters);
 $shipmentXML = invokeListInboundShipments($service, $requestShip);
+$requestCount++;
 
 // Parse the new XML document.
 $shipments = new SimpleXMLElement($shipmentXML);
@@ -67,6 +71,7 @@ unset($parameters);
 while ($token != null) 
 {
     $shipmentXML = invokeListInboundShipmentsByNextToken($service, $requestShipToken);
+    $requestCount++;
     $shipments = new SimpleXMLElement($shipmentXML);
     foreach ($shipments->ListInboundShipmentsByNextTokenResult->ShipmentData->member as $member) {
         // Create array of all shipments.
@@ -81,6 +86,13 @@ while ($token != null)
     $parameters = array ('SellerId' => MERCHANT_ID, 'NextToken' => $token);
     $requestShipToken = new FBAInboundServiceMWS_Model_ListInboundShipmentsByNextTokenRequest($parameters);
     unset($parameters);
+            
+    // Sleep for required time to avoid throttling.
+    $end = microtime(true);
+    if ($requestCount > 29 && ($end - $start) < 500000) {
+        usleep(5000000 - ($end - $start));
+    }
+    $start = microtime(true);
 }
 
 /************************************************************************
@@ -94,6 +106,9 @@ foreach($shipmentArray as $key => &$shipment) {
     $shipmentId = $shipment['ShipmentId'];
     $name = $shipment['ShipmentName'];
     $updated = date('m/d/Y', mktime(0, 0, 0, date("m")-1, date("d"),   date("Y")));
+    
+    // Cache throttling parameter.
+    $requestCount = 0;
 
     $parameters = array
     (
@@ -106,6 +121,7 @@ foreach($shipmentArray as $key => &$shipment) {
     $requestItem = new FBAInboundServiceMWS_Model_ListInboundShipmentItemsRequest($parameters);
     unset($parameters);
     $itemsXML = invokeListInboundShipmentItems($service, $requestItem);
+    $requestCount++;
 
     // Parse the new XML document.
     $items = new SimpleXMLElement($itemsXML);
@@ -133,6 +149,7 @@ foreach($shipmentArray as $key => &$shipment) {
     while ($token != null) 
     {
         $itemsXML = invokeListInboundShipmentItemsByNextToken($service, $requestItemToken);
+        $requestCount++;
         $items = new SimpleXMLElement($shipmentXML);
         foreach ($items->ListInboundShipmentItemsByNextTokenResult->ItemData->member as $member) 
         {
@@ -152,6 +169,14 @@ foreach($shipmentArray as $key => &$shipment) {
         $parameters = array('SellerId' => MERCHANT_ID, 'NextToken' => $token);
         $requestItemToken = new FBAInboundServiceMWS_Model_ListInboundShipmentItemsByNextTokenRequest($parameters);
         unset($parameters);
+
+
+        // Sleep for required time to avoid throttling.
+        $end = microtime(true);
+        if ($requestCount > 29 && ($end - $start) < 500000) {
+            usleep(5000000 - ($end - $start));
+        }
+        $start = microtime(true);
     }
 }
 
