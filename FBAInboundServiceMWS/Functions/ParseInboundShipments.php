@@ -90,7 +90,7 @@ while ($token != null)
     // Sleep for required time to avoid throttling.
     $end = microtime(true);
     if ($requestCount > 29 && ($end - $start) < 500000) {
-        usleep(5000000 - ($end - $start));
+        usleep(500000 - ($end - $start));
     }
     $start = microtime(true);
 }
@@ -109,7 +109,15 @@ foreach($shipmentArray as $key => &$shipment) {
     
     // Cache throttling parameter.
     $requestCount = 0;
+    
+    // Sleep for required time to avoid throttling.
+    $end = microtime(true);
+    if ($requestCount > 29 && ($end - $start) < 500000) {
+        usleep(500000 - ($end - $start));
+    }
+    $start = microtime(true);
 
+    // Format parameters to be sent to Amazon
     $parameters = array
     (
         'SellerId' => MERCHANT_ID,
@@ -118,6 +126,7 @@ foreach($shipmentArray as $key => &$shipment) {
         'ShipmentId' => $shipmentId
     );
 
+    // Format parameters into MWS request and send to Amazon
     $requestItem = new FBAInboundServiceMWS_Model_ListInboundShipmentItemsRequest($parameters);
     unset($parameters);
     $itemsXML = invokeListInboundShipmentItems($service, $requestItem);
@@ -174,7 +183,7 @@ foreach($shipmentArray as $key => &$shipment) {
         // Sleep for required time to avoid throttling.
         $end = microtime(true);
         if ($requestCount > 29 && ($end - $start) < 500000) {
-            usleep(5000000 - ($end - $start));
+            usleep(500000 - ($end - $start));
         }
         $start = microtime(true);
     }
