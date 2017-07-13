@@ -296,4 +296,5 @@ foreach($shipmentArray as $shipment) {
     $xmlPut = invokePutTransportContent($service, $requestPut);
 }
 
+echo "Success! Shipments have been created. Go to SellerCentral to view shipments and print labels.";
 ?>

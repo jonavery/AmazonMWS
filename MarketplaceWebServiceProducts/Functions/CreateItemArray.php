@@ -134,5 +134,5 @@ foreach($itemArray as $key => &$item) {
 $itemJSON = json_encode($itemArray);
 file_put_contents("MWS.json", $itemJSON);
 
-echo "Success! MWS.json has been created.";
+echo "Success! MWS.json has been created. Run 'Populate MWS Tab' and 'Post Listings' to list products on Amazon.";
 ?>

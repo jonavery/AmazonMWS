@@ -192,5 +192,5 @@ foreach($shipmentArray as $key => &$shipment) {
 $itemJSON = json_encode($itemArray);
 file_put_contents("FBA.json", $itemJSON);
 
-echo "Success! FBA.json has been created.";
+echo "Success! FBA.json has been created. Now run 'Import FBA Shipment Report' to move it into the sheet.";
 ?>
