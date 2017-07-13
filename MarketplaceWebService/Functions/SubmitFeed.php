@@ -69,11 +69,9 @@ $config = array (
 // your feed on disk and use traditional file streams to submit your feeds. For conciseness, this
 // example uses a memory stream.
 
-// Constructing the MarketplaceId array which will be passed in as the the MarketplaceIdList 
-// parameter to the SubmitFeedRequest object.
-$marketplaceIdArray = array("Id" => array(MARKETPLACE_ID));
-     
 function makeRequest($feed) {
+    $marketplaceIdArray = array("Id" => array(MARKETPLACE_ID));
+
     $feedHandle = @fopen('php://memory', 'rw+');
     fwrite($feedHandle, $feed);
     rewind($feedHandle);
