@@ -73,20 +73,23 @@ $config = array (
 // parameter to the SubmitFeedRequest object.
 $marketplaceIdArray = array("Id" => array(MARKETPLACE_ID));
      
-$feedHandle = @fopen('php://memory', 'rw+');
-fwrite($feedHandle, $feed);
-rewind($feedHandle);
+function makeRequest($feed) {
+    $feedHandle = @fopen('php://memory', 'rw+');
+    fwrite($feedHandle, $feed);
+    rewind($feedHandle);
 
-$request = new MarketplaceWebService_Model_SubmitFeedRequest();
-$request->setMerchant(MERCHANT_ID);
-$request->setMarketplaceIdList($marketplaceIdArray);
-$request->setContentMd5(base64_encode(md5(stream_get_contents($feedHandle), true)));
-rewind($feedHandle);
-$request->setPurgeAndReplace(false);
-$request->setFeedContent($feedHandle);
-$request->setMWSAuthToken(MWS_AUTH_TOKEN);
+    $request = new MarketplaceWebService_Model_SubmitFeedRequest();
+    $request->setMerchant(MERCHANT_ID);
+    $request->setMarketplaceIdList($marketplaceIdArray);
+    $request->setContentMd5(base64_encode(md5(stream_get_contents($feedHandle), true)));
+    rewind($feedHandle);
+    $request->setPurgeAndReplace(false);
+    $request->setFeedContent($feedHandle);
+    $request->setMWSAuthToken(MWS_AUTH_TOKEN);
 
-rewind($feedHandle);
+    rewind($feedHandle);
+    return $request;
+}
                                         
 /**
   * Submit Feed Action Sample
