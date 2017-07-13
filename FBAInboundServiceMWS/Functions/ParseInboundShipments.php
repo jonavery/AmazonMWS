@@ -112,7 +112,7 @@ foreach($shipmentArray as $key => &$shipment) {
     
     // Sleep for required time to avoid throttling.
     $end = microtime(true);
-    if ($requestCount > 29 && ($end - $start) < 500000) {
+    if (($end - $start) < 500000) {
         usleep(500000 - ($end - $start));
     }
     $start = microtime(true);
@@ -182,14 +182,15 @@ foreach($shipmentArray as $key => &$shipment) {
 
         // Sleep for required time to avoid throttling.
         $end = microtime(true);
-        if ($requestCount > 29 && ($end - $start) < 500000) {
+        if (($end - $start) < 500000) {
             usleep(500000 - ($end - $start));
         }
         $start = microtime(true);
     }
 }
 
-echo $itemJSON = json_encode($itemArray);
+$itemJSON = json_encode($itemArray);
 file_put_contents("FBA.json", $itemJSON);
 
+echo "Success! FBA.json has been created.";
 ?>
