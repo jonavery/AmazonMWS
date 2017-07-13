@@ -131,7 +131,8 @@ foreach($itemArray as $key => &$item) {
     $time_start = microtime(true);
 }
 
-echo $itemJSON = json_encode($itemArray);
-file_put_contents("item.json", $itemJSON);
+$itemJSON = json_encode($itemArray);
+file_put_contents("MWS.json", $itemJSON);
 
+echo "Success! MWS.json has been created.";
 ?>
