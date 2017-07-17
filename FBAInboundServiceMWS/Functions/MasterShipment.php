@@ -295,6 +295,8 @@ foreach($shipmentArray as $shipment) {
     unset($parameters);
     $xmlPut = invokePutTransportContent($service, $requestPut);
 }
+$shipJSON = json_encode($shipmentSKU);
+file_put_contents("shipID.json", $shipJSON);
 
 echo "Success! Shipments have been created. Go to SellerCentral to view shipments and print labels.";
 ?>
