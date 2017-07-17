@@ -70,7 +70,7 @@ foreach($chunkedSKUs as $chunk) {
 
 // Create address array to be passed into parameters
 $ShipFromAddress = array (
-    'Name' => 'Kriss Sweeney',
+    'Name' => 'KLAS1000',
     'AddressLine1' => '51 N Pecos Rd #103',
     'City' => 'Las Vegas',
     'StateOrProvinceCode' => 'NV',
