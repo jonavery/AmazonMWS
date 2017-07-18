@@ -6,8 +6,9 @@
  ************************************************************************/
 // Initialize files
 require_once(__DIR__ . '/../../MarketplaceWebService/Functions/SubmitFeed.php');
-require_once(__DIR__ . '/GetUniquePackageLabels.php');
-require_once(__DIR__ . '/UpdateInboundShipment.php');
+$serviceMWS = $service;
+// require_once(__DIR__ . '/GetUniquePackageLabels.php');
+// require_once(__DIR__ . '/UpdateInboundShipment.php');
 
 /*************************************************************
 *  Call SubmitFeed to send information to Amazon
@@ -18,12 +19,11 @@ require_once(__DIR__ . '/UpdateInboundShipment.php');
 $urlFeed = "https://script.google.com/macros/s/AKfycbxozOUDpHwr0-szEtn2J8luT7D7cImDevIjSRyZf72ODKGy0H0O/exec"; 
 
 // Call SubmitFeed to send shipped item information to Amazon
-$feed = file_get_contents($urlShip);
+$feed = file_get_contents($urlFeed);
 $requestFeed = makeRequest($feed);
 $requestFeed->setFeedType('_POST_FBA_INBOUND_CARTON_CONTENTS_');
-invokeSubmitFeed($service, $requestFeed);
+invokeSubmitFeed($serviceMWS, $requestFeed);
 @fclose($feedHandle);
-unset($request);
 
 
 /*************************************************************
@@ -32,7 +32,8 @@ unset($request);
 *************************************************************/
 
 // Initialize label script
-$request = new FBAInboundServiceMWS_Model_GetUniquePackageLabelsRequest($parameters);
+// $requestLabel = new FBAInboundServiceMWS_Model_GetUniquePackageLabelsRequest($parameters);
+// unset($parameters);
 
 
 /*************************************************************
@@ -42,8 +43,8 @@ $request = new FBAInboundServiceMWS_Model_GetUniquePackageLabelsRequest($paramet
 
 // Initialize update script
 
-$requestUpdate = new FBAInboundServiceMWS_Model_UpdateInboundShipmentRequest($parameters);
-unset($parameters);
-$xmlUpdate = invokeUpdateInboundShipment($service, $requestUpdate);
+// $requestUpdate = new FBAInboundServiceMWS_Model_UpdateInboundShipmentRequest($parameters);
+// unset($parameters);
+// $xmlUpdate = invokeUpdateInboundShipment($service, $requestUpdate);
 
 ?>

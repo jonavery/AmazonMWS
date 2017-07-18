@@ -12,7 +12,7 @@ require_once(__DIR__ . '/CreateInboundShipment.php');
 require_once(__DIR__ . '/UpdateInboundShipment.php');
 require_once(__DIR__ . '/PutTransportContent.php');
 
-// Cache URLs 
+// Cache URL 
 $urlShip = "https://script.google.com/macros/s/AKfycbxBN9iOFmN5fJH5_iEPwEMK36a98SX7xFF4bfHaBfD0y29Ff7zN/exec";
 
 // Parse XML file and create member array

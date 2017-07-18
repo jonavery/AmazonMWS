@@ -17,10 +17,10 @@
  */
 
 /**
- * Submit Feed  Sample
+ * Submit Feed
  */
 
-require_once (__DIR__ . '/../../MarketplaceWebService/Functions/.config.inc.php'); 
+require_once (__DIR__ . '/../../FBAInboundServiceMWS/Functions/.config.inc.php'); 
 
 /************************************************************************
 * Uncomment to configure the client instance. Configuration settings
