@@ -20,10 +20,10 @@ $urlFeed = "https://script.google.com/macros/s/AKfycbxozOUDpHwr0-szEtn2J8luT7D7c
 
 // Call SubmitFeed to send shipped item information to Amazon
 $feed = file_get_contents($urlFeed);
-$requestFeed = makeRequest($feed);
-$requestFeed->setFeedType('_POST_FBA_INBOUND_CARTON_CONTENTS_');
-invokeSubmitFeed($serviceMWS, $requestFeed);
-@fclose($feedHandle);
+// $requestFeed = makeRequest($feed);
+// $requestFeed->setFeedType('_POST_FBA_INBOUND_CARTON_CONTENTS_');
+// invokeSubmitFeed($serviceMWS, $requestFeed);
+// @fclose($feedHandle);
 
 
 /*************************************************************
@@ -34,13 +34,13 @@ invokeSubmitFeed($serviceMWS, $requestFeed);
 // Initialize label script
 $items = new SimpleXMLElement($feed);
 
+$requestCount = 0;
 $itemArray = [];
-$labelArray = [];
 foreach ($items->Message as $message) {
-    $shipmentId = $message->CartonContentsRequest->ShipmentId;
+    $shipmentId = (String)$message->CartonContentsRequest->ShipmentId;
     foreach ($message->CartonContentsRequest->Carton as $carton) {
         $itemArray[$shipmentId][] = array(
-            'CartonId' => $carton->CartonId,
+            'CartonId' => (String)$carton->CartonId,
         );
     }
 
@@ -51,11 +51,19 @@ foreach ($items->Message as $message) {
         'PageType' => 'PackageLabel_Plain_Paper',
         'PackageLabelsToPrint' => array('member' => $itemArray[$shipmentId])
     );
+    
+    // Sleep for required time to avoid throttling.
+    $end = microtime(true);
+    if ($requestCount > 29 && ($end - $start) < 500000) {
+        usleep(500000 - ($end - $start));
+    }
+    $start = microtime(true);
 
     // Call GetUniquePackageLabels using the created parameters
     $requestLabel = new FBAInboundServiceMWS_Model_GetUniquePackageLabelsRequest($parameters);
     unset($parameters);
     $xmlLabel = invokeGetUniquePackageLabels($service, $requestLabel);
+    $requestCount++;
     $label = new SimpleXMLElement($xmlLabel);
 
     // Cache pdf label as a base64-encoded data string
