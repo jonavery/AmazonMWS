@@ -49,8 +49,10 @@ foreach ($items->Message as $message) {
         'SellerId' => MERCHANT_ID,
         'ShipmentId' => $shipmentId,
         'PageType' => 'PackageLabel_Plain_Paper',
-        'PackageLabelsToPrint' => array('member' => $itemArray[$shipmentId])
+        'PackageLabelsToPrint' => array('member' => array_values($itemArray[$shipmentId]))
     );
+
+    print_r($parameters);
     
     // Sleep for required time to avoid throttling.
     $end = microtime(true);
