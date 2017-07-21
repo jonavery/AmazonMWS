@@ -49,7 +49,7 @@ foreach ($items->Message as $message) {
         'SellerId' => MERCHANT_ID,
         'ShipmentId' => $shipmentId,
         'PageType' => 'PackageLabel_Plain_Paper',
-        'PackageLabelsToPrint' => array('member' => $itemArray[$shipmentId]
+        'PackageLabelsToPrint' => array('member' => $itemArray[$shipmentId])
     );
 
     // Call GetUniquePackageLabels using the created parameters
