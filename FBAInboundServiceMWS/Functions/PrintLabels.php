@@ -7,8 +7,8 @@
 // Initialize files
 require_once(__DIR__ . '/../../MarketplaceWebService/Functions/SubmitFeed.php');
 $serviceMWS = $service;
-// require_once(__DIR__ . '/GetUniquePackageLabels.php');
-// require_once(__DIR__ . '/UpdateInboundShipment.php');
+require_once(__DIR__ . '/GetUniquePackageLabels.php');
+require_once(__DIR__ . '/UpdateInboundShipment.php');
 
 /*************************************************************
 *  Call SubmitFeed to send information to Amazon
@@ -32,8 +32,46 @@ invokeSubmitFeed($serviceMWS, $requestFeed);
 *************************************************************/
 
 // Initialize label script
-// $requestLabel = new FBAInboundServiceMWS_Model_GetUniquePackageLabelsRequest($parameters);
-// unset($parameters);
+$items = new SimpleXMLElement($feed);
+
+$itemArray = [];
+$labelArray = [];
+foreach ($items->Message as $message) {
+    $shipmentId = $message->CartonContentsRequest->ShipmentId;
+    foreach ($message->CartonContentsRequest->Carton as $carton) {
+        $itemArray[$shipmentId][] = array(
+            'CartonId' => $carton->CartonId,
+        );
+    }
+
+    // Enter parameters to be passed into GetUniquePackageLabels
+    $parameters = array(
+        'SellerId' => MERCHANT_ID,
+        'ShipmentId' => $shipmentId,
+        'PageType' => 'PackageLabel_Plain_Paper',
+        'PackageLabelsToPrint' => array('member' => $itemArray[$shipmentId]
+    );
+
+    // Call GetUniquePackageLabels using the created parameters
+    $requestLabel = new FBAInboundServiceMWS_Model_GetUniquePackageLabelsRequest($parameters);
+    unset($parameters);
+    $xmlLabel = invokeGetUniquePackageLabels($service, $requestLabel);
+    $label = new SimpleXMLElement($xmlLabel);
+
+    // Cache pdf label as a base64-encoded data string
+    $label64 = $label->GetUniquePackageLabelsResult->TransportDocument->PdfDocument; 
+    // Get File content from txt file
+    $pdf_base64_handler = fopen($pdf_base64,'r');
+    $pdf_content = fread ($pdf_base64_handler,filesize($pdf_base64));
+    fclose ($pdf_base64_handler);
+    // Decode pdf content
+    $pdf_decoded = base64_decode ($pdf_content);
+    // Write data back to pdf file
+    $pdf = fopen ($shipmentId . '-labels.pdf','w');
+    fwrite ($pdf,$pdf_decoded);
+    // Close output file
+    fclose ($pdf);
+}
 
 
 /*************************************************************
