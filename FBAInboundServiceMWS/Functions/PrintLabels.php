@@ -39,9 +39,7 @@ $itemArray = [];
 foreach ($items->Message as $message) {
     $shipmentId = (String)$message->CartonContentsRequest->ShipmentId;
     foreach ($message->CartonContentsRequest->Carton as $carton) {
-        $itemArray[$shipmentId][] = array(
-            'CartonId' => (String)$carton->CartonId,
-        );
+        $itemArray[$shipmentId][] = (String)$carton->CartonId;
     }
 
     // Enter parameters to be passed into GetUniquePackageLabels
@@ -49,7 +47,7 @@ foreach ($items->Message as $message) {
         'SellerId' => MERCHANT_ID,
         'ShipmentId' => $shipmentId,
         'PageType' => 'PackageLabel_Plain_Paper',
-        'PackageLabelsToPrint' => array('member' => array_values($itemArray[$shipmentId]))
+        'PackageLabelsToPrint' => array('member' => $itemArray[$shipmentId])
     );
 
     print_r($parameters);
