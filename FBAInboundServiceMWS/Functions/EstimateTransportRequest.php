@@ -18,10 +18,10 @@
  */
 
 /**
- * Get Transport Content Sample
+ * Estimate Transport Request Sample
  */
 
-require_once('.config.inc.php');
+require_once(__DIR__ '/.config.inc.php');
 
 /************************************************************************
  * Instantiate Implementation of FBAInboundServiceMWS
@@ -32,7 +32,7 @@ require_once('.config.inc.php');
  ***********************************************************************/
 // More endpoints are listed in the MWS Developer Guide
 // North America:
-//$serviceUrl = "https://mws.amazonservices.com/FulfillmentInboundShipment/2010-10-01";
+$serviceUrl = "https://mws.amazonservices.com/FulfillmentInboundShipment/2010-10-01";
 // Europe
 //$serviceUrl = "https://mws-eu.amazonservices.com/FulfillmentInboundShipment/2010-10-01";
 // Japan
@@ -57,51 +57,26 @@ require_once('.config.inc.php');
         APPLICATION_VERSION,
         $config);
 
-/************************************************************************
- * Uncomment to try out Mock Service that simulates FBAInboundServiceMWS
- * responses without calling FBAInboundServiceMWS service.
- *
- * Responses are loaded from local XML files. You can tweak XML files to
- * experiment with various outputs during development
- *
- * XML files available under FBAInboundServiceMWS/Mock tree
- *
- ***********************************************************************/
- // $service = new FBAInboundServiceMWS_Mock();
-
-/************************************************************************
- * Setup request parameters and uncomment invoke to try out
- * sample for Get Transport Content Action
- ***********************************************************************/
- // @TODO: set request. Action can be passed as FBAInboundServiceMWS_Model_GetTransportContent
- $request = new FBAInboundServiceMWS_Model_GetTransportContentRequest();
- $request->setSellerId(MERCHANT_ID);
- // object or array of parameters
- invokeGetTransportContent($service, $request);
-
 /**
-  * Get Get Transport Content Action Sample
+  * Get Estimate Transport Request Action Sample
   * Gets competitive pricing and related information for a product identified by
   * the MarketplaceId and ASIN.
   *
   * @param FBAInboundServiceMWS_Interface $service instance of FBAInboundServiceMWS_Interface
-  * @param mixed $request FBAInboundServiceMWS_Model_GetTransportContent or array of parameters
+  * @param mixed $request FBAInboundServiceMWS_Model_EstimateTransportRequest or array of parameters
   */
 
-  function invokeGetTransportContent(FBAInboundServiceMWS_Interface $service, $request)
+  function invokeEstimateTransportRequest(FBAInboundServiceMWS_Interface $service, $request)
   {
       try {
-        $response = $service->GetTransportContent($request);
-
-        echo ("Service Response\n");
-        echo ("=============================================================================\n");
+        $response = $service->EstimateTransportRequest($request);
 
         $dom = new DOMDocument();
         $dom->loadXML($response->toXML());
         $dom->preserveWhiteSpace = false;
         $dom->formatOutput = true;
-        echo $dom->saveXML();
-        echo("ResponseHeaderMetadata: " . $response->getResponseHeaderMetadata() . "\n");
+        $response->getResponseHeaderMetadata();
+        return $dom->saveXML();
 
      } catch (FBAInboundServiceMWS_Exception $ex) {
         echo("Caught Exception: " . $ex->getMessage() . "\n");
