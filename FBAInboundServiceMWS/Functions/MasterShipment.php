@@ -6,11 +6,14 @@
  ************************************************************************/
 
 // Initialize files
+require_once(__DIR__ . '/../../MarketplaceWebService/Functions/SubmitFeed.php');
+$serviceMWS = $service;
 require_once(__DIR__ . '/GetPrepInstructionsForSKU.php');
 require_once(__DIR__ . '/CreateInboundShipmentPlan.php');
 require_once(__DIR__ . '/CreateInboundShipment.php');
 require_once(__DIR__ . '/UpdateInboundShipment.php');
 require_once(__DIR__ . '/PutTransportContent.php');
+require_once(__DIR__ . '/GetUniquePackageLabels.php');
 
 // Cache URL 
 $urlShip = "https://script.google.com/macros/s/AKfycbxBN9iOFmN5fJH5_iEPwEMK36a98SX7xFF4bfHaBfD0y29Ff7zN/exec";
@@ -245,6 +248,25 @@ foreach($mergedShipments as $shipment) {
     $xmlUpdate = invokeUpdateInboundShipment($service, $requestUpdate);
 }
 
+// Save shipment information as a JSON file
+$shipJSON = json_encode($shipmentSKU);
+file_put_contents("shipID.json", $shipJSON);
+
+/*************************************************************
+*  Call SubmitFeed to send information to Amazon
+*  about all shipped items.
+*************************************************************/
+
+// Cache URL containing feed XML file
+$urlFeed = "https://script.google.com/macros/s/AKfycbxozOUDpHwr0-szEtn2J8luT7D7cImDevIjSRyZf72ODKGy0H0O/exec"; 
+
+// Call SubmitFeed to send shipped item information to Amazon
+$feed = file_get_contents($urlFeed);
+$requestFeed = makeRequest($feed);
+$requestFeed->setFeedType('_POST_FBA_INBOUND_CARTON_CONTENTS_');
+invokeSubmitFeed($serviceMWS, $requestFeed);
+@fclose($feedHandle);
+
 /*************************************************************
 *  Call PutTransportContent to add dimensions to all items in
 *  each shipment.
@@ -295,8 +317,87 @@ foreach($shipmentArray as $shipment) {
     unset($parameters);
     $xmlPut = invokePutTransportContent($service, $requestPut);
 }
-$shipJSON = json_encode($shipmentSKU);
-file_put_contents("shipID.json", $shipJSON);
+
+/*************************************************************
+*  Call EstimateTransportRequest operation to request that an 
+*  estimate be generated for an Amazon-partnered carrier to 
+*  ship your inbound shipment.
+*************************************************************/
+
+/*************************************************************
+*  Call GetTransportContent operation to get an estimate for 
+*  the cost to ship your shipment with an Amazon-partnered 
+*  carrier. The estimate is returned in the PartneredEstimate 
+*  response element. Note that the estimate will not be returned 
+*  until the TransportStatus value of the inbound shipment is 
+*  ESTIMATED, CONFIRMING, or CONFIRMED. Because the 
+*  GetTransportContent operation returns TransportStatus values, 
+*  you can use this operation to monitor the progress of your 
+*  inbound shipment. If a PartneredEstimate value is not yet 
+*  available, retry the operation later.
+*************************************************************/
+
+/************************************************************
+* Call the ConfirmTransportRequest operation to accept the 
+* Amazon-partnered shipping estimate, agree to allow Amazon 
+* to charge your account for the shipping cost, and request 
+* that the Amazon-partnered carrier ship your inbound shipment.
+*************************************************************/
+
+/*************************************************************
+*  Call GetUniquePackageLabels to retrieve shipment label
+*  images from Amazon.
+*************************************************************/
+
+// Initialize label script
+$items = new SimpleXMLElement($feed);
+
+$requestCount = 0;
+$itemArray = [];
+foreach ($items->Message as $message) {
+    $shipmentId = (String)$message->CartonContentsRequest->ShipmentId;
+    foreach ($message->CartonContentsRequest->Carton as $carton) {
+        $itemArray[$shipmentId][] = (String)$carton->CartonId;
+    }
+
+    // Enter parameters to be passed into GetUniquePackageLabels
+    $parameters = array(
+        'SellerId' => MERCHANT_ID,
+        'ShipmentId' => $shipmentId,
+        'PageType' => 'PackageLabel_Plain_Paper',
+        'PackageLabelsToPrint' => array('member' => $itemArray[$shipmentId])
+    );
+
+    print_r($parameters);
+    
+    // Sleep for required time to avoid throttling.
+    $end = microtime(true);
+    if ($requestCount > 29 && ($end - $start) < 500000) {
+        usleep(500000 - ($end - $start));
+    }
+    $start = microtime(true);
+
+    // Call GetUniquePackageLabels using the created parameters
+    $requestLabel = new FBAInboundServiceMWS_Model_GetUniquePackageLabelsRequest($parameters);
+    unset($parameters);
+    $xmlLabel = invokeGetUniquePackageLabels($service, $requestLabel);
+    $requestCount++;
+    $label = new SimpleXMLElement($xmlLabel);
+
+    // Cache pdf label as a base64-encoded data string
+    $label64 = $label->GetUniquePackageLabelsResult->TransportDocument->PdfDocument; 
+    // Get File content from txt file
+    $pdf_base64_handler = fopen($pdf_base64,'r');
+    $pdf_content = fread ($pdf_base64_handler,filesize($pdf_base64));
+    fclose ($pdf_base64_handler);
+    // Decode pdf content
+    $pdf_decoded = base64_decode ($pdf_content);
+    // Write data back to pdf file
+    $pdf = fopen ($shipmentId . '-labels.pdf','w');
+    fwrite ($pdf,$pdf_decoded);
+    // Close output file
+    fclose ($pdf);
+}
 
 echo "Success! Shipments have been created. Go to SellerCentral to view shipments and print labels.";
 ?>

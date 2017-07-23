@@ -20,10 +20,10 @@ $urlFeed = "https://script.google.com/macros/s/AKfycbxozOUDpHwr0-szEtn2J8luT7D7c
 
 // Call SubmitFeed to send shipped item information to Amazon
 $feed = file_get_contents($urlFeed);
-// $requestFeed = makeRequest($feed);
-// $requestFeed->setFeedType('_POST_FBA_INBOUND_CARTON_CONTENTS_');
-// invokeSubmitFeed($serviceMWS, $requestFeed);
-// @fclose($feedHandle);
+$requestFeed = makeRequest($feed);
+$requestFeed->setFeedType('_POST_FBA_INBOUND_CARTON_CONTENTS_');
+invokeSubmitFeed($serviceMWS, $requestFeed);
+@fclose($feedHandle);
 
 
 /*************************************************************
