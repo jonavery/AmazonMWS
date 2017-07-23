@@ -13,6 +13,9 @@ require_once(__DIR__ . '/CreateInboundShipmentPlan.php');
 require_once(__DIR__ . '/CreateInboundShipment.php');
 require_once(__DIR__ . '/UpdateInboundShipment.php');
 require_once(__DIR__ . '/PutTransportContent.php');
+require_once(__DIR__ . '/EstimateTransportRequest.php');
+require_once(__DIR__ . '/GetTransportContent.php');
+require_once(__DIR__ . '/ConfirmTransportRequest.php');
 require_once(__DIR__ . '/GetUniquePackageLabels.php');
 
 // Cache URL 
@@ -323,6 +326,9 @@ foreach($shipmentArray as $shipment) {
 *  estimate be generated for an Amazon-partnered carrier to 
 *  ship your inbound shipment.
 *************************************************************/
+$requestEsti = new FBAInboundServiceMWS_Model_EstimateTransportInputRequest($parameters);
+unset($parameters);
+invokeEstimateTransportRequest($service, $requestEsti);
 
 /*************************************************************
 *  Call GetTransportContent operation to get an estimate for 
@@ -336,6 +342,9 @@ foreach($shipmentArray as $shipment) {
 *  inbound shipment. If a PartneredEstimate value is not yet 
 *  available, retry the operation later.
 *************************************************************/
+$requestGet = new FBAInboundServiceMWS_Model_GetTransportContentRequest($paramters);
+unset($parameters);
+invokeGetTransportContent($service, $requestGet);
 
 /************************************************************
 * Call the ConfirmTransportRequest operation to accept the 
@@ -343,6 +352,9 @@ foreach($shipmentArray as $shipment) {
 * to charge your account for the shipping cost, and request 
 * that the Amazon-partnered carrier ship your inbound shipment.
 *************************************************************/
+$requestConf = new FBAInboundServiceMWS_Model_ConfirmTransportInputRequest($parameters);
+unset($parameters);
+invokeConfirmTransportRequest($service, $requestConf);
 
 /*************************************************************
 *  Call GetUniquePackageLabels to retrieve shipment label
@@ -368,8 +380,6 @@ foreach ($items->Message as $message) {
         'PackageLabelsToPrint' => array('member' => $itemArray[$shipmentId])
     );
 
-    print_r($parameters);
-    
     // Sleep for required time to avoid throttling.
     $end = microtime(true);
     if ($requestCount > 29 && ($end - $start) < 500000) {
@@ -399,5 +409,5 @@ foreach ($items->Message as $message) {
     fclose ($pdf);
 }
 
-echo "Success! Shipments have been created. Go to SellerCentral to view shipments and print labels.";
+echo "Success! Shipments and labels have been created. Go to SellerCentral to view shipments and print labels.";
 ?>
