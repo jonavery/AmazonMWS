@@ -275,6 +275,13 @@ invokeSubmitFeed($serviceMWS, $requestFeed);
 *  each shipment.
 *************************************************************/
 
+// Cache URL 
+$urlShip = "https://script.google.com/macros/s/AKfycbxBN9iOFmN5fJH5_iEPwEMK36a98SX7xFF4bfHaBfD0y29Ff7zN/exec";
+
+// Parse XML file and create member array
+$itemsXML = file_get_contents($urlShip);
+$items = new SimpleXMLElement($itemsXML);
+
 // Create dimension array of all items from XML data
 $memberDimensionArray = array();
 foreach ($items->Member as $member) {
@@ -292,19 +299,21 @@ foreach ($items->Member as $member) {
     );
 }
 
-foreach($shipmentArray as $shipment) {
+$itemShip = new SimpleXMLElement($feed);
+foreach ($itemShip->Message as $message) {
+    $shipmentId = (String)$message->CartonContentsRequest->ShipmentId;
 
     // Create array of dimensions in shipment
-    $shipmentId = $shipment['ShipmentId'];
     $shipmentDimensions = array();
-    foreach($shipmentSKU[$shipmentId] as $sku) {
+    foreach ($message->CartonContentsRequest->Carton as $carton) {
+        $sku = (String)$carton->Item->SKU;
         $shipmentDimensions[] = $memberDimensionArray[$sku];
     }
 
     // Enter parameters to be passed into PutTransportContent
     $parameters = array (
         'SellerId' => MERCHANT_ID,
-        'ShipmentId' => $shipment['ShipmentId'],
+        'ShipmentId' => $shipmentId,
         'IsPartnered' => 'true',
         'ShipmentType' => 'SP',
         'TransportDetails' => array(
@@ -342,7 +351,7 @@ invokeEstimateTransportRequest($service, $requestEsti);
 *  inbound shipment. If a PartneredEstimate value is not yet 
 *  available, retry the operation later.
 *************************************************************/
-$requestGet = new FBAInboundServiceMWS_Model_GetTransportContentRequest($paramters);
+$requestGet = new FBAInboundServiceMWS_Model_GetTransportContentRequest($parameters);
 unset($parameters);
 invokeGetTransportContent($service, $requestGet);
 
