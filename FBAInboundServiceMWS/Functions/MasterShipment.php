@@ -90,7 +90,7 @@ $shipmentArray = array();
 $shipmentSKU = array();
 
 // Chunk $memberArray into 200-item pieces
-$chunkedMember = array_chunk($memberArray, 200);
+$chunkedMember = array_chunk($memberArray['member'], 200);
 
 foreach($chunkedMember as $key => $chunk) {
     // Enter parameters to be passed into CreateInboundShipmentPlan
@@ -140,7 +140,10 @@ foreach($shipmentArray as $shipment) {
     $shipmentId = $shipment['ShipmentId'];
     $shipDest = $shipment['Destination'];
     if (in_array($shipDest, $destinations)) {
-        $skipShips[] = $shipmentId;
+        $skipShips[] = array (
+            'ShipmentId' => $shipmentId,
+            'Destination' => $shipDest
+        );
         continue;
     }
     $destinations[] = $shipDest;
@@ -193,7 +196,7 @@ foreach($shipmentArray as $shipment) {
 *************************************************************/
 
 $mergedShipments = array();
-foreach($skipShips as $shipmentId) {
+foreach($skipShips as $skip) {
     
     // Find parent of skipped shipment
     $key = array_search($skip['Destination'], array_column($shipmentArray, 'Destination'));
