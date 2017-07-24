@@ -335,9 +335,28 @@ foreach ($itemShip->Message as $message) {
 *  estimate be generated for an Amazon-partnered carrier to 
 *  ship your inbound shipment.
 *************************************************************/
-$requestEsti = new FBAInboundServiceMWS_Model_EstimateTransportInputRequest($parameters);
-unset($parameters);
-invokeEstimateTransportRequest($service, $requestEsti);
+$requestCount = 0;
+foreach ($itemShip->Message as $message) {
+    // Enter parameters to be passed into EstimateTransportRequest
+    $shipmentId = (String)$message->CartonContentsRequest->ShipmentId;
+    $parameters = array (
+        'SellerId' => MERCHANT_ID,
+        'ShipmentId' => $shipmentId
+    );
+    
+    // Sleep for required time to avoid throttling.
+    $end = microtime(true);
+    if ($requestCount > 29 && ($end - $start) < 500000) {
+        usleep(500000 - ($end - $start));
+    }
+    $start = microtime(true);
+
+    // Call EstimateTransportRequest
+    $requestCount++;
+    $requestEsti = new FBAInboundServiceMWS_Model_EstimateTransportInputRequest($parameters);
+    unset($parameters);
+    $xmlEsti = invokeEstimateTransportRequest($service, $requestEsti);
+}
 
 /*************************************************************
 *  Call GetTransportContent operation to get an estimate for 
@@ -351,9 +370,28 @@ invokeEstimateTransportRequest($service, $requestEsti);
 *  inbound shipment. If a PartneredEstimate value is not yet 
 *  available, retry the operation later.
 *************************************************************/
-$requestGet = new FBAInboundServiceMWS_Model_GetTransportContentRequest($parameters);
-unset($parameters);
-invokeGetTransportContent($service, $requestGet);
+$requestCount = 0;
+foreach ($itemShip->Message as $message) {
+    // Enter parameters to be passed into GetTransportContent
+    $shipmentId = (String)$message->CartonContentsRequest->ShipmentId;
+    $parameters = array (
+        'SellerId' => MERCHANT_ID,
+        'ShipmentId' => $shipmentId
+    );
+    
+    // Sleep for required time to avoid throttling.
+    $end = microtime(true);
+    if ($requestCount > 29 && ($end - $start) < 500000) {
+        usleep(500000 - ($end - $start));
+    }
+    $start = microtime(true);
+
+    // Call GetTransportContent
+    $requestCount++;
+    $requestGet = new FBAInboundServiceMWS_Model_GetTransportContentRequest($parameters);
+    unset($parameters);
+    $xmlGet = invokeGetTransportContent($service, $requestGet);
+}
 
 /************************************************************
 * Call the ConfirmTransportRequest operation to accept the 
@@ -361,9 +399,28 @@ invokeGetTransportContent($service, $requestGet);
 * to charge your account for the shipping cost, and request 
 * that the Amazon-partnered carrier ship your inbound shipment.
 *************************************************************/
-$requestConf = new FBAInboundServiceMWS_Model_ConfirmTransportInputRequest($parameters);
-unset($parameters);
-invokeConfirmTransportRequest($service, $requestConf);
+$requestCount = 0;
+foreach ($itemShip->Message as $message) {
+    // Enter parameters to be passed into ConfirmTransportRequest
+    $shipmentId = (String)$message->CartonContentsRequest->ShipmentId;
+    $parameters = array (
+        'SellerId' => MERCHANT_ID,
+        'ShipmentId' => $shipmentId
+    );
+    
+    // Sleep for required time to avoid throttling.
+    $end = microtime(true);
+    if ($requestCount > 29 && ($end - $start) < 500000) {
+        usleep(500000 - ($end - $start));
+    }
+    $start = microtime(true);
+
+    // Call ConfirmTransportRequest
+    $requestCount++;
+    $requestConf = new FBAInboundServiceMWS_Model_ConfirmTransportInputRequest($parameters);
+    unset($parameters);
+    $xmlConf = invokeConfirmTransportRequest($service, $requestConf);
+}
 
 /*************************************************************
 *  Call GetUniquePackageLabels to retrieve shipment label
