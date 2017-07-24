@@ -25,10 +25,7 @@ $url = "https://script.google.com/macros/s/AKfycbwFxIlDhKpBIkJywpzz9iSbkWeO50EXL
 $itemsXML = file_get_contents($url);
 $items = new SimpleXMLElement($itemsXML);
 $itemArray = array();
-$j = 0;
 foreach ($items->item as $key => $item) {
-    $j++;
-    if ($j < 700) {continue;}
     switch (strlen((string)$item->UPC)) {
         case 11:
             $upc = "0".(string)$item->UPC;
