@@ -167,5 +167,6 @@ function makeRequest($feed) {
          echo("XML: " . $ex->getXML() . "\n");
          echo("ResponseHeaderMetadata: " . $ex->getResponseHeaderMetadata() . "\n");
      }
+
  }
                                                                 
