@@ -267,7 +267,9 @@ $urlFeed = "https://script.google.com/macros/s/AKfycbxozOUDpHwr0-szEtn2J8luT7D7c
 $feed = file_get_contents($urlFeed);
 $requestFeed = makeRequest($feed);
 $requestFeed->setFeedType('_POST_FBA_INBOUND_CARTON_CONTENTS_');
+ob_start();
 invokeSubmitFeed($serviceMWS, $requestFeed);
+ob_end_clean();
 @fclose($feedHandle);
 
 /*************************************************************
