@@ -20,7 +20,7 @@
  * Get Feed Submission List  Sample
  */
 
-include_once ('.config.inc.php'); 
+require_once (__DIR__ . '/../../FBAInboundServiceMWS/Functions/.config.inc.php'); 
 
 /************************************************************************
 * Uncomment to configure the client instance. Configuration settings
@@ -63,15 +63,11 @@ $config = array (
  // @TODO: set request. Action can be passed as MarketplaceWebService_Model_GetFeedSubmissionListRequest
  // object or array of parameters
  
+define('DATE_FORMAT', 'Y-m-d H:i:s T');
 
 $parameters = array (
     'Merchant' => MERCHANT_ID,
-    'FeedTypeList' => array ('Type' => array (
-        '_POST_PRODUCT_DATA_',
-        '_POST_INVENTORY_AVAILABILITY_DATA_',
-        '_POST_PRODUCT_PRICING_DATA_'  
-    )),
-    'MWSAuthToken' => MWS_Auth_Token,
+    'MWSAuthToken' => MWS_AUTH_TOKEN,
     'SubmittedFromDate' => date('Y-m-d'),
     'SubmittedToDate' => date('Y-m-d', mktime(0, 0, 0, date("m"), date("d")+1,   date("Y")))
 );
