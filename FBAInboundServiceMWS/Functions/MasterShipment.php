@@ -90,7 +90,7 @@ $shipmentArray = array();
 $shipmentSKU = array();
 
 // Chunk $memberArray into 200-item pieces
-$chunkedMember = array_chunk($memberArray['member'], 200);
+$chunkedMember = array_chunk($memberArray, 200);
 
 foreach($chunkedMember as $key => $chunk) {
     // Enter parameters to be passed into CreateInboundShipmentPlan
@@ -195,65 +195,65 @@ foreach($shipmentArray as $shipment) {
 *  tested using sandbox: http://sandbox.onlinephpfunctions.com/code/9bc0ac26f13595b077854234b13d0d0538021b4a
 *************************************************************/
 
-$mergedShipments = array();
-foreach($skipShips as $skip) {
-    
-    // Find parent of skipped shipment
-    $key = array_search($skip['Destination'], array_column($shipmentArray, 'Destination'));
-    $parent = $shipmentArray[$key]['ShipmentId'];
-    $child = $skip['ShipmentId'];
-
-    // Merge child with parent in $shipmentSKU array
-    $shipmentSKU[$parent] = array_merge($shipmentSKU[$parent], $shipmentSKU[$child]);
-    unset($shipmentSKU[$child]);
-
-    // Add parent shipment to $mergedShipments
-    if(!in_array($shipmentArray[$key], $mergedShipments)) {
-        $mergedShipments[] = $shipmentArray[$key];
-    }
-}
-
-foreach($mergedShipments as $shipment) {
-
-    // Create array of updated shipment items
-    $shipmentId = $shipment['ShipmentId'];
-    $shipmentItems = array();
-    foreach($shipmentSKU[$shipmentId] as $sku) {
-        $item = array_filter($memberArray['member'], function ($var) use ($sku) {
-            return ($var['SellerSKU'] == $sku);
-        });
-        $shipmentItems[] = $item[array_keys($item)[0]];
-    }
-
-    // Rename Quantity to QuantityShipped
-    $shipmentItems = array_map(function($shipItems) {
-        return array(
-            'SellerSKU' => $shipItems['SellerSKU'],
-            'QuantityShipped' => $shipItems['Quantity'],
-            'PrepDetailsList' => $shipItems['PrepDetailsList']
-        );
-    }, $shipmentItems);
-
-    // Enter parameters to be passed into UpdateInboundShipment
-    $parameters = array (
-        'SellerId' => MERCHANT_ID,
-        'ShipmentId' => $shipmentId,
-        'InboundShipmentHeader' => array(
-            'ShipmentName' => $shipment['ShipmentName'],
-            'ShipFromAddress' => $ShipFromAddress,
-            'DestinationFulfillmentCenterId' => $shipment['Destination'],
-            'ShipmentStatus' => 'WORKING',
-            'LabelPrepPreference' => 'SELLER_LABEL',
-        ),
-        'InboundShipmentItems' => array('member' => $shipmentItems)
-    );
-
-    // Pass updated shipment information to Amazon
-    $requestUpdate = new FBAInboundServiceMWS_Model_UpdateInboundShipmentRequest($parameters);
-    unset($parameters);
-    $xmlUpdate = invokeUpdateInboundShipment($service, $requestUpdate);
-}
-
+// $mergedShipments = array();
+// foreach($skipShips as $skip) {
+//     
+//     // Find parent of skipped shipment
+//     $key = array_search($skip['Destination'], array_column($shipmentArray, 'Destination'));
+//     $parent = $shipmentArray[$key]['ShipmentId'];
+//     $child = $skip['ShipmentId'];
+// 
+//     // Merge child with parent in $shipmentSKU array
+//     $shipmentSKU[$parent] = array_merge($shipmentSKU[$parent], $shipmentSKU[$child]);
+//     unset($shipmentSKU[$child]);
+// 
+//     // Add parent shipment to $mergedShipments
+//     if(!in_array($shipmentArray[$key], $mergedShipments)) {
+//         $mergedShipments[] = $shipmentArray[$key];
+//     }
+// }
+// 
+// foreach($mergedShipments as $shipment) {
+// 
+//     // Create array of updated shipment items
+//     $shipmentId = $shipment['ShipmentId'];
+//     $shipmentItems = array();
+//     foreach($shipmentSKU[$shipmentId] as $sku) {
+//         $item = array_filter($memberArray['member'], function ($var) use ($sku) {
+//             return ($var['SellerSKU'] == $sku);
+//         });
+//         $shipmentItems[] = $item[array_keys($item)[0]];
+//     }
+// 
+//     // Rename Quantity to QuantityShipped
+//     $shipmentItems = array_map(function($shipItems) {
+//         return array(
+//             'SellerSKU' => $shipItems['SellerSKU'],
+//             'QuantityShipped' => $shipItems['Quantity'],
+//             'PrepDetailsList' => $shipItems['PrepDetailsList']
+//         );
+//     }, $shipmentItems);
+// 
+//     // Enter parameters to be passed into UpdateInboundShipment
+//     $parameters = array (
+//         'SellerId' => MERCHANT_ID,
+//         'ShipmentId' => $shipmentId,
+//         'InboundShipmentHeader' => array(
+//             'ShipmentName' => $shipment['ShipmentName'],
+//             'ShipFromAddress' => $ShipFromAddress,
+//             'DestinationFulfillmentCenterId' => $shipment['Destination'],
+//             'ShipmentStatus' => 'WORKING',
+//             'LabelPrepPreference' => 'SELLER_LABEL',
+//         ),
+//         'InboundShipmentItems' => array('member' => $shipmentItems)
+//     );
+// 
+//     // Pass updated shipment information to Amazon
+//     $requestUpdate = new FBAInboundServiceMWS_Model_UpdateInboundShipmentRequest($parameters);
+//     unset($parameters);
+//     $xmlUpdate = invokeUpdateInboundShipment($service, $requestUpdate);
+// }
+// 
 // Save shipment information as a JSON file
 $shipJSON = json_encode($shipmentSKU);
 file_put_contents("shipID.json", $shipJSON);
