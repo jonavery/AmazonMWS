@@ -290,7 +290,7 @@ $items = new SimpleXMLElement($itemsXML);
 // Create dimension array of all items from XML data
 $memberDimensionArray = array();
 foreach ($items->Member as $member) {
-    $memberDimensionArray[(string)$member->SellerSKU] = array(
+    $memberDimensionArray[(string)$member->ShipmentId][(string)$member->SellerSKU] = array(
         'Weight' => array(
             'Value'=>(string)$member->Dimensions->Weight,
             'Unit' => 'pounds'
@@ -304,15 +304,13 @@ foreach ($items->Member as $member) {
     );
 }
 
-$itemShip = new SimpleXMLElement($feed);
-foreach ($itemShip->Message as $message) {
-    $shipmentId = (String)$message->CartonContentsRequest->ShipmentId;
+foreach ($memberDimensionArray as $key => $member) {
+    $shipmentId = $key;
 
     // Create array of dimensions in shipment
     $shipmentDimensions = array();
-    foreach ($message->CartonContentsRequest->Carton as $carton) {
-        $sku = (String)$carton->Item->SKU;
-        $shipmentDimensions[] = $memberDimensionArray[$sku];
+    foreach ($member as $value) {
+        $shipmentDimensions[] = $value;
     }
 
     // Enter parameters to be passed into PutTransportContent
@@ -341,6 +339,7 @@ foreach ($itemShip->Message as $message) {
 *  ship your inbound shipment.
 *************************************************************/
 $requestCount = 0;
+$itemShip = new SimpleXMLElement($feed);
 foreach ($itemShip->Message as $message) {
     // Enter parameters to be passed into EstimateTransportRequest
     $shipmentId = (String)$message->CartonContentsRequest->ShipmentId;
