@@ -129,9 +129,9 @@ foreach($chunkedMember as $key => $chunk) {
 * combination of Destination and LabelPrepType
 ****************************************************************/
 
-//Initialize arrays for shipment filtering
-$destinations = array();
-$skipShips = array();
+// // Initialize arrays for shipment filtering
+// $destinations = array();
+// $skipShips = array();
 
 foreach($shipmentArray as $shipment) {
 
@@ -139,14 +139,14 @@ foreach($shipmentArray as $shipment) {
     // are never created
     $shipmentId = $shipment['ShipmentId'];
     $shipDest = $shipment['Destination'];
-    if (in_array($shipDest, $destinations)) {
-        $skipShips[] = array (
-            'ShipmentId' => $shipmentId,
-            'Destination' => $shipDest
-        );
-        continue;
-    }
-    $destinations[] = $shipDest;
+//    if (in_array($shipDest, $destinations)) {
+//        $skipShips[] = array (
+//            'ShipmentId' => $shipmentId,
+//            'Destination' => $shipDest
+//        );
+//        continue;
+//    }
+//    $destinations[] = $shipDest;
 
     // Filter item array to only include items from this shipment
     $shipmentItems = array();
