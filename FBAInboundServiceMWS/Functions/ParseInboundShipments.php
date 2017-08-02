@@ -24,7 +24,7 @@ require_once(__DIR__ . '/ListInboundShipmentItemsByNextToken.php');
  ***********************************************************************/
 
 // Set status array and timeframe criteria for filtering shipments
-$statusList = array('WORKING','SHIPPED','IN_TRANSIT','DELIVERED','CHECKED_IN','RECEIVING','CLOSED','CANCELLED','DELETED','ERROR');
+$statusList = array('WORKING','SHIPPED','IN_TRANSIT','DELIVERED','CHECKED_IN','RECEIVING','CLOSED','CANCELLED','ERROR');
 $updatedAfter = date('Y-m-d', mktime(0, 0, 0, date("m")-1, date("d"),   date("Y")));
 $updatedBefore = date('Y-m-d');
 
