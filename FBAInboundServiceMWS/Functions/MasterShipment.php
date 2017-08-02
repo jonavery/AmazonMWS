@@ -432,11 +432,11 @@ foreach ($itemShip->Message as $message) {
 *************************************************************/
 
 // Initialize label script
-$items = new SimpleXMLElement($feed);
+$itemShip = new SimpleXMLElement($feed);
 
 $requestCount = 0;
 $itemArray = [];
-foreach ($items->Message as $message) {
+foreach ($itemShip->Message as $message) {
     $shipmentId = (String)$message->CartonContentsRequest->ShipmentId;
     foreach ($message->CartonContentsRequest->Carton as $carton) {
         $itemArray[$shipmentId][] = (String)$carton->CartonId;
@@ -464,18 +464,17 @@ foreach ($items->Message as $message) {
     $requestCount++;
     $label = new SimpleXMLElement($xmlLabel);
 
-    // Cache pdf label as a base64-encoded data string
+    // Retrive pdf label from xml as a base64-encoded data string
     $label64 = $label->GetUniquePackageLabelsResult->TransportDocument->PdfDocument; 
-    // Get File content from txt file
-    $pdf_base64_handler = fopen($pdf_base64,'r');
-    $pdf_content = fread ($pdf_base64_handler,filesize($pdf_base64));
+    // Get file content from txt file
+    $pdf_base64_handler = fopen($label64, 'r');
+    $pdf_content = fread ($pdf_base64_handler, filesize($label64));
     fclose ($pdf_base64_handler);
-    // Decode pdf content
+    // Decode pdf content from string
     $pdf_decoded = base64_decode ($pdf_content);
-    // Write data back to pdf file
+    // Write data to pdf file
     $pdf = fopen ($shipmentId . '-labels.pdf','w');
-    fwrite ($pdf,$pdf_decoded);
-    // Close output file
+    fwrite ($pdf, $pdf_decoded);
     fclose ($pdf);
 }
 
