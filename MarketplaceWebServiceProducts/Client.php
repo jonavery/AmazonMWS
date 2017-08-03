@@ -18,6 +18,11 @@
  */
 
 /**
+ * Increase max runtime to 5 minutes - the max time allowed by Apache
+ */
+ini_set('max_execution_time', 300);
+
+/**
  *  @see MarketplaceWebServiceProducts_Interface
  */
 require_once (dirname(__FILE__) . '/Interface.php');
