@@ -105,7 +105,8 @@ foreach($itemArray as $key => &$item) {
     $price_start = microtime(true);
 }
 
-echo $itemJSON = json_encode($itemArray);
+$itemJSON = json_encode($itemArray);
 file_put_contents("blackwrap.json", $itemJSON);
 
+echo "Success! blackwrap.json has been created. Run 'Import Price Estimates' to import blackwrap item prices.";
 ?>
