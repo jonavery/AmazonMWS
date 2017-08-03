@@ -21,6 +21,10 @@
  * List Matching Products Sample
  */
 
+
+// Increase max runtime to 5 minutes - the max time allowed by Apache
+ini_set('max_execution_time', 300);
+
 require_once('.config.inc.php');
 
 /************************************************************************

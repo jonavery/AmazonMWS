@@ -17,6 +17,9 @@
  * Generated: Wed Mar 22 23:24:40 UTC 2017
  */
 
+// Increase max runtime to 5 minutes - the max time allowed by Apache
+ini_set('max_execution_time', 300);
+
 require_once('.config.inc.php');
 
 /************************************************************************
