@@ -213,8 +213,7 @@ foreach($shipmentArray as $shipment) {
 //     }
 // }
 // 
-// foreach($mergedShipments as $shipment) {
-// 
+// foreach($mergedShipments as $shipment) { 
 //     // Create array of updated shipment items
 //     $shipmentId = $shipment['ShipmentId'];
 //     $shipmentItems = array();
@@ -403,6 +402,8 @@ foreach ($itemShip->Message as $message) {
 * to charge your account for the shipping cost, and request 
 * that the Amazon-partnered carrier ship your inbound shipment.
 *************************************************************/
+/* Commented out to avoid danger of unintentionall incurring charges.
+ * Uncomment when reinstating the GetUniquePackageLabels function below.
 $requestCount = 0;
 foreach ($itemShip->Message as $message) {
     // Enter parameters to be passed into ConfirmTransportRequest
@@ -425,12 +426,13 @@ foreach ($itemShip->Message as $message) {
     unset($parameters);
     $xmlConf = invokeConfirmTransportRequest($service, $requestConf);
 }
+ */
 
 /*************************************************************
 *  Call GetUniquePackageLabels to retrieve shipment label
 *  images from Amazon.
 *************************************************************/
-
+/* Commented out due to inability to get CartonId's working
 // Initialize label script
 $itemShip = new SimpleXMLElement($feed);
 
@@ -477,6 +479,7 @@ foreach ($itemShip->Message as $message) {
     fwrite ($pdf, $pdf_decoded);
     fclose ($pdf);
 }
+ */
 
 echo "Success! Shipments and labels have been created. Go to SellerCentral to view shipments and print labels.";
 ?>
