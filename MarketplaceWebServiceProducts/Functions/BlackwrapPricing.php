@@ -96,6 +96,8 @@ foreach($itemArray as $key => &$item) {
     $listings = $price->GetLowestOfferListingsForASINResult->Product->LowestOfferListings;
     foreach($listings->LowestOfferListing as $listing) {
         $item["Price"] = (string)$listing->Price->LandedPrice->Amount;
+        $item["Condition"] = (string)$listing->Qualifiers->ItemSubCondition;
+        $item["FulfilledBy"] = (string)$listing->Qualifiers->FulfullmentChannel;
         break;
     }
 
