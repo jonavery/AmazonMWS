@@ -18,7 +18,7 @@
  */
 
 /**
- * Get Lowest Offer Listings For ASIN Sample
+ * Get Lowest Offer Listings For ASIN
  */
 
 

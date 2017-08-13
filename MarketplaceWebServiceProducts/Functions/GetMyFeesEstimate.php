@@ -55,8 +55,6 @@ $service = new MarketplaceWebServiceProducts_Client(
  * Setup request parameters and uncomment invoke to try out
  * sample for Get My Fees Estimate Action
  ***********************************************************************/
-$request = new MarketplaceWebServiceProducts_Model_GetMyFeesEstimateRequest();
-$request->setSellerId(MERCHANT_ID);
 // object or array of parameters
 
 /**

@@ -16,9 +16,7 @@ unset($request);
 require_once('ListMatchingProducts.php');
 $requestMatch = $request;
 unset($request);
-// require_once('GetMyFeesEstimate.php');
-// $requestFees = $request;
-// unset($request);
+require_once('GetMyFeesEstimate.php');
 
 // Load XML file.
 $url = "https://script.google.com/macros/s/AKfycbwFxIlDhKpBIkJywpzz9iSbkWeO50EXLS5Oj7xS7IYzCoK-jxND/exec";
@@ -107,6 +105,45 @@ foreach($itemArray as $key => &$item) {
         usleep(200000 - ($price_end - $price_start));
     }
     $price_start = microtime(true);
+
+    // Create parameters to be passed to GetMyFeesEstimate
+    $priceFees = array(
+        'ListingPrice' => array(
+            'CurrencyCode' => 'USD',
+            'Amount' => (string)((float)$item["Price"] * .8)
+        ),
+        'Shipping' => array(
+            'CurrencyCode' => 'USD',
+            'Amount' => ceil((float)$item["Weight"])
+        ),
+        'Points' => array('PointsNumber' => '0')
+    );
+
+    $parameters = array(
+        'FeesEstimateRequestList' => array(
+            'FeesEstimateRequest' => array(
+                '1' => array(
+                    'MarketplaceId' => MARKETPLACE_ID,
+                    'IdType' => 'ASIN',
+                    'IdValue' => $item["ASIN"],
+                    'IsAmazonFulfilled' => 'true',
+                    'Identifier' => 'request' . $key,
+                    'PriceToEstimateFees' => $priceFees
+                )
+            )
+        )
+        'SellerId' => MERCHANT_ID
+    );
+
+    // Call GetMyFeesEstimate and cache result as xml element
+    $requestFees = new MarketplaceWebServiceProducts_Model_GetMyFeesEstimateRequest($parameters);
+    $xmlFees = invokeGetMyFeesEstimate($service, $requestFees);
+    $fees = new SimpleXMLElement($xmlFees);
+    $fee = $fees->GetMyFeesEstimateResult->FeesEstimateResultList->FeesEstimateResult;
+
+    if ((string)$fee->Status == "Success") {
+       $item["Fees"] = $fee->FeesEstimate->TotalFeesEstimate->Amount; 
+    }
 }
 
 $itemJSON = json_encode($itemArray);
