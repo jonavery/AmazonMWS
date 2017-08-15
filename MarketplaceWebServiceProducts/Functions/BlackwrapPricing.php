@@ -144,10 +144,11 @@ foreach($itemArray as $key => &$item) {
     if ((string)$fee->Status == "Success") {
        $item["Fees"] = $fee->FeesEstimate->TotalFeesEstimate->Amount; 
     }
+
+    $itemJSON = json_encode($itemArray);
+    file_put_contents("blackwrap.json", $itemJSON);
 }
 
-$itemJSON = json_encode($itemArray);
-file_put_contents("blackwrap.json", $itemJSON);
 
 echo "Success! blackwrap.json has been created. Run 'Import Price Estimates' to import blackwrap item prices.";
 ?>
