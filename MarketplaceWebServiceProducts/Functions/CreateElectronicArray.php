@@ -19,7 +19,7 @@ $requestMatch = $request;
 unset($request);
 
 // Load XML file.
-$url = "https://script.google.com/macros/s/AKfycbxoNDu7BM4PRE1DEDVyCTd5lkMK1cGPLV0C8KujXDgc3CKNqljU/exec";
+$url = "https://script.google.com/macros/s/AKfycbx8EuLlIqz8EPVXYV0kHDfgxLxUsoNL_4cZhtHlvcC0bl7IQG0/exec";
 
 // Parse data from XML into an array.
 $itemsXML = file_get_contents($url);
@@ -134,5 +134,5 @@ foreach($itemArray as $key => &$item) {
 $itemJSON = json_encode($itemArray);
 file_put_contents("MWS.json", $itemJSON);
 
-echo "Success! MWS.json has been created. Run 'Populate MWS Tab' and 'Post Listings' to list products on Amazon.";
+echo "Success! Electronics MWS.json has been created. Run 'Populate MWS Tab' and 'Post Listings' to list products on Amazon.";
 ?>
