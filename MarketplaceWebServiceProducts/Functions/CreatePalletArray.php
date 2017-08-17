@@ -19,7 +19,7 @@ $requestMatch = $request;
 unset($request);
 
 // Load XML file.
-$url = "https://script.google.com/macros/s/AKfycbxoNDu7BM4PRE1DEDVyCTd5lkMK1cGPLV0C8KujXDgc3CKNqljU/exec";
+$url = "https://script.google.com/macros/s/AKfycby1w0X4NSMGISn-IMeqCLclr7sXueZlhzTp84GPktgaQubNtI8/exec";
 
 // Parse data from XML into an array.
 $itemsXML = file_get_contents($url);
