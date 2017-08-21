@@ -59,11 +59,15 @@ foreach($chunkedSKUs as $chunk) {
 
     // Add prep instructions to member array
     foreach ($prep->GetPrepInstructionsForSKUResult->SKUPrepInstructionsList->SKUPrepInstructions as $instructions) {
+        $sku = (string)$instructions->SellerSKU;
         foreach ($instructions->PrepInstructionList->PrepInstruction as $instruction) {
             $memberArray['member'][$i]['PrepDetailsList']['member'][] = array(
                 'PrepInstruction' => (string)$instruction,
                 'PrepOwner' => 'AMAZON'
             );
+            if ((string)$instruction == 'Labeling') {
+                echo "SKU " . $sku . "requires an FNSKU label.\n"
+            }
         }
         $i++;
     }
@@ -77,7 +81,7 @@ foreach($chunkedSKUs as $chunk) {
 // Create address array to be passed into parameters
 $ShipFromAddress = array (
     'Name' => 'KLAS1000',
-    'AddressLine1' => '51 N Pecos Rd #103',
+    'AddressLine1' => '61 N Pecos Rd #104',
     'City' => 'Las Vegas',
     'StateOrProvinceCode' => 'NV',
     'PostalCode' => '89101',
