@@ -35,6 +35,7 @@ foreach ($items->item as $item) {
 	"UPC"=>(string)$item->ASIN,
 	"Condition"=>(string)$item->Condition,
 	"Comment"=>(string)$item->Comment,
+    "Defect"=>(string)$item->Defect,
 	"Dimensions"=>array(
 	    "Weight"=>(string)$item->Dimensions->Weight,
 	    "Length"=>(string)$item->Dimensions->Length,
