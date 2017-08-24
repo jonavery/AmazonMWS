@@ -118,9 +118,9 @@ foreach($itemArray as $key => &$item) {
     $price = new SimpleXMLElement($xmlPrice);
     $listings = $price->GetLowestOfferListingsForASINResult->Product->LowestOfferListings;
     foreach($listings->LowestOfferListing as $listing) {
-        $item["ListCond"] = (string)$listing->Qualifiers->ItemCondition->ItemSubcondition;
-        $item["Currency"] = (string)$listing->Price->LandedPrice->CurrencyCode;
         $item["Price"] = (string)$listing->Price->LandedPrice->Amount;
+        $item["Condition"] = (string)$listing->Qualifiers->ItemSubCondition;
+        $item["FulfilledBy"] = (string)$listing->Qualifiers->FulfullmentChannel;
         break;
     }
 
