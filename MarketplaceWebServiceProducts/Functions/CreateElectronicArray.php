@@ -119,7 +119,7 @@ foreach($itemArray as $key => &$item) {
     $listings = $price->GetLowestOfferListingsForASINResult->Product->LowestOfferListings;
     foreach($listings->LowestOfferListing as $listing) {
         $item["Price"] = (string)$listing->Price->LandedPrice->Amount;
-        $item["Condition"] = (string)$listing->Qualifiers->ItemSubCondition;
+        $item["ListCond"] = (string)$listing->Qualifiers->ItemSubCondition;
         $item["FulfilledBy"] = (string)$listing->Qualifiers->FulfullmentChannel;
         break;
     }
@@ -131,6 +131,23 @@ foreach($itemArray as $key => &$item) {
     }
     $time_start = microtime(true);
 }
+
+foreach($itemArray as $key => &$item) {
+    // Stop current loop iteration if lowest offer
+    // listing condition matches condition of our item,
+    // no price is set, or no list condition is set.
+    if ($item["Price"] == "") {continue;}
+    if ($item["ListCond"] == "") {continue;}
+    if ($item["ListCond"] == $item["Condition"]) {continue;}
+
+    // Cache conditions as numbers.
+    $itemCond = numCond(subStr($item["Condition"], 4));
+    $listCond = numCond($item["ListCond"]);
+    
+    // Adjust price by condition.
+    $item["Price"] = $item["Price"]*1-(.05*($listCond - $itemCond));
+}
+
 
 $itemJSON = json_encode($itemArray);
 file_put_contents("MWS.json", $itemJSON);
