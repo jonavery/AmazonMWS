@@ -145,11 +145,12 @@ foreach($itemArray as $key => &$item) {
     $listCond = numCond($item["ListCond"]);
     
     // Adjust price by condition.
+    echo $item["SellerSKU"]." -> ".$item["Price"]."*1-(.05*(".$listCond." - ".$itemCond."))";
     $item["Price"] = $item["Price"]*1-(.05*($listCond - $itemCond));
 }
 
 
-$itemJSON = json_encode($itemArray);
+echo $itemJSON = json_encode($itemArray);
 file_put_contents("MWS.json", $itemJSON);
 
 echo "Success! MWS.json has been created. Run 'Populate MWS Tab' and 'Post Listings' to list products on Amazon.";
