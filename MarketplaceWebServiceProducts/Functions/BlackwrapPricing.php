@@ -105,7 +105,7 @@ foreach($itemArray as $key => &$item) {
         usleep(200000 - ($price_end - $price_start));
     }
     $price_start = microtime(true);
-
+/*
     // Create parameters to be passed to GetMyFeesEstimate
     $priceFees = array(
         'ListingPrice' => array(
@@ -131,7 +131,7 @@ foreach($itemArray as $key => &$item) {
                     'PriceToEstimateFees' => $priceFees
                 )
             )
-        )
+        ),
         'SellerId' => MERCHANT_ID
     );
 
@@ -144,7 +144,7 @@ foreach($itemArray as $key => &$item) {
     if ((string)$fee->Status == "Success") {
        $item["Fees"] = $fee->FeesEstimate->TotalFeesEstimate->Amount; 
     }
-
+ */
     $itemJSON = json_encode($itemArray);
     file_put_contents("blackwrap.json", $itemJSON);
 }
