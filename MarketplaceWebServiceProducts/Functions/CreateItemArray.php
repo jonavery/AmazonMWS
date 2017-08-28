@@ -132,9 +132,9 @@ foreach($itemArray as $key => &$item) {
     $time_start = microtime(true);
 }
 
-function numCond(condition) {
+function numCond($condition) {
     // Convert string condition into numerical condition.
-    switch (condition) {
+    switch ($condition) {
         case "Acceptable":
             return 1;
         case "Good":
