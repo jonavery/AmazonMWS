@@ -65,9 +65,9 @@ foreach($chunkedSKUs as $chunk) {
                 'PrepInstruction' => (string)$instruction,
                 'PrepOwner' => 'AMAZON'
             );
-            if ((string)$instruction == 'Labeling') {
-                echo "SKU " . $sku . "requires an FNSKU label.\n";
-            }
+//             if ((string)$instruction == 'Labeling') {
+//                 echo "SKU " . $sku . "requires an FNSKU label.\n";
+//             }
         }
         $i++;
     }
