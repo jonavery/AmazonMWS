@@ -311,23 +311,22 @@ foreach ($memberDimensionArray as $key => $member) {
     $boxCount = 0;
     $palletList = array();
     foreach ($member as $value) {
-        $totalWeight = (int)$totalWeight + $value['Weight']['Value'];
+        $totalWeight = (float)$totalWeight + $value['Weight']['Value'];
         $boxCount++;
-        if ($boxCount%6 == 0) {
-            $palletList[] = array(
-                'Dimensions' => array(
-                    'Unit' => 'inches',
-                    'Length' => '40',
-                    'Width' => '48',
-                    'Height' => '72'
-                ),
-                'IsStacked' => false,
-                'Weight' => array(
-                    'Unit' => 'pounds',
-                    'Value' => $totalWeight/$boxCount*6+35
-                )
-            );
-        }
+        $palletCount = ceil($boxCount/6);
+        $palletList[] = array(
+            'Dimensions' => array(
+                'Unit' => 'inches',
+                'Length' => '40',
+                'Width' => '48',
+                'Height' => '72'
+            ),
+            'IsStacked' => false,
+            'Weight' => array(
+                'Unit' => 'pounds',
+                'Value' => ($totalWeight/$palletCount)+35
+            )
+        );
     }
     $shipDate = date('Y-m-d', strtotime(date('Y-m-d') . ' +2 Weekday'));
 
