@@ -324,7 +324,7 @@ foreach ($memberDimensionArray as $key => $member) {
                 'IsStacked' => false,
                 'Weight' => array(
                     'Unit' => 'pounds',
-                    'Value' => $totalWeight/$boxCount*6
+                    'Value' => $totalWeight/$boxCount*6+35
                 )
             );
         }
@@ -349,7 +349,7 @@ foreach ($memberDimensionArray as $key => $member) {
                 'PalletList' => array('member' => $palletList),
                 'TotalWeight' => array(
                     'Unit' => 'pounds',
-                    'Value' => $totalWeight
+                    'Value' => $totalWeight + 35*sizeof($palletList)
                 )
             )
         )
