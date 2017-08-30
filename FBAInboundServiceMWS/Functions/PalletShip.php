@@ -306,13 +306,30 @@ foreach ($items->Member as $member) {
 foreach ($memberDimensionArray as $key => $member) {
     $shipmentId = $key;
 
-    // Create array of dimensions in shipment
+    // Calculate total weight, box count, and shipping date of shipment
     $totalWeight = 0;
     $boxCount = 0;
+    $palletList = array();
     foreach ($member as $value) {
         $totalWeight = (int)$totalWeight + $value['Weight']['Value'];
         $boxCount++;
+        if ($boxCount%6 == 0) {
+            $palletList[] = array(
+                'Dimensions' => array(
+                    'Unit' => 'inches',
+                    'Length' => '40',
+                    'Width' => '48',
+                    'Height' => '72'
+                ),
+                'IsStacked' => false,
+                'Weight' => array(
+                    'Unit' => 'pounds',
+                    'Value' => $totalWeight/$boxCount*6
+                )
+            );
+        }
     }
+    $shipDate = date('Y-m-d', strtotime(date('Y-m-d') . ' +2 Weekday'));
 
     // Enter parameters to be passed into PutTransportContent
     $parameters = array (
@@ -328,14 +345,8 @@ foreach ($memberDimensionArray as $key => $member) {
                     'Email' => 'klasrunbooks4000@gmail.com',
                     'Fax' => 'n/a'),
                 'BoxCount' => $boxCount,
-                'FreightReadyDate' => , // str
-//                 'PalletList' => array(
-//                     'Dimensions' => array(
-//                         'Unit' => 'inches',
-//                         'Length' => '40',
-//                         'Width' => '48',
-//                         'Height' => '72'),
-//                     'IsStacked' => false,
+                'FreightReadyDate' => $shipDate,
+                'PalletList' => array('member' => $palletList),
                 'TotalWeight' => array(
                     'Unit' => 'pounds',
                     'Value' => $totalWeight
@@ -344,7 +355,7 @@ foreach ($memberDimensionArray as $key => $member) {
         )
     );
 
-    // Send dimensions to Amazon
+    // Send pallet information to Amazon
     $requestPut = new FBAInboundServiceMWS_Model_PutTransportContentRequest($parameters);
     unset($parameters);
     $xmlPut = invokePutTransportContent($service, $requestPut);
