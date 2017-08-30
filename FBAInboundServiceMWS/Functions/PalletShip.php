@@ -373,6 +373,7 @@ foreach ($memberDimensionArray as $key => $member) {
                 return '500';
             default:
                 return '110';
+        }
     }
 
     // Enter parameters to be passed into PutTransportContent
