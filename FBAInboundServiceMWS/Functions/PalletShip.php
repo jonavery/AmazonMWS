@@ -306,28 +306,28 @@ foreach ($items->Member as $member) {
 foreach ($memberDimensionArray as $key => $member) {
     $shipmentId = $key;
 
-    // Calculate total weight, box count, and shipping date of shipment
+    // Calculate total weight, box count, pallet count, and shipping date of shipment
     $totalWeight = 0;
     $boxCount = 0;
     $palletList = array();
     foreach ($member as $value) {
         $totalWeight = (float)$totalWeight + $value['Weight']['Value'];
         $boxCount++;
-        $palletCount = ceil($boxCount/6);
-        $palletList[] = array(
-            'Dimensions' => array(
-                'Unit' => 'inches',
-                'Length' => '40',
-                'Width' => '48',
-                'Height' => '72'
-            ),
-            'IsStacked' => false,
-            'Weight' => array(
-                'Unit' => 'pounds',
-                'Value' => ($totalWeight/$palletCount)+35
-            )
-        );
     }
+    $palletCount = ceil($boxCount/6);
+    $palletList = array(
+        'Dimensions' => array(
+            'Unit' => 'inches',
+            'Length' => '40',
+            'Width' => '48',
+            'Height' => '72'
+        ),
+        'IsStacked' => false,
+        'Weight' => array(
+            'Unit' => 'pounds',
+            'Value' => ($totalWeight/$palletCount)+35
+        )
+    );
     $shipDate = date('Y-m-d', strtotime(date('Y-m-d') . ' +2 Weekday'));
 
     // Enter parameters to be passed into PutTransportContent
