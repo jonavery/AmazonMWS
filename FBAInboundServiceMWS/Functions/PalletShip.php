@@ -307,16 +307,18 @@ foreach ($memberDimensionArray as $key => $member) {
     $shipmentId = $key;
 
     // Create array of dimensions in shipment
-    $shipmentDimensions = array();
+    $totalWeight = 0;
+    $boxCount = 0;
     foreach ($member as $value) {
-        $shipmentDimensions[] = $value;
+        $totalWeight = (int)$totalWeight + $value['Weight']['Value'];
+        $boxCount++;
     }
 
     // Enter parameters to be passed into PutTransportContent
     $parameters = array (
         'SellerId' => MERCHANT_ID,
         'ShipmentId' => $shipmentId,
-        'IsPartnered' => 'true',
+        'IsPartnered' => true,
         'ShipmentType' => 'LTL',
         'TransportDetails' => array(
             'PartneredLtlData' => array(
@@ -325,15 +327,19 @@ foreach ($memberDimensionArray as $key => $member) {
                     'Phone' => '(914)217-7622',
                     'Email' => 'klasrunbooks4000@gmail.com',
                     'Fax' => 'n/a'),
-                'BoxCount' => ,
-                'FreightReadyDate' => ,
-                'PalletList' => array(
-                    'Dimensions' => array(
-                        'Unit' => 'inches',
-                        'Length' => '40',
-                        'Width' => '48',
-                        'Height' => '72'),
-                    'IsStacked' => false
+                'BoxCount' => $boxCount,
+                'FreightReadyDate' => , // str
+//                 'PalletList' => array(
+//                     'Dimensions' => array(
+//                         'Unit' => 'inches',
+//                         'Length' => '40',
+//                         'Width' => '48',
+//                         'Height' => '72'),
+//                     'IsStacked' => false,
+                'TotalWeight' => array(
+                    'Unit' => 'pounds',
+                    'Value' => $totalWeight
+                )
             )
         )
     );
