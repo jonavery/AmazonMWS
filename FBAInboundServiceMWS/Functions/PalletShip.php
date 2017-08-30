@@ -320,8 +320,20 @@ foreach ($memberDimensionArray as $key => $member) {
         'ShipmentType' => 'LTL',
         'TransportDetails' => array(
             'PartneredLtlData' => array(
-                'CarrierName' => 'UNITED_PARCEL_SERVICE_INC',
-                'PackageList' => array( 'member' => $shipmentDimensions)
+                'Contact' => array(
+                    'Name' => 'Kevin Carozza',
+                    'Phone' => '(914)217-7622',
+                    'Email' => 'klasrunbooks4000@gmail.com',
+                    'Fax' => 'n/a'),
+                'BoxCount' => ,
+                'FreightReadyDate' => ,
+                'PalletList' => array(
+                    'Dimensions' => array(
+                        'Unit' => 'inches',
+                        'Length' => '40',
+                        'Width' => '48',
+                        'Height' => '72'),
+                    'IsStacked' => false
             )
         )
     );
