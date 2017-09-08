@@ -356,10 +356,6 @@ foreach ($memberDimensionArray as $key => $member) {
             case $density >= 8:
                 return '110';
             case $density >= 7:
-                return '125';
-            case $density >= 6:
-                return '150';
-            case $density >= 5:
                 return '175';
             case $density >= 4:
                 return '200';
@@ -390,7 +386,7 @@ foreach ($memberDimensionArray as $key => $member) {
                     'Email' => 'klasrunbooks4000@gmail.com',
                     'Fax' => 'n/a'),
                 'BoxCount' => $boxCount,
-                'SellerFreightClass' => freightClass('72',$totalWeight),
+                // 'SellerFreightClass' => freightClass('72',$totalWeight),
                 'FreightReadyDate' => $shipDate,
                 'PalletList' => array('member' => $palletList),
                 'TotalWeight' => array(
