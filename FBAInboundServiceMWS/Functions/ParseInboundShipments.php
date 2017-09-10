@@ -25,7 +25,7 @@ require_once(__DIR__ . '/ListInboundShipmentItemsByNextToken.php');
 
 // Set status array and timeframe criteria for filtering shipments
 $statusList = array('WORKING','SHIPPED','IN_TRANSIT','DELIVERED','CHECKED_IN','RECEIVING','CLOSED','CANCELLED','ERROR');
-$updatedAfter = date('Y-m-d', mktime(0, 0, 0, date("m")-1, date("d"),   date("Y")));
+$updatedAfter = date('Y-m-d', strtotime("-1 week"));
 $updatedBefore = date('Y-m-d');
 
 // Cache throttling parameter.
@@ -105,7 +105,6 @@ $itemArray = array();
 foreach($shipmentArray as $key => &$shipment) {
     $shipmentId = $shipment['ShipmentId'];
     $name = $shipment['ShipmentName'];
-    $updated = date('m/d/Y', mktime(0, 0, 0, date("m")-1, date("d"),   date("Y")));
     
     // Cache throttling parameter.
     $requestCount = 0;
@@ -142,7 +141,7 @@ foreach($shipmentArray as $key => &$shipment) {
             "SellerSKU" => (string)$member->SellerSKU,
             "Status" => $shipment['ShipmentStatus'],
             "Created" => substr($name, 5, strcspn($name," ",5)),
-            "Updated" => $updated,
+            "Updated" => $updatedBefore,
             "QuantityShipped" => (string)$member->QuantityShipped,
             "QuantityReceived" => (string)$member->QuantityReceived
         );
@@ -169,7 +168,7 @@ foreach($shipmentArray as $key => &$shipment) {
                 "SellerSKU" => (string)$member->SellerSKU,
                 "Status" => $shipment['ShipmentStatus'],
                 "Created" => substr($name, 5, strcspn($name," ",5)),
-                "Updated" => $updated,
+                "Updated" => $updatedBefore,
                 "QuantityShipped" => (string)$member->QuantityShipped,
                 "QuantityReceived" => (string)$member->QuantityReceived
             );
