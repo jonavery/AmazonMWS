@@ -10,12 +10,27 @@
 require_once('GetLowestOfferListingsForASIN.php');
 $requestPrice = $request;
 
-// Get ASIN from database.
+// Define database parameters.
+$servername = "11.60.0.47";
+$username = "test";
+$password = "P@ssw0rd";
+$dbname = "klasrunc_pricingTEST";
+
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+} 
+echo "Connected successfully";
+
+
 // Call GetLowestOfferListingsForASIN to get price, list condition, and fulfillment channel.
 // Run info through algorithm to set pricing.
 // Save price in database.
 // Repeat for all items.
 
+exit;
 // Reset throttling parameter
 $requestCount = 0;
 
