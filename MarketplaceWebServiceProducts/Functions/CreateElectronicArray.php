@@ -145,8 +145,8 @@ foreach($itemArray as $key => &$item) {
     $listCond = numCond($item["ListCond"]);
     
     // Adjust price by condition.
-    echo $item["SellerSKU"]." -> ".$item["Price"]."*1-(.05*(".$listCond." - ".$itemCond."))\n\n";
-    $item["Price"] = $item["Price"]*1-(.05*($listCond - $itemCond));
+    echo $item["SellerSKU"]." -> ".$item["Price"]."*(1-(.05*(".$listCond." - ".$itemCond.")))\n\n";
+    $item["Price"] = $item["Price"]*(1-(.05*($listCond - $itemCond)));
 }
 
 function numCond($condition) {
