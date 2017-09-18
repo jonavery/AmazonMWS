@@ -11,16 +11,16 @@ require_once('GetLowestOfferListingsForASIN.php');
 $requestPrice = $request;
 
 // Define database parameters.
-$servername = "11.60.0.47";
-$username = "test";
+$servername = "localhost";
+$username = "klasrunc_test";
 $password = "P@ssw0rd";
 $dbname = "klasrunc_pricingTEST";
 
 // Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
+$db = new mysqli($servername, $username, $password, $dbname);
 // Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+if ($db->connect_errno) {
+    die("Connection failed: " . $db->connect_error);
 } 
 echo "Connected successfully";
 
