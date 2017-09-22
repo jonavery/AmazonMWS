@@ -133,42 +133,16 @@ foreach($itemArray as $key => &$item) {
 }
 
 foreach($itemArray as $key => &$item) {
-    // Stop current loop iteration if lowest offer
-    // listing condition matches condition of our item,
-    // no price is set, or no list condition is set.
-    if ($item["Price"] == "") {continue;}
-    if ($item["ListCond"] == "" || $item["ListCond"] == "" ) {continue;}
-    if ($item["ListCond"] == $item["Condition"]) {continue;}
-
-    // Cache conditions as numbers.
+    // Convert conditions to number form.
     $itemCond = numCond(subStr($item["Condition"], 4));
     $listCond = numCond($item["ListCond"]);
-    
-    // Adjust price by condition.
-    echo $item["SellerSKU"]." -> ".$item["Price"]."*(1-(.08*(".$listCond." - ".$itemCond.")))\n\n";
-    $item["Price"] = $item["Price"]*(1-(.08*($listCond - $itemCond)));
-}
 
-function numCond($condition) {
-    // Convert string condition into numerical condition.
-    switch ($condition) {
-        case "Acceptable":
-            return 1;
-        case "Good":
-            return 2;
-        case "VeryGood":
-            return 3;
-        case "LikeNew":
-            return 4;
-        case "New":
-            return 5;
-        default:
-            return;
-    }
+    // Set price of item.
+    $item["Price"] = pricer($item["Price"], $listCond, $itemCond);
 }
 
 $itemJSON = json_encode($itemArray);
 file_put_contents("MWS.json", $itemJSON);
 
-echo "Success! MWS.json has been created. Run 'Populate MWS Tab' and 'Post Listings' to list products on Amazon.";
+echo "Success! Oversize MWS.json has been created. Run 'Populate MWS Tab' and 'Post Listings' to list products on Amazon.";
 ?>
