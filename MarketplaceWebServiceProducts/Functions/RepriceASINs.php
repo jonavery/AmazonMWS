@@ -11,24 +11,39 @@ require_once('GetLowestOfferListingsForASIN.php');
 $requestPrice = $request;
 
 // Define database parameters.
-$servername = "localhost";
-$username = "klasrunc_test";
-$password = "P@ssw0rd";
-$dbname = "klasrunc_pricingTEST";
+$host = "localhost";
+$db = "klasrunc_pricingTEST";
+$user = "klasrunc_test";
+$pass = "P@ssw0rd";
+$char = "utf8";
+$dsn = "mysql:host=$host;dbname=$db;charset=$char";
+$opt = [
+    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+    PDO::ATTR_EMULATE_PREPARES   => false,
+];
 
-// Create connection
-$db = new mysqli($servername, $username, $password, $dbname);
-// Check connection
+// Create and check database connection
+$db = new PDO($dsn, $user, $pass, $opt);
 if ($db->connect_errno) {
     die("Connection failed: " . $db->connect_error);
 } 
 echo "Connected successfully";
 
+// Select all ASINs from price table that have not been updated in the last hour.
+echo $updated = date('Y-m-d H:i:s', strtotime('-1 hour'));
+$stmt = $db->prepare('SELECT * FROM prices WHERE LastUpdated < :updated OR LastUpdated = NULL LIMIT 5');
+$stmt->execute(['updated' => $updated]);
+echo $asins = $stmt->fetch();
+
 
 // Call GetLowestOfferListingsForASIN to get price, list condition, and fulfillment channel.
+
+
 // Run info through algorithm to set pricing.
+
+
 // Save price in database.
-// Repeat for all items.
 
 exit;
 // Reset throttling parameter
