@@ -28,15 +28,16 @@ $db = new PDO($dsn, $user, $pass, $opt);
 if ($db->connect_errno) {
     die("Connection failed: " . $db->connect_error);
 } 
-echo "Connected successfully";
+echo "Connected successfully \n";
 
 // Select all ASINs from price table that have not been updated in the last hour.
 $updated = date('Y-m-d H:i:s', strtotime('-1 hour'));
 $stmt = $db->prepare('SELECT ASIN FROM prices WHERE LastUpdated < ? LIMIT 5');
 $stmt->execute([$updated]);
-$asinPDOS = $stmt->fetch();
+$asinPDOS = $stmt->fetchAll(PDO::FETCH_ASSOC);
 foreach ($asinPDOS as $row) {
     echo $row['ASIN'] . "\n";
+    $asin = $row['ASIN'];
 }
 
 exit;
