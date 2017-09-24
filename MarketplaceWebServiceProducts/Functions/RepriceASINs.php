@@ -31,12 +31,15 @@ if ($db->connect_errno) {
 echo "Connected successfully";
 
 // Select all ASINs from price table that have not been updated in the last hour.
-echo $updated = date('Y-m-d H:i:s', strtotime('-1 hour'));
-$stmt = $db->prepare('SELECT * FROM prices WHERE LastUpdated < :updated OR LastUpdated = NULL LIMIT 5');
-$stmt->execute(['updated' => $updated]);
-echo $asins = $stmt->fetch();
+$updated = date('Y-m-d H:i:s', strtotime('-1 hour'));
+$stmt = $db->prepare('SELECT ASIN FROM prices WHERE LastUpdated < ? LIMIT 5');
+$stmt->execute([$updated]);
+$asinPDOS = $stmt->fetch();
+foreach ($asinPDOS as $row) {
+    echo $row['ASIN'] . "\n";
+}
 
-
+exit;
 // Call GetLowestOfferListingsForASIN to get price, list condition, and fulfillment channel.
 
 
@@ -44,8 +47,11 @@ echo $asins = $stmt->fetch();
 
 
 // Save price in database.
+$stmt = $db->prepare('UPDATE prices SET ListPrice = :price WHERE ASIN = :asin');
+foreach ($asinArray as $asin => $price) {
+    $stmt->execute([$price, $asin]);
+}
 
-exit;
 // Reset throttling parameter
 $requestCount = 0;
 
