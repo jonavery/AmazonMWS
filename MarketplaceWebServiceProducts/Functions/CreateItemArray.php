@@ -122,6 +122,7 @@ foreach($itemArray as $key => &$item) {
         $item["Price"] = (string)$listing->Price->LandedPrice->Amount;
         $item["ListCond"] = (string)$listing->Qualifiers->ItemSubcondition;
         $item["FulfilledBy"] = (string)$listing->Qualifiers->FulfillmentChannel;
+        $item["FeedbackCount"] => (string)$listing->SellerFeedbackCount;
         break;
     }
 
