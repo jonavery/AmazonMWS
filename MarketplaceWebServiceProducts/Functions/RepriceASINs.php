@@ -35,34 +35,19 @@ $updated = date('Y-m-d H:i:s', strtotime('-1 hour'));
 $stmt = $db->prepare('SELECT ASIN FROM prices WHERE LastUpdated < ? LIMIT 5');
 $stmt->execute([$updated]);
 $asinPDOS = $stmt->fetchAll(PDO::FETCH_ASSOC);
-foreach ($asinPDOS as $row) {
-    echo $row['ASIN'] . "\n";
-    $asin = $row['ASIN'];
-}
 
-exit;
 // Call GetLowestOfferListingsForASIN to get price, list condition, and fulfillment channel.
+$itemArray = [];
+foreach ($asinPDOS as $row) {
+    // Cache ASIN.
+    $asin = $row['ASIN'];
 
-
-// Run info through algorithm to set pricing.
-
-
-// Save price in database.
-$stmt = $db->prepare('UPDATE prices SET ListPrice = :price WHERE ASIN = :asin');
-foreach ($asinArray as $asin => $price) {
-    $stmt->execute([$price, $asin]);
-}
-
-// Reset throttling parameter
-$requestCount = 0;
-
-foreach($itemArray as $key => &$item) {
-    // Stop current loop iteration if no ASIN set.
-    if (!array_key_exists("ASIN", $item)) {continue;}
+    // Reset throttling parameter.
+    $requestCount = 0;
 
     // Setup request to be passed to Amazon and increment counter.
     $asinObject = new MarketplaceWebServiceProducts_Model_ASINListType();
-    $asinObject->setASIN($item["ASIN"]);
+    $asinObject->setASIN($asin);
     $requestPrice->setASINList($asinObject);
     $requestCount++;
 
@@ -71,9 +56,12 @@ foreach($itemArray as $key => &$item) {
     $price = new SimpleXMLElement($xmlPrice);
     $listings = $price->GetLowestOfferListingsForASINResult->Product->LowestOfferListings;
     foreach($listings->LowestOfferListing as $listing) {
-        $item["Price"] = (string)$listing->Price->LandedPrice->Amount;
-        $item["ListCond"] = (string)$listing->Qualifiers->ItemSubcondition;
-        $item["FulfilledBy"] = (string)$listing->Qualifiers->FulfillmentChannel;
+        $itemArray[] = array(
+            "Price" => (string)$listing->Price->LandedPrice->Amount,
+            "ListCond" => (string)$listing->Qualifiers->ItemSubcondition,
+            "FulfilledBy" => (string)$listing->Qualifiers->FulfillmentChannel,
+            "FeedbackCount" => (string)$listing->SellerFeedbackCount
+        );
         break;
     }
 
@@ -84,40 +72,24 @@ foreach($itemArray as $key => &$item) {
     }
     $time_start = microtime(true);
 }
+print_r($itemArray);
+exit;
 
+// Run info through algorithm to set pricing.
 foreach($itemArray as $key => &$item) {
-    // Stop current loop iteration if lowest offer
-    // listing condition matches condition of our item,
-    // no price is set, or no list condition is set.
-    if ($item["Price"] == "") {continue;}
-    if ($item["ListCond"] == "" || $item["ListCond"] == "" ) {continue;}
-    if ($item["ListCond"] == $item["Condition"]) {continue;}
-
-    // Cache conditions as numbers.
+    // Convert conditions to number form.
     $itemCond = numCond(subStr($item["Condition"], 4));
     $listCond = numCond($item["ListCond"]);
-    
-    // Adjust price by condition.
-    echo $item["SellerSKU"]." -> ".$item["Price"]."*(1-(.05*(".$listCond." - ".$itemCond.")))\n\n";
-    $item["Price"] = $item["Price"]*(1-(.05*($listCond - $itemCond)));
+
+    // Set price of item.
+    $item["Price"] = pricer($item["Price"], $listCond, $itemCond);
 }
 
-function numCond($condition) {
-    // Convert string condition into numerical condition.
-    switch ($condition) {
-        case "Acceptable":
-            return 1;
-        case "Good":
-            return 2;
-        case "VeryGood":
-            return 3;
-        case "LikeNew":
-            return 4;
-        case "New":
-            return 5;
-        default:
-            return;
-    }
+// Save price in database.
+$stmt = $db->prepare('UPDATE prices SET ListPrice = :price WHERE ASIN = :asin');
+foreach ($asinArray as $asin => $price) {
+    $stmt->execute([$price, $asin]);
 }
+
 
 ?>
