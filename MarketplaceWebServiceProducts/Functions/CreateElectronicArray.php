@@ -52,6 +52,7 @@ $upcList = array();
 $requestCount = 0;
 
 // Pass item array through for loop and format UPC.
+echo "Creating item array... \n";
 foreach($itemArray as $key => &$item) {
     switch(strlen($item["UPC"])) {
         case 11:
@@ -104,6 +105,7 @@ foreach($itemArray as $key => &$item) {
 // Reset throttling parameter
 $requestCount = 0;
 
+echo "Generating prices... \n";
 foreach($itemArray as $key => &$item) {
     // Stop current loop iteration if no ASIN set.
     if (!array_key_exists("ASIN", $item)) {continue;}
@@ -119,10 +121,10 @@ foreach($itemArray as $key => &$item) {
     $price = new SimpleXMLElement($xmlPrice);
     $listings = $price->GetLowestOfferListingsForASINResult->Product->LowestOfferListings;
     foreach($listings->LowestOfferListing as $listing) {
-        $item["Price"] = (string)$listing->Price->LandedPrice->Amount;
-        $item["ListCond"] = (string)$listing->Qualifiers->ItemSubCondition;
-        $item["FulfilledBy"] = (string)$listing->Qualifiers->FulfullmentChannel;
-        $item["FeedbackCount"] => (int)$listing->SellerFeedbackCount;
+        $item["Price"] = (int)$listing->Price->LandedPrice->Amount;
+        $item["ListCond"] = (string)$listing->Qualifiers->ItemSubcondition;
+        $item["FulfilledBy"] = (string)$listing->Qualifiers->FulfillmentChannel;
+        $item["FeedbackCount"] = (int)$listing->SellerFeedbackCount;
         break;
     }
 
@@ -136,11 +138,13 @@ foreach($itemArray as $key => &$item) {
 
 foreach($itemArray as $key => &$item) {
     // Convert conditions to number form.
-    $itemCond = numCond(subStr($item["Condition"], 4));
-    $listCond = numCond($item["ListCond"]);
+    echo "ItemCond: " . $itemCond = numCond(subStr($item["Condition"], 4)) . "\n";
+    echo "ListCond: " . $listCond = numCond($item["ListCond"]) . "\n";
+    echo $item["ASIN"] . "\n";
+    echo "PriceIn: " . $item["Price"] . "\n";
 
     // Set price of item.
-    $item["Price"] = pricer($item["Price"], $listCond, $itemCond, $item["FeedbackCount"]);
+    echo "PriceOut: " . $item["Price"] = pricer($item["Price"], $listCond, $itemCond, $item["FeedbackCount"]) . "\n\n\n";
 }
 
 $itemJSON = json_encode($itemArray);
