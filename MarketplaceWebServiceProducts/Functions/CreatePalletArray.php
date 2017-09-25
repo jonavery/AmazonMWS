@@ -121,7 +121,7 @@ foreach($itemArray as $key => &$item) {
         $item["Price"] = (string)$listing->Price->LandedPrice->Amount;
         $item["ListCond"] = (string)$listing->Qualifiers->ItemSubcondition;
         $item["FulfilledBy"] = (string)$listing->Qualifiers->FulfillmentChannel;
-        $item["FeedbackCount"] => (string)$listing->SellerFeedbackCount;
+        $item["FeedbackCount"] => (int)$listing->SellerFeedbackCount;
         break;
     }
 
@@ -139,7 +139,7 @@ foreach($itemArray as $key => &$item) {
     $listCond = numCond($item["ListCond"]);
 
     // Set price of item.
-    $item["Price"] = pricer($item["Price"], $listCond, $itemCond);
+    $item["Price"] = pricer($item["Price"], $listCond, $itemCond, $item["FeedbackCount"]);
 }
 
 $itemJSON = json_encode($itemArray);

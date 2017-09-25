@@ -60,7 +60,7 @@ foreach ($asinPDOS as $row) {
             "Price" => (string)$listing->Price->LandedPrice->Amount,
             "ListCond" => (string)$listing->Qualifiers->ItemSubcondition,
             "FulfilledBy" => (string)$listing->Qualifiers->FulfillmentChannel,
-            "FeedbackCount" => (string)$listing->SellerFeedbackCount
+            "FeedbackCount" => (int)$listing->SellerFeedbackCount
         );
         break;
     }
@@ -82,7 +82,7 @@ foreach($itemArray as $key => &$item) {
     $listCond = numCond($item["ListCond"]);
 
     // Set price of item.
-    $item["Price"] = pricer($item["Price"], $listCond, $itemCond);
+    $item["Price"] = pricer($item["Price"], $listCond, $itemCond, $item["FeedbackCount"]);
 }
 
 // Save price in database.
