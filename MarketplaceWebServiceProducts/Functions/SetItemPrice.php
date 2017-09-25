@@ -27,7 +27,7 @@ function pricer($listPrice, $listCond, $itemCond, $feedback) {
     );
     if ((int)$feedback > 2000000) {$listCond++;}
     $itemPrice = $listPrice * $priceMatrix[$itemCond-1][$listCond-1];
-    return $itemPrice;
+    return round($itemPrice, 2);
 }
 
 function numCond($condition) {
