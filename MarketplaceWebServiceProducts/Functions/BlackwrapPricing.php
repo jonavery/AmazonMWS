@@ -26,6 +26,7 @@ $itemsXML = file_get_contents($url);
 $items = new SimpleXMLElement($itemsXML);
 $itemArray = array();
 foreach ($items->item as $key => $item) {
+    // if ($key < 125) {continue;}
     switch (strlen((string)$item->UPC)) {
         case 11:
             $upc = "0".(string)$item->UPC;
