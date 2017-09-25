@@ -7,6 +7,7 @@
  * These prices are then updated in the database.
  **********************************************************/
 
+require_once('SetItemPrice.php');
 require_once('GetLowestOfferListingsForASIN.php');
 $requestPrice = $request;
 
@@ -57,6 +58,7 @@ foreach ($asinPDOS as $row) {
     $listings = $price->GetLowestOfferListingsForASINResult->Product->LowestOfferListings;
     foreach($listings->LowestOfferListing as $listing) {
         $itemArray[] = array(
+            "ASIN" => $asin,
             "Price" => (string)$listing->Price->LandedPrice->Amount,
             "ListCond" => (string)$listing->Qualifiers->ItemSubcondition,
             "FulfilledBy" => (string)$listing->Qualifiers->FulfillmentChannel,
@@ -72,19 +74,20 @@ foreach ($asinPDOS as $row) {
     }
     $time_start = microtime(true);
 }
-print_r($itemArray);
-exit;
 
 // Run info through algorithm to set pricing.
 foreach($itemArray as $key => &$item) {
-    // Convert conditions to number form.
-    $itemCond = numCond(subStr($item["Condition"], 4));
+    // Default Klasrun item to Good condition.
+    $itemCond = 2;
+    // Convert list condition to number form.
     $listCond = numCond($item["ListCond"]);
 
     // Set price of item.
     $item["Price"] = pricer($item["Price"], $listCond, $itemCond, $item["FeedbackCount"]);
 }
 
+print_r($itemArray);
+exit;
 // Save price in database.
 $stmt = $db->prepare('UPDATE prices SET ListPrice = :price WHERE ASIN = :asin');
 foreach ($asinArray as $asin => $price) {
