@@ -65,9 +65,6 @@ foreach($chunkedSKUs as $chunk) {
                 'PrepInstruction' => (string)$instruction,
                 'PrepOwner' => 'AMAZON'
             );
-//             if ((string)$instruction == 'Labeling') {
-//                 echo "SKU " . $sku . "requires an FNSKU label.\n";
-//             }
         }
         $i++;
     }
@@ -290,31 +287,22 @@ $urlShip = "https://script.google.com/macros/s/AKfycbxBN9iOFmN5fJH5_iEPwEMK36a98
 $itemsXML = file_get_contents($urlShip);
 $items = new SimpleXMLElement($itemsXML);
 
-// Create dimension array of all items from XML data
-$memberDimensionArray = array();
-foreach ($items->Member as $member) {
-    $memberDimensionArray[(string)$member->ShipmentId][(string)$member->SellerSKU] = array(
+foreach ($shipmentArray as $shipment) {
+    $shipmentId = $shipment['ShipmentId'];
+
+    // Create placeholder dimensions for shipment box
+    $shipmentDimensions = array(
         'Weight' => array(
-            'Value'=>(string)$member->Dimensions->Weight,
+            'Value'=>1,
             'Unit' => 'pounds'
         ),
         'Dimensions' => array(
-            'Length'=>(string)$member->Dimensions->Length,
-            'Width'=>(string)$member->Dimensions->Width,
-            'Height'=>(string)$member->Dimensions->Height,
+            'Length'=>1,
+            'Width'=>1,
+            'Height'=>1,
             'Unit' => 'inches'
         )
     );
-}
-
-foreach ($memberDimensionArray as $key => $member) {
-    $shipmentId = $key;
-
-    // Create array of dimensions in shipment
-    $shipmentDimensions = array();
-    foreach ($member as $value) {
-        $shipmentDimensions[] = $value;
-    }
 
     // Enter parameters to be passed into PutTransportContent
     $parameters = array (
