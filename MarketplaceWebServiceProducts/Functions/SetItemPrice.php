@@ -49,6 +49,7 @@ function numCond($condition) {
             return 3;
         case "LikeNew":
             return 4;
+        case "Mint":
         case "New":
             return 5;
         default:
