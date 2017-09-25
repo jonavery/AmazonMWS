@@ -29,15 +29,22 @@ $db = new PDO($dsn, $user, $pass, $opt);
 if ($db->connect_errno) {
     die("Connection failed: " . $db->connect_error);
 } 
-echo "Connected successfully \n";
+echo "Connected successfully. \n";
 
 // Select all ASINs from price table that have not been updated in the last hour.
 $updated = date('Y-m-d H:i:s', strtotime('-1 hour'));
-$stmt = $db->prepare('SELECT ASIN FROM prices WHERE LastUpdated < ? LIMIT 5');
+$stmt = $db->prepare('
+    SELECT ASIN
+    FROM prices
+    WHERE LastUpdated < ?
+    ORDER BY LastUpdated ASC
+    LIMIT 250
+');
 $stmt->execute([$updated]);
 $asinPDOS = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Call GetLowestOfferListingsForASIN to get price, list condition, and fulfillment channel.
+echo "Updating prices... \n";
 $itemArray = [];
 foreach ($asinPDOS as $row) {
     // Cache ASIN.
@@ -84,15 +91,11 @@ foreach($itemArray as $key => &$item) {
 
     // Set price of item.
     $item["Price"] = pricer($item["Price"], $listCond, $itemCond, $item["FeedbackCount"]);
-}
 
-print_r($itemArray);
-exit;
-// Save price in database.
-$stmt = $db->prepare('UPDATE prices SET ListPrice = :price WHERE ASIN = :asin');
-foreach ($asinArray as $asin => $price) {
-    $stmt->execute([$price, $asin]);
+    // Save price in database.
+    $stmt = $db->prepare('UPDATE prices SET ListPrice = :price WHERE ASIN = :asin');
+    $stmt->execute([$item["Price"], $item["ASIN"]]);
 }
-
+echo "Database update complete.";
 
 ?>
