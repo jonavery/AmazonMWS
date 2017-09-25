@@ -10,13 +10,12 @@
  * @param {int} $feedback - the feedback count of the seller of the offer
  * **********************************************************/
 
-function pricer($listPrice, $listCond, $itemCond, $feedback) {
+function pricer($listPrice, $listCond, $itemCond, $feedback = 0) {
     // Stop function if lowest offer
     // listing condition matches condition of our item,
     // no price is set, or no list condition is set.
-    if ($listPrice == "") {return;}
-    if ($listCond == "" || $listCond == "" ) {return;}
-    if ($listCond == $itemCond) {return;}
+    if ($listPrice == "") {return "MANUAL";}
+    if ($itemCond == "" ) {return "NO_CONDITION";}
 
     // Set price using Klasrun algorithm.
     $priceMatrix = array(
