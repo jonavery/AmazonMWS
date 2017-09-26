@@ -12,7 +12,7 @@ require_once('SetItemPrice.php');
 require_once('GetMatchingProductForId.php');
 $requestId = $request;
 unset($request);
-require_once('GetLowestOfferListingsForASIN.php');
+require_once('GetLowestOfferListingsForASIN.php')
 $requestPrice = $request;
 unset($request);
 require_once('ListMatchingProducts.php');
@@ -102,53 +102,11 @@ foreach($itemArray as $key => &$item) {
     $time_start = microtime(true);
 }
 
-// Reset throttling parameter
-$requestCount = 0;
-
 echo "Generating prices... \n";
-foreach($itemArray as $key => &$item) {
-    // Stop current loop iteration if no ASIN set.
-    if (!array_key_exists("ASIN", $item)) {continue;}
-
-    // Setup request to be passed to Amazon and increment counter.
-    $asinObject = new MarketplaceWebServiceProducts_Model_ASINListType();
-    $asinObject->setASIN($item["ASIN"]);
-    $requestPrice->setASINList($asinObject);
-    $requestCount++;
-
-    // Query Amazon and store returned information.
-    $xmlPrice = invokeGetLowestOfferListingsForASIN($service, $requestPrice);
-    $price = new SimpleXMLElement($xmlPrice);
-    $listings = $price->GetLowestOfferListingsForASINResult->Product->LowestOfferListings;
-    foreach($listings->LowestOfferListing as $listing) {
-        $item["Price"] = (int)$listing->Price->LandedPrice->Amount;
-        $item["ListCond"] = (string)$listing->Qualifiers->ItemSubcondition;
-        $item["FulfilledBy"] = (string)$listing->Qualifiers->FulfillmentChannel;
-        $item["FeedbackCount"] = (int)$listing->SellerFeedbackCount;
-        break;
-    }
-
-    // Sleep for required time to avoid throttling.
-    $time_end = microtime(true);
-    if ($requestCount > 19 && ($time_end - $time_start) < 200000) {
-        usleep(200000 - ($time_end - $time_start));
-    }
-    $time_start = microtime(true);
-}
-
-foreach($itemArray as $key => &$item) {
-    // Convert conditions to number form.
-    echo "ItemCond: " . $itemCond = numCond(subStr($item["Condition"], 4)) . "\n";
-    echo "ListCond: " . $listCond = numCond($item["ListCond"]) . "\n";
-    echo $item["ASIN"] . "\n";
-    echo "PriceIn: " . $item["Price"] . "\n";
-
-    // Set price of item.
-    echo "PriceOut: " . $item["Price"] = pricer($item["Price"], $listCond, $itemCond, $item["FeedbackCount"]) . "\n\n\n";
-}
+$itemArray = parseOffers($itemArray, $requestPrice);
 
 $itemJSON = json_encode($itemArray);
 file_put_contents("MWS.json", $itemJSON);
 
-echo "Success! Electronics MWS.json has been created. Run 'Populate MWS Tab' and 'Post Listings' to list products on Amazon.";
+echo "\n\nSuccess! Electronics MWS.json has been created. Run 'Populate MWS Tab' and 'Post Listings' to list products on Amazon.";
 ?>
