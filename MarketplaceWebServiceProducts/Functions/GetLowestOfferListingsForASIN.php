@@ -55,7 +55,8 @@ $service = new MarketplaceWebServiceProducts_Client(
        $config);
 
 
- * sample for Get Lowest Offer Listings For ASIN Action
+/***********************************************************************
+ * Get Lowest Offer Listings For ASIN Action
  ***********************************************************************/
 // Create request.
 $request = new MarketplaceWebServiceProducts_Model_GetLowestOfferListingsForASINRequest();
@@ -87,7 +88,7 @@ function parseOffers($itemArray, $requestPrice) {
         $price = new SimpleXMLElement($xmlPrice);
         $listings = $price->GetLowestOfferListingsForASINResult->Product->LowestOfferListings;
         foreach($listings->LowestOfferListing as $listing) {
-            $item["Price"] = (int)$listing->Price->LandedPrice->Amount;
+            $item["ListPrice"] = (int)$listing->Price->LandedPrice->Amount;
             $item["ListCond"] = (string)$listing->Qualifiers->ItemSubcondition;
             $item["FulfilledBy"] = (string)$listing->Qualifiers->FulfillmentChannel;
             $item["FeedbackCount"] = (int)$listing->SellerFeedbackCount;
@@ -100,6 +101,15 @@ function parseOffers($itemArray, $requestPrice) {
             usleep(200000 - ($time_end - $time_start));
         }
         $time_start = microtime(true);
+
+        // Convert conditions to number form.
+        echo "ItemCond: " . $itemCond = numCond(subStr($item["Condition"], 4)) . "\n";
+        echo "ListCond: " . $listCond = numCond($item["ListCond"]) . "\n";
+        echo $item["ASIN"] . "\n";
+        echo "PriceIn: " . $item["Price"] . "\n";
+
+        // Set price of item.
+        echo "PriceOut: " . $item["Price"] = pricer($item["Price"], $listCond, $itemCond, $item["FeedbackCount"]) . "\n\n\n";
     }
     return $itemArray;
 }
