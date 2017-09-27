@@ -26,6 +26,7 @@
 ini_set('max_execution_time', 300);
 
 require_once('.config.inc.php');
+require_once('SetItemPrice.php');
 
 /************************************************************************
  * Instantiate Implementation of MarketplaceWebServiceProducts
@@ -73,6 +74,24 @@ $request->setMarketplaceId(MARKETPLACE_ID);
 
 $requestCount = 0;
 function parseOffers($itemArray, $requestPrice) {
+    $serviceUrl = "https://mws.amazonservices.com/Products/2011-10-01";
+
+    $config = array (
+      'ServiceURL' => $serviceUrl,
+      'ProxyHost' => null,
+      'ProxyPort' => -1,
+      'ProxyUsername' => null,
+      'ProxyPassword' => null,
+      'MaxErrorRetry' => 3,
+    );
+
+    $service = new MarketplaceWebServiceProducts_Client(
+           AWS_ACCESS_KEY_ID,
+           AWS_SECRET_ACCESS_KEY,
+           APPLICATION_NAME,
+           APPLICATION_VERSION,
+           $config);
+
     foreach($itemArray as $key => &$item) {
         // Stop current loop iteration if no ASIN set.
         if (!array_key_exists("ASIN", $item)) {continue;}
@@ -88,7 +107,7 @@ function parseOffers($itemArray, $requestPrice) {
         $price = new SimpleXMLElement($xmlPrice);
         $listings = $price->GetLowestOfferListingsForASINResult->Product->LowestOfferListings;
         foreach($listings->LowestOfferListing as $listing) {
-            $item["ListPrice"] = (int)$listing->Price->LandedPrice->Amount;
+            $item["ListPrice"] = (float)$listing->Price->LandedPrice->Amount;
             $item["ListCond"] = (string)$listing->Qualifiers->ItemSubcondition;
             $item["FulfilledBy"] = (string)$listing->Qualifiers->FulfillmentChannel;
             $item["FeedbackCount"] = (int)$listing->SellerFeedbackCount;
@@ -106,10 +125,10 @@ function parseOffers($itemArray, $requestPrice) {
         echo "ItemCond: " . $itemCond = numCond(subStr($item["Condition"], 4)) . "\n";
         echo "ListCond: " . $listCond = numCond($item["ListCond"]) . "\n";
         echo $item["ASIN"] . "\n";
-        echo "PriceIn: " . $item["Price"] . "\n";
+        echo "PriceIn: " . $item["ListPrice"] . "\n";
 
         // Set price of item.
-        echo "PriceOut: " . $item["Price"] = pricer($item["Price"], $listCond, $itemCond, $item["FeedbackCount"]) . "\n\n\n";
+        echo "PriceOut: " . $item["ItemPrice"] = pricer($item["ListPrice"], $listCond, $itemCond, $item["FeedbackCount"]) . "\n\n\n";
     }
     return $itemArray;
 }
