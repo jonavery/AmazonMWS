@@ -279,6 +279,48 @@ ob_end_clean();
 *  each shipment.
 *************************************************************/
 
+// Estimate freight class
+function freightClass($height, $weight) {
+    $volume = 40 * 48 * $height / 1728;
+    $density = $weight/$volume;
+    switch (true) {
+        case $density >= 50:
+            return '50';
+        case $density >= 35:
+            return '55';
+        case $density >= 30:
+            return '60';
+        case $density >= 22:
+            return '65';
+        case $density >= 15:
+            return '70';
+        case $density >= 13:
+            return '77.5';
+        case $density >= 12:
+            return '85';
+        case $density >= 10:
+            return '92.5';
+        case $density >= 9:
+            return '100';
+        case $density >= 8:
+            return '110';
+        case $density >= 7:
+            return '175';
+        case $density >= 4:
+            return '200';
+        case $density >= 3:
+            return '250';
+        case $density >= 2:
+            return '300';
+        case $density >= 1:
+            return '400';
+        case $density < 1:
+            return '500';
+        default:
+            return '110';
+    }
+}
+
 // Cache URL 
 $urlShip = "https://script.google.com/macros/s/AKfycbxBN9iOFmN5fJH5_iEPwEMK36a98SX7xFF4bfHaBfD0y29Ff7zN/exec";
 
@@ -330,47 +372,6 @@ foreach ($memberDimensionArray as $key => $member) {
     );
     $shipDate = date('Y-m-d', strtotime(date('Y-m-d') . ' +2 Weekday'));
 
-    // Estimate freight class
-    function freightClass($height, $weight) {
-        $volume = 40 * 48 * $height / 1728;
-        $density = $weight/$volume;
-        switch (true) {
-            case $density >= 50:
-                return '50';
-            case $density >= 35:
-                return '55';
-            case $density >= 30:
-                return '60';
-            case $density >= 22:
-                return '65';
-            case $density >= 15:
-                return '70';
-            case $density >= 13:
-                return '77.5';
-            case $density >= 12:
-                return '85';
-            case $density >= 10:
-                return '92.5';
-            case $density >= 9:
-                return '100';
-            case $density >= 8:
-                return '110';
-            case $density >= 7:
-                return '175';
-            case $density >= 4:
-                return '200';
-            case $density >= 3:
-                return '250';
-            case $density >= 2:
-                return '300';
-            case $density >= 1:
-                return '400';
-            case $density < 1:
-                return '500';
-            default:
-                return '110';
-        }
-    }
 
     // Enter parameters to be passed into PutTransportContent
     $parameters = array (
