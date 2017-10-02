@@ -1,6 +1,6 @@
 <?php
 /*******************************************************************************
- * Copyright 2009-2016 Amazon Services. All Rights Reserved.
+ * Copyright 2009-2017 Amazon Services. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License"); 
  *
  * You may not use this file except in compliance with the License. 
@@ -12,13 +12,13 @@
  * PHP Version 5
  * @category Amazon
  * @package  FBA Inbound Service MWS
- * @version  2010-10-01
- * Library Version: 2016-10-05
- * Generated: Wed Oct 05 06:15:45 PDT 2016
+ * @version  2011-10-01
+ * Library Version: 2017-03-22
+ * Generated: Wed Mar 22 23:24:40 UTC 2017
  */
 
 /**
- * Confirm Preorder Sample
+ * Confirms shipment for pre-order. 
  */
 
 require_once('.config.inc.php');
@@ -32,14 +32,7 @@ require_once('.config.inc.php');
  ***********************************************************************/
 // More endpoints are listed in the MWS Developer Guide
 // North America:
-//$serviceUrl = "https://mws.amazonservices.com/FulfillmentInboundShipment/2010-10-01";
-// Europe
-//$serviceUrl = "https://mws-eu.amazonservices.com/FulfillmentInboundShipment/2010-10-01";
-// Japan
-//$serviceUrl = "https://mws.amazonservices.jp/FulfillmentInboundShipment/2010-10-01";
-// China
-//$serviceUrl = "https://mws.amazonservices.com.cn/FulfillmentInboundShipment/2010-10-01";
-
+$serviceUrl = "https://mws.amazonservices.com/FulfillmentInboundShipment/2010-10-01";
 
  $config = array (
    'ServiceURL' => $serviceUrl,
@@ -55,23 +48,10 @@ require_once('.config.inc.php');
         AWS_SECRET_ACCESS_KEY,
         APPLICATION_NAME,
         APPLICATION_VERSION,
-        $config);
+	$config);
 
-/************************************************************************
- * Uncomment to try out Mock Service that simulates FBAInboundServiceMWS
- * responses without calling FBAInboundServiceMWS service.
- *
- * Responses are loaded from local XML files. You can tweak XML files to
- * experiment with various outputs during development
- *
- * XML files available under FBAInboundServiceMWS/Mock tree
- *
- ***********************************************************************/
- // $service = new FBAInboundServiceMWS_Mock();
-
-/************************************************************************
- * Setup request parameters and uncomment invoke to try out
- * sample for Confirm Preorder Action
+ /***********************************************************************
+ * Confirms shipment for pre-order.  
  ***********************************************************************/
  // @TODO: set request. Action can be passed as FBAInboundServiceMWS_Model_ConfirmPreorder
  $request = new FBAInboundServiceMWS_Model_ConfirmPreorderRequest();
@@ -80,28 +60,26 @@ require_once('.config.inc.php');
  invokeConfirmPreorder($service, $request);
 
 /**
-  * Get Confirm Preorder Action Sample
+  * Get Confirm Preorder Action
   * Gets competitive pricing and related information for a product identified by
   * the MarketplaceId and ASIN.
   *
   * @param FBAInboundServiceMWS_Interface $service instance of FBAInboundServiceMWS_Interface
   * @param mixed $request FBAInboundServiceMWS_Model_ConfirmPreorder or array of parameters
-  */
+*/
 
   function invokeConfirmPreorder(FBAInboundServiceMWS_Interface $service, $request)
   {
       try {
         $response = $service->ConfirmPreorder($request);
-
-        echo ("Service Response\n");
-        echo ("=============================================================================\n");
-
-        $dom = new DOMDocument();
+	
+	$dom = new DOMDocument();
         $dom->loadXML($response->toXML());
         $dom->preserveWhiteSpace = false;
         $dom->formatOutput = true;
-        echo $dom->saveXML();
-        echo("ResponseHeaderMetadata: " . $response->getResponseHeaderMetadata() . "\n");
+        $response->getResponseHeaderMetadata();
+        return $dom->saveXML();
+
 
      } catch (FBAInboundServiceMWS_Exception $ex) {
         echo("Caught Exception: " . $ex->getMessage() . "\n");
