@@ -30,34 +30,27 @@ if ($db->connect_errno) {
 } 
 echo "Connected successfully. \n";
 
-// Select all ASINs from price table that have not been updated in the last hour.
+// Select all ASINs from price table and cache as array.
 $stmt = $db->prepare('
     SELECT ASIN
     FROM prices
-    WHERE LastUpdated < ?
-    ORDER BY LastUpdated ASC
-    LIMIT 250
 ');
-$stmt->execute([$updated]);
+$stmt->execute();
 $asinPDOS = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// Call GetLowestOfferListingsForASIN to get price, list condition, and fulfillment channel.
-echo "Updating ASINs... \n";
+// @TODO: Call the Google DB and convert JSON to an array.
 
-// Run info through algorithm to set pricing.
-foreach($itemArray as $key => &$item) {
-    // Default Klasrun item to Good condition.
-    $itemCond = 2;
-    // Convert list condition to number form.
-    $listCond = numCond($item["ListCond"]);
-
-    // Set price of item.
-    $item["Price"] = pricer($item["Price"], $listCond, $itemCond, $item["FeedbackCount"]);
-
-    // Save price in database.
+echo "Comparing ASINs in MySQL to those in GoogleDB. \n";
+// Check each ASIN from the Google DB to see if it's in the prices table.
+foreach ($asinPDOS as $row) {
+    // If the ASIN is not in the prices table, insert it.
+    // @TODO: Change query to an insert with the item to be added.
     $stmt = $db->prepare('UPDATE prices SET ListPrice = :price WHERE ASIN = :asin');
     $stmt->execute([$item["Price"], $item["ASIN"]]);
 }
+
+// Run info through algorithm to set pricing.
+
 echo "Database update complete.";
 
 ?>
