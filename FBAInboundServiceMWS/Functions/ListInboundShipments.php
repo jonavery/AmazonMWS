@@ -18,7 +18,7 @@
  */
 
 /**
- * List Inbound Shipments Sample
+ * Returns list Inbound Shipments 
  */
 
 require_once('.config.inc.php');
@@ -53,8 +53,8 @@ $serviceUrl = "https://mws.amazonservices.com/FulfillmentInboundShipment/2010-10
 
 /**
   * Get List Inbound Shipments Action
-  *     Gets list of inbound shipments as specified by the filters passed through
-  *     in the $request parameter.
+  * Gets list of inbound shipments as specified by the filters passed through
+  * in the $request parameter.
   *
   * @param FBAInboundServiceMWS_Interface $service instance of FBAInboundServiceMWS_Interface
   * @param mixed $request FBAInboundServiceMWS_Model_ListInboundShipments or array of parameters
