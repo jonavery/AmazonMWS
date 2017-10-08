@@ -12,43 +12,18 @@
 /******************************************************************************* 
  *  Marketplace Web Service PHP5 Library
  *  Generated: Thu May 07 13:07:36 PDT 2009
- * 
  */
 
 /**
- * Cancel Feed Submissions  Sample
+ * Cancels feed submissions and returns a count of the canceled feeds
  */
 
 include_once ('.config.inc.php'); 
 
-/************************************************************************
-* Uncomment to configure the client instance. Configuration settings
-* are:
-*
-* - MWS endpoint URL
-* - Proxy host and port.
-* - MaxErrorRetry.
-***********************************************************************/
 // IMPORTANT: Uncomment the approiate line for the country you wish to
 // sell in:
 // United States:
-//$serviceUrl = "https://mws.amazonservices.com";
-// United Kingdom
-//$serviceUrl = "https://mws.amazonservices.co.uk";
-// Germany
-//$serviceUrl = "https://mws.amazonservices.de";
-// France
-//$serviceUrl = "https://mws.amazonservices.fr";
-// Italy
-//$serviceUrl = "https://mws.amazonservices.it";
-// Japan
-//$serviceUrl = "https://mws.amazonservices.jp";
-// China
-//$serviceUrl = "https://mws.amazonservices.com.cn";
-// Canada
-//$serviceUrl = "https://mws.amazonservices.ca";
-// India
-//$serviceUrl = "https://mws.amazonservices.in";
+$serviceUrl = "https://mws.amazonservices.com";
  
 $config = array (
   'ServiceURL' => $serviceUrl,
@@ -67,50 +42,15 @@ $config = array (
  $service = new MarketplaceWebService_Client(
      AWS_ACCESS_KEY_ID, 
      AWS_SECRET_ACCESS_KEY, 
-     $config,
+     APPLICATION_VERSION,
      APPLICATION_NAME,
-     APPLICATION_VERSION);
- 
-/************************************************************************
- * Uncomment to try out Mock Service that simulates MarketplaceWebService
- * responses without calling MarketplaceWebService service.
- *
- * Responses are loaded from local XML files. You can tweak XML files to
- * experiment with various outputs during development
- *
- * XML files available under MarketplaceWebService/Mock tree
- *
- ***********************************************************************/
- // $service = new MarketplaceWebService_Mock();
+     $config);
 
-/************************************************************************
- * Setup request parameters and uncomment invoke to try out 
- * sample for Cancel Feed Submissions Action
- ***********************************************************************/
-// @TODO: set request. Action can be passed as MarketplaceWebService_Model_CancelFeedSubmissionsRequest
-// object or array of parameters
- 
-//Request objects can be constructed with an array of parameters.
-//$options = array (
-//  'Merchant' => MERCHANT_ID,
-//  'FeedSubmissionIdList' => array ('Id' => '<Feed Submission Id>'),
-//  'MWSAuthToken' => '<MWS Auth Token>', // Optional
-//);
-//
-//$request = new MarketplaceWebService_Model_CancelFeedSubmissionsRequest($options);
-
-// Or the request can be constructed like
-//$request = new MarketplaceWebService_Model_CancelFeedSubmissionsRequest();
-//$request->setMerchant(MERCHANT_ID);
-//
-//$idList = new MarketplaceWebService_Model_IdList();
-//$request->setFeedSubmissionIdList($idList->withId('<Feed Submission Id>'));
-//$request->setMWSAuthToken('<MWS Auth Token>'); // Optional
 // 
 invokeCancelFeedSubmissions($service, $request);
                                                     
 /**
-  * Cancel Feed Submissions Action Sample
+  * Cancel Feed Submissions Action 
   * cancels feed submissions - by default all of the submissions of the
   * last 30 days that have not started processing
   *   
