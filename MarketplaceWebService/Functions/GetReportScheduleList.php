@@ -17,39 +17,15 @@
  */
 
 /**
- * Get Report Schedule List  Sample
+ * Get Report Schedule List  
  */
 
 include_once ('.config.inc.php'); 
 
-/************************************************************************
-* Uncomment to configure the client instance. Configuration settings
-* are:
-*
-* - MWS endpoint URL
-* - Proxy host and port.
-* - MaxErrorRetry.
-***********************************************************************/
 // IMPORTANT: Uncomment the approiate line for the country you wish to
 // sell in:
 // United States:
 //$serviceUrl = "https://mws.amazonservices.com";
-// United Kingdom
-//$serviceUrl = "https://mws.amazonservices.co.uk";
-// Germany
-//$serviceUrl = "https://mws.amazonservices.de";
-// France
-//$serviceUrl = "https://mws.amazonservices.fr";
-// Italy
-//$serviceUrl = "https://mws.amazonservices.it";
-// Japan
-//$serviceUrl = "https://mws.amazonservices.jp";
-// China
-//$serviceUrl = "https://mws.amazonservices.com.cn";
-// Canada
-//$serviceUrl = "https://mws.amazonservices.ca";
-// India
-//$serviceUrl = "https://mws.amazonservices.in";
 
 $config = array (
   'ServiceURL' => $serviceUrl,
@@ -72,45 +48,10 @@ $config = array (
      APPLICATION_NAME,
      APPLICATION_VERSION);
  
-/************************************************************************
- * Uncomment to try out Mock Service that simulates MarketplaceWebService
- * responses without calling MarketplaceWebService service.
- *
- * Responses are loaded from local XML files. You can tweak XML files to
- * experiment with various outputs during development
- *
- * XML files available under MarketplaceWebService/Mock tree
- *
- ***********************************************************************/
- // $service = new MarketplaceWebService_Mock();
-
-/************************************************************************
- * Setup request parameters and uncomment invoke to try out 
- * sample for Get Report Schedule List Action
- ***********************************************************************/
- // @TODO: set request. Action can be passed as MarketplaceWebService_Model_GetReportScheduleListRequest
- // object or array of parameters
- 
-//$parameters = array (
-//  'Merchant' => MERCHANT_ID,
-//  'ReportTypeList' => array ('Type' => array ('_GET_ORDERS_DATA_', '_GET_FLAT_FILE_ORDERS_DATA_')),
-//  'MWSAuthToken' => '<MWS Auth Token>', // Optional
-//);     
-//
-//$request = new MarketplaceWebService_Model_GetReportScheduleListRequest($parameters);
-
-//$request = new MarketplaceWebService_Model_GetReportScheduleListRequest();
-//$request->setMerchant(MERCHANT_ID);
-//$request->setMWSAuthToken('<MWS Auth Token>'); // Optional
-//
-//$typeList = new MarketplaceWebService_Model_TypeList();
-//$request->setReportTypeList($typeList->withType('_GET_ORDERS_DATA_', '_GET_FLAT_FILE_ORDERS_DATA_'));
-//
 //invokeGetReportScheduleList($service, $request);
-
                                                                                                     
 /**
-  * Get Report Schedule List Action Sample
+  * Get Report Schedule List Action 
   * returns the list of report schedules
   *   
   * @param MarketplaceWebService_Interface $service instance of MarketplaceWebService_Interface
