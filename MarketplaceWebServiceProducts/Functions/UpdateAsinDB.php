@@ -6,6 +6,7 @@
  *
  **********************************************************/
 
+
 // Define database parameters.
 $host = "localhost";
 $db = "klasrunc_inventory";
@@ -26,35 +27,38 @@ if ($db->connect_errno) {
 } 
 echo "Connected successfully to MySQL database. \n";
 
-// Select all ASINs from price table and cache as array.
-$stmt = $db->prepare('
-    SELECT ASIN
-    FROM prices
-');
-$stmt->execute();
-$asinPDOS = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-echo "Connecting to Google Sheets database... ";
+echo "Getting ASINs from Google Sheets database... ";
 // Call the Google DB and convert JSON to an array.
 $url = "https://script.google.com/macros/s/AKfycbwKZalsFAweoZtHoFEzmz-W505BN4P7sQ6zDP4HSI4AXK8Tsdw/exec";
-$asinJSON = file_get_contents($url);
-$asinArray = json_decode($asinJSON, true);
-echo "Connected successfully. \n\n";
-var_dump($asinArray);
+$googleJSON = file_get_contents($url);
+$googleArray = array_slice(json_decode($googleJSON, true), 1);
+echo "ASINs retrieved successfully. \n\n";
+
+// Create ASIN array to be passed to SQL SELECT statement.
+$asinArray = array_column($googleArray, 1);
+$inArray = "?" . str_repeat(",?", count($asinArray) - 1);
+
+// Select all ASINs from price table that are in ASIN array.
+$stmt = $db->prepare("
+    SELECT ASIN
+    FROM prices
+    WHERE ASIN IN ($inArray)
+");
+$stmt->execute($asinArray);
+$asinPDOS = $stmt->fetchAll(PDO::FETCH_COLUMN,0);
+print_r($asinPDOS);
 exit;
 
-echo "Comparing ASINs in MySQL to those in GoogleDB. \n";
-// Check each ASIN from the Google DB to see if it's in the prices table.
-foreach ($asinArray as $asinRow) {
-    if (1  /******ASIN not in prices table******/) {
-        // If the ASIN is not in the prices table, insert it.
-        $stmt = $db->prepare('
-            INSERT INTO prices (ASIN, Title, AERdesignation, SalePrice, SaleRank, FeeTotal, NetProfit)
-            VALUES (?,?,?,?,?,?,?)
-        ');
-        $stmt->execute([$asinRow]);
-    }
-}
+
+echo "Comparing ASINs in MySQL to those in GoogleDB... \n";
+// Insert all ASINs not in prices table.
+// $stmt = $db->prepare('
+//     INSERT INTO prices (Title, ASIN, AERdesignation, SalePrice, FeeTotal, NetProfit, SaleRank)
+//     VALUES (?)
+// ');
+// $stmt->execute($asinRow);
+
+
 
 // Run info through algorithm to set pricing.
 
