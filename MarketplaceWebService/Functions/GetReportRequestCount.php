@@ -17,39 +17,15 @@
  */
 
 /**
- * Get Report Count  Sample
+ * Get Report Count  
  */
 
 include_once ('.config.inc.php'); 
 
-/************************************************************************
-* Uncomment to configure the client instance. Configuration settings
-* are:
-*
-* - MWS endpoint URL
-* - Proxy host and port.
-* - MaxErrorRetry.
-***********************************************************************/
 // IMPORTANT: Uncomment the approiate line for the country you wish to
 // sell in:
 // United States:
-//$serviceUrl = "https://mws.amazonservices.com";
-// United Kingdom
-//$serviceUrl = "https://mws.amazonservices.co.uk";
-// Germany
-//$serviceUrl = "https://mws.amazonservices.de";
-// France
-//$serviceUrl = "https://mws.amazonservices.fr";
-// Italy
-//$serviceUrl = "https://mws.amazonservices.it";
-// Japan
-//$serviceUrl = "https://mws.amazonservices.jp";
-// China
-//$serviceUrl = "https://mws.amazonservices.com.cn";
-// Canada
-//$serviceUrl = "https://mws.amazonservices.ca";
-// India
-//$serviceUrl = "https://mws.amazonservices.in";
+$serviceUrl = "https://mws.amazonservices.com";
 
 $config = array (
   'ServiceURL' => $serviceUrl,
@@ -72,45 +48,10 @@ $config = array (
      APPLICATION_NAME,
      APPLICATION_VERSION);
  
-/************************************************************************
- * Uncomment to try out Mock Service that simulates MarketplaceWebService
- * responses without calling MarketplaceWebService service.
- *
- * Responses are loaded from local XML files. You can tweak XML files to
- * experiment with various outputs during development
- *
- * XML files available under MarketplaceWebService/Mock tree
- *
- ***********************************************************************/
- // $service = new MarketplaceWebService_Mock();
-
-/************************************************************************
- * Setup request parameters and uncomment invoke to try out 
- * sample for Get Report Count Action
- ***********************************************************************/
- // @TODO: set request. Action can be passed as MarketplaceWebService_Model_GetReportRequestCountRequest
- // object or array of parameters
-
-//$parameters = array (
-//  'Merchant' => MERCHANT_ID,
-//  'ReportProcessingStatusList' => array ('Status' => array ('_SUBMITTED_', '_DONE_')),
-//  'MWSAuthToken' => '<MWS Auth Token>', // Optional
-//);
-//
-//$request = new MarketplaceWebService_Model_GetReportRequestCountRequest($parameters);
-
-//$request = new MarketplaceWebService_Model_GetReportRequestCountRequest();
-//$request->setMerchant(MERCHANT_ID);
-//$request->setMWSAuthToken('<MWS Auth Token>'); // Optional
-//
-//$statusList = new MarketplaceWebService_Model_StatusList();
-//$request->setReportProcessingStatusList($statusList->withStatus('_SUBMITTED_', '_DONE_'));
-//     
 //invokeGetReportRequestCount($service, $request);
-
                                             
 /**
-  * Get Report Count Action Sample
+  * Get Report Count Action
   * returns a count of reports matching your criteria;
   * by default, the number of reports generated in the last 90 days,
   * regardless of acknowledgement status
