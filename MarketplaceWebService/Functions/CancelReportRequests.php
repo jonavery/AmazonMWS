@@ -16,39 +16,15 @@
  */
 
 /**
- * Cancel Reports  Sample
+ * Cancel Reports and returns canceled report count
  */
 
 include_once ('.config.inc.php'); 
 
-/************************************************************************
-* Uncomment to configure the client instance. Configuration settings
-* are:
-*
-* - MWS endpoint URL
-* - Proxy host and port.
-* - MaxErrorRetry.
-***********************************************************************/
 // IMPORTANT: Uncomment the approiate line for the country you wish to
 // sell in:
 // United States:
-//$serviceUrl = "https://mws.amazonservices.com";
-// United Kingdom
-//$serviceUrl = "https://mws.amazonservices.co.uk";
-// Germany
-//$serviceUrl = "https://mws.amazonservices.de";
-// France
-//$serviceUrl = "https://mws.amazonservices.fr";
-// Italy
-//$serviceUrl = "https://mws.amazonservices.it";
-// Japan
-//$serviceUrl = "https://mws.amazonservices.jp";
-// China
-//$serviceUrl = "https://mws.amazonservices.com.cn";
-// Canada
-//$serviceUrl = "https://mws.amazonservices.ca";
-// India
-//$serviceUrl = "https://mws.amazonservices.in";
+$serviceUrl = "https://mws.amazonservices.com";
 
 $config = array (
   'ServiceURL' => $serviceUrl,
@@ -70,46 +46,11 @@ $config = array (
      $config,
      APPLICATION_NAME,
      APPLICATION_VERSION);
- 
-/************************************************************************
- * Uncomment to try out Mock Service that simulates MarketplaceWebService
- * responses without calling MarketplaceWebService service.
- *
- * Responses are loaded from local XML files. You can tweak XML files to
- * experiment with various outputs during development
- *
- * XML files available under MarketplaceWebService/Mock tree
- *
- ***********************************************************************/
- // $service = new MarketplaceWebService_Mock();
 
-/************************************************************************
- * Setup request parameters and uncomment invoke to try out 
- * sample for Cancel Reports Action
- ***********************************************************************/
- // @TODO: set request. Action can be passed as MarketplaceWebService_Model_CancelReportsRequest
- // object or array of parameters
-
-// Request objects can be constructed with an array of parameters.
-//$parameters = array (
-//  'Merchant' => MERCHANT_ID,
-//  'ReportRequestIdList' => array ( 'Id' => array ('4309077944', '4309077934')),
-//  'MWSAuthToken' => '<MWS Auth Token>', // Optional
-//);
-//
-//$request = new MarketplaceWebService_Model_CancelReportRequestsRequest($parameters);
-
-//$request = new MarketplaceWebService_Model_CancelReportRequestsRequest();
-//$request->setMerchant(MERCHANT_ID);
-//$request->setMWSAuthToken('<MWS Auth Token>'); // Optional
-//
-//$idList = new MarketplaceWebService_Model_IdList();
-//$request->setReportRequestIdList($idList->withId('4309077944', '4309077934'));
-//
 //invokeCancelReportRequests($service, $request);
  
 /**
-  * Cancel Report Requests Action Sample
+  * Cancel Report Requests Action
   * cancels report requests - by default all of the submissions of the
   * last 30 days that have not started processing
   *   
