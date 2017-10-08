@@ -25,11 +25,9 @@ $requestFeed->setFeedType('_POST_FBA_INBOUND_CARTON_CONTENTS_');
 invokeSubmitFeed($serviceMWS, $requestFeed);
 @fclose($feedHandle);
 
-
-/*************************************************************
-*  Call GetUniquePackageLabels to retrieve shipment label
-*  images from Amazon.
-*************************************************************/
+/*****************************************************************************
+*  Call GetUniquePackageLabels to retrieve shipment label  images from Amazon.
+*****************************************************************************/
 
 // Initialize label script
 $items = new SimpleXMLElement($feed);
@@ -80,7 +78,6 @@ foreach ($items->Message as $message) {
     // Close output file
     fclose ($pdf);
 }
-
 
 /*************************************************************
 *  Call UpdateInboundShipment to change shipment status to
