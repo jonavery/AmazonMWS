@@ -372,7 +372,6 @@ foreach ($memberDimensionArray as $key => $member) {
     );
     $shipDate = date('Y-m-d', strtotime(date('Y-m-d') . ' +2 Weekday'));
 
-
     // Enter parameters to be passed into PutTransportContent
     $parameters = array (
         'SellerId' => MERCHANT_ID,
