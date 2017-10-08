@@ -18,7 +18,7 @@
  */
 
 /**
- * Update Inbound Shipment
+ * Updates an existing inbound shipment
  */
 
 // Initialize configuration file
@@ -52,10 +52,7 @@ $service = new FBAInboundServiceMWS_Client(
     $config);
 
 /**
-  * Get Update Inbound Shipment Action Sample
-  * Gets competitive pricing and related information for a product identified by
-  * the MarketplaceId and ASIN.
-  *
+  * Get Update Inbound Shipment Action 
   * @param FBAInboundServiceMWS_Interface $service instance of FBAInboundServiceMWS_Interface
   * @param mixed $request FBAInboundServiceMWS_Model_UpdateInboundShipment or array of parameters
   */
