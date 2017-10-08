@@ -18,7 +18,7 @@
  */
 
 /**
- * Create Inbound Shipment Plan Sample
+ * Create Inbound Shipment Plan 
  */
 
 // Initialize configuration file
@@ -51,17 +51,8 @@ $service = new FBAInboundServiceMWS_Client(
         APPLICATION_VERSION,
         $config);
 
-
-/************************************************************************
- * Setup request parameters and uncomment invoke to try out
- * sample for Create Inbound Shipment Plan Action
- ***********************************************************************/
-
 /**
-  * Get Create Inbound Shipment Plan Action Sample
-  * Gets competitive pricing and related information for a product identified by
-  * the MarketplaceId and ASIN.
-  *
+  * Get Create Inbound Shipment Plan Action 
   * @param FBAInboundServiceMWS_Interface $service instance of FBAInboundServiceMWS_Interface
   * @param mixed $request FBAInboundServiceMWS_Model_CreateInboundShipmentPlan or array of parameters
   */
