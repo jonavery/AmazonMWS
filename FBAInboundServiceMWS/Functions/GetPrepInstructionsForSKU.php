@@ -18,7 +18,7 @@
  */
 
 /**
- * Get Prep Instructions For SKU Sample
+ * Get Prep Instructions For SKU for inbound shipment
  */
 
 // Initialize configuration file
@@ -51,18 +51,8 @@ $service = new FBAInboundServiceMWS_Client(
        APPLICATION_VERSION,
        $config);
 
-/************************************************************************
- * Setup request parameters and uncomment invoke to try out
- * sample for Get Prep Instructions For SKU Action
- ***********************************************************************/
-// Create request. Action can be passed as FBAInboundServiceMWS_Model_GetPrepInstructionsForSKU
-// $request = new FBAInboundServiceMWS_Model_GetPrepInstructionsForSKURequest($parameters);
-
 /**
-  * Get Get Prep Instructions For SKU Action Sample
-  * Gets competitive pricing and related information for a product identified by
-  * the MarketplaceId and ASIN.
-  *
+  * Get Prep Instructions For SKU Action 
   * @param FBAInboundServiceMWS_Interface $service instance of FBAInboundServiceMWS_Interface
   * @param mixed $request FBAInboundServiceMWS_Model_GetPrepInstructionsForSKU or array of parameters
   */
