@@ -1,12 +1,10 @@
 <?php
-
 /***********************************************************
  * BlackwrapPricing.php queries the database and creates an
  * array containing prices for items in the order.
  **********************************************************/
 // Increase max runtime to 5 minutes - the max time allowed by Apache
 ini_set('max_execution_time', 300);
-
 require_once('GetMatchingProductForId.php');
 $requestId = $request;
 unset($request);
@@ -17,10 +15,8 @@ require_once('ListMatchingProducts.php');
 $requestMatch = $request;
 unset($request);
 require_once('GetMyFeesEstimate.php');
-
 // Load XML file.
 $url = "https://script.google.com/macros/s/AKfycbwFxIlDhKpBIkJywpzz9iSbkWeO50EXLS5Oj7xS7IYzCoK-jxND/exec";
-
 // Parse data from XML into an array.
 $itemsXML = file_get_contents($url);
 $items = new SimpleXMLElement($itemsXML);
@@ -44,25 +40,20 @@ foreach ($items->item as $key => $item) {
         "ASIN"=>(string)$item->ASIN
     );
 }
-
 // Set throttling parameters to zero.
 $requestCount = 0;
 $priceCount = 0;
-
 // Pass item array to Amazon and cache ASIN.
 foreach($itemArray as $key => &$item) {
     // Stop current loop iteration if no ASIN set.
     if ($item["ASIN"] == "") {continue;}
     $requestCount++;
-
     // Set the ID and ID type to be converted to an ASIN.
     $requestId->setIdType('ASIN');
     $asinObject = new MarketplaceWebServiceProducts_Model_IdListType();
     $asinObject->setId($item["ASIN"]);
     $requestId->setIdList($asinObject);
-
     $xmlId = invokeGetMatchingProductForId($service, $requestId);
-
     // Parse the XML response
     $asins = new SimpleXMLElement($xmlId);    
     $ns = $asins->GetNamespaces(true);
@@ -88,7 +79,6 @@ foreach($itemArray as $key => &$item) {
     $priceObject->setASIN($item["ASIN"]);
     $requestPrice->setASINList($priceObject);
     $priceCount++;
-
     // Query Amazon and store returned information.
     $xmlPrice = invokeGetLowestOfferListingsForASIN($service, $requestPrice);
     $price = new SimpleXMLElement($xmlPrice);
@@ -99,7 +89,6 @@ foreach($itemArray as $key => &$item) {
         $item["FulfilledBy"] = (string)$listing->Qualifiers->FulfullmentChannel;
         break;
     }
-
     // Sleep for required time to avoid throttling.
     $price_end = microtime(true);
     if ($priceCount > 19 && ($price_end - $price_start) < 200000) {
@@ -119,7 +108,6 @@ foreach($itemArray as $key => &$item) {
         ),
         'Points' => array('PointsNumber' => '0')
     );
-
     $parameters = array(
         'FeesEstimateRequestList' => array(
             'FeesEstimateRequest' => array(
@@ -135,13 +123,11 @@ foreach($itemArray as $key => &$item) {
         ),
         'SellerId' => MERCHANT_ID
     );
-
     // Call GetMyFeesEstimate and cache result as xml element
     $requestFees = new MarketplaceWebServiceProducts_Model_GetMyFeesEstimateRequest($parameters);
     $xmlFees = invokeGetMyFeesEstimate($service, $requestFees);
     $fees = new SimpleXMLElement($xmlFees);
     $fee = $fees->GetMyFeesEstimateResult->FeesEstimateResultList->FeesEstimateResult;
-
     if ((string)$fee->Status == "Success") {
        $item["Fees"] = $fee->FeesEstimate->TotalFeesEstimate->Amount; 
     }
@@ -149,7 +135,5 @@ foreach($itemArray as $key => &$item) {
     $itemJSON = json_encode($itemArray);
     file_put_contents("blackwrap.json", $itemJSON);
 }
-
-
 echo "Success! blackwrap.json has been created. Run 'Import Price Estimates' to import blackwrap item prices.";
 ?>
