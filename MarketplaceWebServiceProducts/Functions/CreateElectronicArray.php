@@ -12,7 +12,7 @@ require_once('SetItemPrice.php');
 require_once('GetMatchingProductForId.php');
 $requestId = $request;
 unset($request);
-require_once('GetLowestOfferListingsForASIN.php')
+require_once('GetLowestOfferListingsForASIN.php');
 $requestPrice = $request;
 unset($request);
 require_once('ListMatchingProducts.php');
