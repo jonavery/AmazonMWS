@@ -18,7 +18,7 @@
  */
 
 /**
- * List Inbound Shipments By Next Token Sample
+ * List Inbound Shipments by Next Token
  */
 
 require_once('.config.inc.php');
@@ -50,12 +50,11 @@ $config = array (
         APPLICATION_VERSION,
         $config);
 
-/**
-  * Get List Inbound Shipments By Next Token Action Sample
-  *
+/**********************************************************************************************************
+  * Get List Inbound Shipments By Next Token Action 
   * @param FBAInboundServiceMWS_Interface $service instance of FBAInboundServiceMWS_Interface
   * @param mixed $request FBAInboundServiceMWS_Model_ListInboundShipmentsByNextToken or array of parameters
-  */
+**********************************************************************************************************/
 
   function invokeListInboundShipmentsByNextToken(FBAInboundServiceMWS_Interface $service, $request)
   {
