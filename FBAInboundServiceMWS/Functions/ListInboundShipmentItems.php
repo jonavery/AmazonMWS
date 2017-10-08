@@ -18,7 +18,7 @@
  */
 
 /**
- * List Inbound Shipment Items Sample
+ * List Inbound Shipment Items 
  */
 
 require_once('.config.inc.php');
@@ -33,7 +33,6 @@ require_once('.config.inc.php');
 // More endpoints are listed in the MWS Developer Guide
 // North America:
 $serviceUrl = "https://mws.amazonservices.com/FulfillmentInboundShipment/2010-10-01";
-
 
  $config = array (
    'ServiceURL' => $serviceUrl,
@@ -52,8 +51,7 @@ $serviceUrl = "https://mws.amazonservices.com/FulfillmentInboundShipment/2010-10
         $config);
 
 /**
-  * Get List Inbound Shipment Items Action Sample
-  *
+  * Get List Inbound Shipment Items Action 
   * @param FBAInboundServiceMWS_Interface $service instance of FBAInboundServiceMWS_Interface
   * @param mixed $request FBAInboundServiceMWS_Model_ListInboundShipmentItems or array of parameters
   */
