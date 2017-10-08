@@ -18,7 +18,7 @@
  */
 
 /**
- * Get Transport Content
+ * Get Transport Content current inbound inshipment
  */
 
 require_once(__DIR__ . '/.config.inc.php');
@@ -33,13 +33,6 @@ require_once(__DIR__ . '/.config.inc.php');
 // More endpoints are listed in the MWS Developer Guide
 // North America:
 $serviceUrl = "https://mws.amazonservices.com/FulfillmentInboundShipment/2010-10-01";
-// Europe
-//$serviceUrl = "https://mws-eu.amazonservices.com/FulfillmentInboundShipment/2010-10-01";
-// Japan
-//$serviceUrl = "https://mws.amazonservices.jp/FulfillmentInboundShipment/2010-10-01";
-// China
-//$serviceUrl = "https://mws.amazonservices.com.cn/FulfillmentInboundShipment/2010-10-01";
-
 
  $config = array (
    'ServiceURL' => $serviceUrl,
@@ -57,17 +50,8 @@ $serviceUrl = "https://mws.amazonservices.com/FulfillmentInboundShipment/2010-10
         APPLICATION_VERSION,
         $config);
 
-/************************************************************************
- * Setup request parameters and uncomment invoke to try out
- * sample for Get Transport Content Action
- ***********************************************************************/
-// @TODO: set request. Action can be passed as FBAInboundServiceMWS_Model_GetTransportContent
-
 /**
-  * Get Get Transport Content Action Sample
-  * Gets competitive pricing and related information for a product identified by
-  * the MarketplaceId and ASIN.
-  *
+  * Get Get Transport Content Action 
   * @param FBAInboundServiceMWS_Interface $service instance of FBAInboundServiceMWS_Interface
   * @param mixed $request FBAInboundServiceMWS_Model_GetTransportContent or array of parameters
   */
