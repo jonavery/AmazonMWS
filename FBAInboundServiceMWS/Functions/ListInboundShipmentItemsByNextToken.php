@@ -18,7 +18,7 @@
  */
 
 /**
- * List Inbound Shipment Items By Next Token Sample
+ * List Inbound Shipment Items By Next Token 
  */
 
 require_once('.config.inc.php');
@@ -52,10 +52,7 @@ $serviceUrl = "https://mws.amazonservices.com/FulfillmentInboundShipment/2010-10
         $config);
 
 /**
-  * Get List Inbound Shipment Items By Next Token Action Sample
-  * Gets competitive pricing and related information for a product identified by
-  * the MarketplaceId and ASIN.
-  *
+  * Get List Inbound Shipment Items By Next Token Action 
   * @param FBAInboundServiceMWS_Interface $service instance of FBAInboundServiceMWS_Interface
   * @param mixed $request FBAInboundServiceMWS_Model_ListInboundShipmentItemsByNextToken or array of parameters
   */
