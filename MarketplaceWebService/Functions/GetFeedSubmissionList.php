@@ -17,19 +17,11 @@
  */
 
 /**
- * Get Feed Submission List  Sample
+ * Get Feed Submission List  
  */
 
 require_once (__DIR__ . '/../../FBAInboundServiceMWS/Functions/.config.inc.php'); 
 
-/************************************************************************
-* Uncomment to configure the client instance. Configuration settings
-* are:
-*
-* - MWS endpoint URL
-* - Proxy host and port.
-* - MaxErrorRetry.
-***********************************************************************/
 // IMPORTANT: Uncomment the approiate line for the country you wish to
 // sell in:
 // United States:
@@ -56,13 +48,6 @@ $config = array (
      APPLICATION_NAME,
      APPLICATION_VERSION);
  
-/************************************************************************
- * Setup request parameters and uncomment invoke to try out 
- * sample for Get Feed Submission List Action
- ***********************************************************************/
- // @TODO: set request. Action can be passed as MarketplaceWebService_Model_GetFeedSubmissionListRequest
- // object or array of parameters
- 
 define('DATE_FORMAT', 'Y-m-d H:i:s T');
 
 $parameters = array (
@@ -86,7 +71,7 @@ invokeGetFeedSubmissionList($service, $request);
 
                                                                             
 /**
-  * Get Feed Submission List Action Sample
+  * Get Feed Submission List Action
   * returns a list of feed submission identifiers and their associated metadata
   *   
   * @param MarketplaceWebService_Interface $service instance of MarketplaceWebService_Interface
