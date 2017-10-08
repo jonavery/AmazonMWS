@@ -46,17 +46,20 @@ $stmt = $db->prepare("
 ");
 $stmt->execute($asinArray);
 $asinPDOS = $stmt->fetchAll(PDO::FETCH_COLUMN,0);
-print_r($asinPDOS);
-exit;
 
+// Compute difference between Google DB and MySQL.
+$diff = array_diff($asinArray, $asinPDOS);
+
+// Prepare new ASINs to be inserted into MySQL.
+$valueArray = array_intersect_key($googleArray, $diff);
 
 echo "Comparing ASINs in MySQL to those in GoogleDB... \n";
 // Insert all ASINs not in prices table.
-// $stmt = $db->prepare('
-//     INSERT INTO prices (Title, ASIN, AERdesignation, SalePrice, FeeTotal, NetProfit, SaleRank)
-//     VALUES (?)
-// ');
-// $stmt->execute($asinRow);
+$stmt = $db->prepare("
+    INSERT INTO prices (Title, ASIN, AERdesignation, SalePrice, FeeTotal, NetProfit, SaleRank)
+    VALUES (?)
+");
+$stmt->execute($asinRow);
 
 
 
