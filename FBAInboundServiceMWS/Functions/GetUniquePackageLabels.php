@@ -33,13 +33,6 @@ require_once(__DIR__ . '/.config.inc.php');
 // More endpoints are listed in the MWS Developer Guide
 // North America:
 $serviceUrl = "https://mws.amazonservices.com/FulfillmentInboundShipment/2010-10-01";
-// Europe
-//$serviceUrl = "https://mws-eu.amazonservices.com/FulfillmentInboundShipment/2010-10-01";
-// Japan
-//$serviceUrl = "https://mws.amazonservices.jp/FulfillmentInboundShipment/2010-10-01";
-// China
-//$serviceUrl = "https://mws.amazonservices.com.cn/FulfillmentInboundShipment/2010-10-01";
-
 
 $config = array (
   'ServiceURL' => $serviceUrl,
@@ -59,9 +52,6 @@ $service = new FBAInboundServiceMWS_Client(
 
 /**
   * Get Get Unique Package Labels Action
-  * Gets competitive pricing and related information for a product identified by
-  * the MarketplaceId and ASIN.
-  *
   * @param FBAInboundServiceMWS_Interface $service instance of FBAInboundServiceMWS_Interface
   * @param mixed $request FBAInboundServiceMWS_Model_GetUniquePackageLabels or array of parameters
   */
