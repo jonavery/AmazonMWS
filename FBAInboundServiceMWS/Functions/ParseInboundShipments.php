@@ -178,7 +178,6 @@ foreach($shipmentArray as $key => &$shipment) {
         $requestItemToken = new FBAInboundServiceMWS_Model_ListInboundShipmentItemsByNextTokenRequest($parameters);
         unset($parameters);
 
-
         // Sleep for required time to avoid throttling.
         $end = microtime(true);
         if (($end - $start) < 500000) {
