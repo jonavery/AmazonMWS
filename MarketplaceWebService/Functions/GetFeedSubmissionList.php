@@ -15,17 +15,10 @@
  * 
  */
 /**
- * Get Feed Submission List  Sample
+ * Returns a list of all feed submissions submitted in the previous 90 days.  
  */
 include_once ('.config.inc.php'); 
-/************************************************************************
-* Uncomment to configure the client instance. Configuration settings
-* are:
-*
-* - MWS endpoint URL
-* - Proxy host and port.
-* - MaxErrorRetry.
-***********************************************************************/
+
 // IMPORTANT: Uncomment the appropriate line for the country you wish to
 // sell in:
 // United States:
@@ -52,7 +45,7 @@ $config = array (
  
                                                                             
 /**
-  * Get Feed Submission List Action Sample
+  * Get Feed Submission List Action 
   * returns a list of feed submission identifiers and their associated metadata
   *   
   * @param MarketplaceWebService_Interface $service instance of MarketplaceWebService_Interface
