@@ -470,7 +470,7 @@ foreach ($itemShip->Message as $message) {
     $requestCount++;
     $label = new SimpleXMLElement($xmlLabel);
 
-    // Retrive pdf label from xml as a base64-encoded data string
+    // Retrieve pdf label from xml as a base64-encoded data string
     $label64 = $label->GetUniquePackageLabelsResult->TransportDocument->PdfDocument; 
     // Get file content from txt file
     $pdf_base64_handler = fopen($label64, 'r');
