@@ -18,14 +18,7 @@
  * Submit Feed
  */
 require_once (__DIR__ . '/../../FBAInboundServiceMWS/Functions/.config.inc.php'); 
-/************************************************************************
-* Uncomment to configure the client instance. Configuration settings
-* are:
-*
-* - MWS endpoint URL
-* - Proxy host and port.
-* - MaxErrorRetry.
-***********************************************************************/
+
 // IMPORTANT: Uncomment the approiate line for the country you wish to
 // sell in:
 // United States:
@@ -50,16 +43,11 @@ $config = array (
      APPLICATION_NAME,
      APPLICATION_VERSION);
  
-/************************************************************************
- * Setup request parameters and uncomment invoke to try out 
- * sample for Submit Feed Action
- ***********************************************************************/
- // @TODO: set request. Action can be passed as MarketplaceWebService_Model_SubmitFeedRequest
- // object or array of parameters
 // Note that PHP memory streams have a default limit of 2M before switching to disk. While you
 // can set the limit higher to accomodate your feed in memory, it's recommended that you store
 // your feed on disk and use traditional file streams to submit your feeds. For conciseness, this
 // example uses a memory stream.
+
 function makeRequest($feed) {
     $marketplaceIdArray = array("Id" => array(MARKETPLACE_ID));
     $feedHandle = @fopen('php://memory', 'rw+');
@@ -78,7 +66,7 @@ function makeRequest($feed) {
 }
                                         
 /**
-  * Submit Feed Action Sample
+  * Submit Feed Action
   * Uploads a file for processing together with the necessary
   * metadata to process the file, such as which type of feed it is.
   * PurgeAndReplace if true means that your existing e.g. inventory is
