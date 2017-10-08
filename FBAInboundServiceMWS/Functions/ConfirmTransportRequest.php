@@ -1,6 +1,6 @@
 <?php
 /*******************************************************************************
- * Copyright 2009-2016 Amazon Services. All Rights Reserved.
+ * Copyright 2009-2017 Amazon Services. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License"); 
  *
  * You may not use this file except in compliance with the License. 
@@ -18,7 +18,7 @@
  */
 
 /**
- * Confirm Transport Request Sample
+ * Acceptance of shipping costs estimate and ship your inbound shipment.
  */
 
 require_once(__DIR__ . '/.config.inc.php');
@@ -33,13 +33,6 @@ require_once(__DIR__ . '/.config.inc.php');
 // More endpoints are listed in the MWS Developer Guide
 // North America:
 $serviceUrl = "https://mws.amazonservices.com/FulfillmentInboundShipment/2010-10-01";
-// Europe
-//$serviceUrl = "https://mws-eu.amazonservices.com/FulfillmentInboundShipment/2010-10-01";
-// Japan
-//$serviceUrl = "https://mws.amazonservices.jp/FulfillmentInboundShipment/2010-10-01";
-// China
-//$serviceUrl = "https://mws.amazonservices.com.cn/FulfillmentInboundShipment/2010-10-01";
-
 
  $config = array (
    'ServiceURL' => $serviceUrl,
@@ -57,14 +50,11 @@ $serviceUrl = "https://mws.amazonservices.com/FulfillmentInboundShipment/2010-10
         APPLICATION_VERSION,
         $config);
 
-/**
-  * Get Confirm Transport Request Action Sample
-  * Gets competitive pricing and related information for a product identified by
-  * the MarketplaceId and ASIN.
-  *
+/***********************************************************************
+  * Acceptenace of shipping costs estimate and ship your inbound shipment.
   * @param FBAInboundServiceMWS_Interface $service instance of FBAInboundServiceMWS_Interface
   * @param mixed $request FBAInboundServiceMWS_Model_ConfirmTransportRequest or array of parameters
-  */
+************************************************************************/
 
   function invokeConfirmTransportRequest(FBAInboundServiceMWS_Interface $service, $request)
   {
