@@ -18,7 +18,7 @@
  */
 
 /**
- * Get Bill Of Lading Sample
+ * Get Bill Of Lading for inbound shipment
  */
 
 require_once('.config.inc.php');
@@ -32,14 +32,7 @@ require_once('.config.inc.php');
  ***********************************************************************/
 // More endpoints are listed in the MWS Developer Guide
 // North America:
-//$serviceUrl = "https://mws.amazonservices.com/FulfillmentInboundShipment/2010-10-01";
-// Europe
-//$serviceUrl = "https://mws-eu.amazonservices.com/FulfillmentInboundShipment/2010-10-01";
-// Japan
-//$serviceUrl = "https://mws.amazonservices.jp/FulfillmentInboundShipment/2010-10-01";
-// China
-//$serviceUrl = "https://mws.amazonservices.com.cn/FulfillmentInboundShipment/2010-10-01";
-
+$serviceUrl = "https://mws.amazonservices.com/FulfillmentInboundShipment/2010-10-01";
 
  $config = array (
    'ServiceURL' => $serviceUrl,
@@ -56,34 +49,14 @@ require_once('.config.inc.php');
         APPLICATION_NAME,
         APPLICATION_VERSION,
         $config);
-
-/************************************************************************
- * Uncomment to try out Mock Service that simulates FBAInboundServiceMWS
- * responses without calling FBAInboundServiceMWS service.
- *
- * Responses are loaded from local XML files. You can tweak XML files to
- * experiment with various outputs during development
- *
- * XML files available under FBAInboundServiceMWS/Mock tree
- *
- ***********************************************************************/
- // $service = new FBAInboundServiceMWS_Mock();
-
-/************************************************************************
- * Setup request parameters and uncomment invoke to try out
- * sample for Get Bill Of Lading Action
- ***********************************************************************/
- // @TODO: set request. Action can be passed as FBAInboundServiceMWS_Model_GetBillOfLading
+ 
  $request = new FBAInboundServiceMWS_Model_GetBillOfLadingRequest();
  $request->setSellerId(MERCHANT_ID);
  // object or array of parameters
  invokeGetBillOfLading($service, $request);
 
 /**
-  * Get Get Bill Of Lading Action Sample
-  * Gets competitive pricing and related information for a product identified by
-  * the MarketplaceId and ASIN.
-  *
+  * Get Get Bill Of Lading Action
   * @param FBAInboundServiceMWS_Interface $service instance of FBAInboundServiceMWS_Interface
   * @param mixed $request FBAInboundServiceMWS_Model_GetBillOfLading or array of parameters
   */
@@ -92,9 +65,6 @@ require_once('.config.inc.php');
   {
       try {
         $response = $service->GetBillOfLading($request);
-
-        echo ("Service Response\n");
-        echo ("=============================================================================\n");
 
         $dom = new DOMDocument();
         $dom->loadXML($response->toXML());
