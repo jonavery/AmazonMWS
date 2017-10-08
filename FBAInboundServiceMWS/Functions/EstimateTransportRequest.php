@@ -18,7 +18,7 @@
  */
 
 /**
- * Estimate Transport Request Sample
+ * Start the request for the estimation of the shipping costs  
  */
 
 require_once(__DIR__ . '/.config.inc.php');
@@ -33,13 +33,6 @@ require_once(__DIR__ . '/.config.inc.php');
 // More endpoints are listed in the MWS Developer Guide
 // North America:
 $serviceUrl = "https://mws.amazonservices.com/FulfillmentInboundShipment/2010-10-01";
-// Europe
-//$serviceUrl = "https://mws-eu.amazonservices.com/FulfillmentInboundShipment/2010-10-01";
-// Japan
-//$serviceUrl = "https://mws.amazonservices.jp/FulfillmentInboundShipment/2010-10-01";
-// China
-//$serviceUrl = "https://mws.amazonservices.com.cn/FulfillmentInboundShipment/2010-10-01";
-
 
  $config = array (
    'ServiceURL' => $serviceUrl,
@@ -58,10 +51,7 @@ $serviceUrl = "https://mws.amazonservices.com/FulfillmentInboundShipment/2010-10
         $config);
 
 /**
-  * Get Estimate Transport Request Action Sample
-  * Gets competitive pricing and related information for a product identified by
-  * the MarketplaceId and ASIN.
-  *
+  * Get Estimate Transport Request Action 
   * @param FBAInboundServiceMWS_Interface $service instance of FBAInboundServiceMWS_Interface
   * @param mixed $request FBAInboundServiceMWS_Model_EstimateTransportRequest or array of parameters
   */
@@ -71,7 +61,7 @@ $serviceUrl = "https://mws.amazonservices.com/FulfillmentInboundShipment/2010-10
       try {
         $response = $service->EstimateTransportRequest($request);
 
-        $dom = new DOMDocument();
+  	$dom = new DOMDocument();
         $dom->loadXML($response->toXML());
         $dom->preserveWhiteSpace = false;
         $dom->formatOutput = true;
