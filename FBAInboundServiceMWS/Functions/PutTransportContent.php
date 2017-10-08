@@ -18,7 +18,7 @@
  */
 
 /**
- * Put Transport Content Sample
+ * Sends transportation information to Amazon regarding inbound shipment
  */
 
 // Initialize configuration file
@@ -34,13 +34,6 @@ require_once(__DIR__ . '/../../MarketplaceWebService/Functions/.config.inc.php')
 // More endpoints are listed in the MWS Developer Guide
 // North America:
 $serviceUrl = "https://mws.amazonservices.com/FulfillmentInboundShipment/2010-10-01";
-// Europe
-//$serviceUrl = "https://mws-eu.amazonservices.com/FulfillmentInboundShipment/2010-10-01";
-// Japan
-//$serviceUrl = "https://mws.amazonservices.jp/FulfillmentInboundShipment/2010-10-01";
-// China
-//$serviceUrl = "https://mws.amazonservices.com.cn/FulfillmentInboundShipment/2010-10-01";
-
 
  $config = array (
    'ServiceURL' => $serviceUrl,
@@ -58,19 +51,11 @@ $serviceUrl = "https://mws.amazonservices.com/FulfillmentInboundShipment/2010-10
         APPLICATION_VERSION,
         $config);
 
-/************************************************************************
- * Setup request parameters and uncomment invoke to try out
- * sample for Put Transport Content Action
- ***********************************************************************/
-
-/**
-  * Get Put Transport Content Action Sample
-  * Gets competitive pricing and related information for a product identified by
-  * the MarketplaceId and ASIN.
-  *
+/********************************************************************************
+  * Get Put Transport Content Action 
   * @param FBAInboundServiceMWS_Interface $service instance of FBAInboundServiceMWS_Interface
   * @param mixed $request FBAInboundServiceMWS_Model_PutTransportContent or array of parameters
-  */
+********************************************************************************/
 
  function invokePutTransportContent(FBAInboundServiceMWS_Interface $service, $request)
  {
