@@ -20,7 +20,7 @@
  * Get Feed Submission List  Sample
  */
 
-require_once (__DIR__ . '/../../FBAInboundServiceMWS/Functions/.config.inc.php'); 
+include_once ('.config.inc.php'); 
 
 /************************************************************************
 * Uncomment to configure the client instance. Configuration settings
@@ -30,7 +30,7 @@ require_once (__DIR__ . '/../../FBAInboundServiceMWS/Functions/.config.inc.php')
 * - Proxy host and port.
 * - MaxErrorRetry.
 ***********************************************************************/
-// IMPORTANT: Uncomment the approiate line for the country you wish to
+// IMPORTANT: Uncomment the appropriate line for the country you wish to
 // sell in:
 // United States:
 $serviceUrl = "https://mws.amazonservices.com";
@@ -56,34 +56,6 @@ $config = array (
      APPLICATION_NAME,
      APPLICATION_VERSION);
  
-/************************************************************************
- * Setup request parameters and uncomment invoke to try out 
- * sample for Get Feed Submission List Action
- ***********************************************************************/
- // @TODO: set request. Action can be passed as MarketplaceWebService_Model_GetFeedSubmissionListRequest
- // object or array of parameters
- 
-define('DATE_FORMAT', 'Y-m-d H:i:s T');
-
-$parameters = array (
-    'Merchant' => MERCHANT_ID,
-    'MWSAuthToken' => MWS_AUTH_TOKEN,
-    'SubmittedFromDate' => date('Y-m-d'),
-    'SubmittedToDate' => date('Y-m-d', mktime(0, 0, 0, date("m"), date("d")+1,   date("Y")))
-);
-
-$request = new MarketplaceWebService_Model_GetFeedSubmissionListRequest($parameters);
-
-// $request = new MarketplaceWebService_Model_GetFeedSubmissionListRequest();
-// $request->setMerchant(MERCHANT_ID);
-// $request->setMWSAuthToken('<MWS Auth Token>'); // Optional
-// 
-// $typeList = new MarketplaceWebService_Model_TypeList();
-// $request->setFeedTypeList($typeList->withType('_SUBMITTED_'));
-
-
-invokeGetFeedSubmissionList($service, $request);
-
                                                                             
 /**
   * Get Feed Submission List Action Sample
