@@ -57,13 +57,11 @@ echo "Comparing ASINs in MySQL to those in GoogleDB... \n";
 // Insert all ASINs not in prices table.
 $stmt = $db->prepare("
     INSERT INTO prices (Title, ASIN, AERdesignation, SalePrice, FeeTotal, NetProfit, SaleRank)
-    VALUES (?)
+    VALUES (?,?,?,?,?,?,?)
 ");
-$stmt->execute($asinRow);
-
-
-
-// Run info through algorithm to set pricing.
+foreach($valueArray as $row) {
+    $stmt->execute($row);
+}
 
 echo "Database update complete.";
 
