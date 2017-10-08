@@ -10,30 +10,32 @@
  *  @version     2009-01-01
  */
 /******************************************************************************* 
-
  *  Marketplace Web Service PHP5 Library
  *  Generated: Thu May 07 13:07:36 PDT 2009
  * 
  */
-
 /**
- * Get Feed Submission List  
+ * Get Feed Submission List  Sample
  */
-
-require_once (__DIR__ . '/../../FBAInboundServiceMWS/Functions/.config.inc.php'); 
-
-// IMPORTANT: Uncomment the approiate line for the country you wish to
+include_once ('.config.inc.php'); 
+/************************************************************************
+* Uncomment to configure the client instance. Configuration settings
+* are:
+*
+* - MWS endpoint URL
+* - Proxy host and port.
+* - MaxErrorRetry.
+***********************************************************************/
+// IMPORTANT: Uncomment the appropriate line for the country you wish to
 // sell in:
 // United States:
 $serviceUrl = "https://mws.amazonservices.com";
-
 $config = array (
   'ServiceURL' => $serviceUrl,
   'ProxyHost' => null,
   'ProxyPort' => -1,
   'MaxErrorRetry' => 3,
 );
-
 /************************************************************************
  * Instantiate Implementation of MarketplaceWebService
  * 
@@ -48,30 +50,9 @@ $config = array (
      APPLICATION_NAME,
      APPLICATION_VERSION);
  
-define('DATE_FORMAT', 'Y-m-d H:i:s T');
-
-$parameters = array (
-    'Merchant' => MERCHANT_ID,
-    'MWSAuthToken' => MWS_AUTH_TOKEN,
-    'SubmittedFromDate' => date('Y-m-d'),
-    'SubmittedToDate' => date('Y-m-d', mktime(0, 0, 0, date("m"), date("d")+1,   date("Y")))
-);
-
-$request = new MarketplaceWebService_Model_GetFeedSubmissionListRequest($parameters);
-
-// $request = new MarketplaceWebService_Model_GetFeedSubmissionListRequest();
-// $request->setMerchant(MERCHANT_ID);
-// $request->setMWSAuthToken('<MWS Auth Token>'); // Optional
-// 
-// $typeList = new MarketplaceWebService_Model_TypeList();
-// $request->setFeedTypeList($typeList->withType('_SUBMITTED_'));
-
-
-invokeGetFeedSubmissionList($service, $request);
-
                                                                             
 /**
-  * Get Feed Submission List Action
+  * Get Feed Submission List Action Sample
   * returns a list of feed submission identifiers and their associated metadata
   *   
   * @param MarketplaceWebService_Interface $service instance of MarketplaceWebService_Interface
@@ -84,7 +65,6 @@ invokeGetFeedSubmissionList($service, $request);
               
                 echo ("Service Response\n");
                 echo ("=============================================================================\n");
-
                 echo("        GetFeedSubmissionListResponse\n");
                 if ($response->isSetGetFeedSubmissionListResult()) { 
                     echo("            GetFeedSubmissionListResult\n");
@@ -143,7 +123,6 @@ invokeGetFeedSubmissionList($service, $request);
                         echo("                    " . $responseMetadata->getRequestId() . "\n");
                     }
                 } 
-
                 echo("            ResponseHeaderMetadata: " . $response->getResponseHeaderMetadata() . "\n");
      } catch (MarketplaceWebService_Exception $ex) {
          echo("Caught Exception: " . $ex->getMessage() . "\n");
@@ -155,4 +134,3 @@ invokeGetFeedSubmissionList($service, $request);
          echo("ResponseHeaderMetadata: " . $ex->getResponseHeaderMetadata() . "\n");
      }
  }
-                            

@@ -10,30 +10,32 @@
  *  @version     2009-01-01
  */
 /******************************************************************************* 
-
  *  Marketplace Web Service PHP5 Library
  *  Generated: Thu May 07 13:07:36 PDT 2009
  * 
  */
-
 /**
  * Submit Feed
  */
-
 require_once (__DIR__ . '/../../FBAInboundServiceMWS/Functions/.config.inc.php'); 
-
+/************************************************************************
+* Uncomment to configure the client instance. Configuration settings
+* are:
+*
+* - MWS endpoint URL
+* - Proxy host and port.
+* - MaxErrorRetry.
+***********************************************************************/
 // IMPORTANT: Uncomment the approiate line for the country you wish to
 // sell in:
 // United States:
 $serviceUrl = "https://mws.amazonservices.com";
-
 $config = array (
   'ServiceURL' => $serviceUrl,
   'ProxyHost' => null,
   'ProxyPort' => -1,
   'MaxErrorRetry' => 3,
 );
-
 /************************************************************************
  * Instantiate Implementation of MarketplaceWebService
  * 
@@ -48,18 +50,21 @@ $config = array (
      APPLICATION_NAME,
      APPLICATION_VERSION);
  
+/************************************************************************
+ * Setup request parameters and uncomment invoke to try out 
+ * sample for Submit Feed Action
+ ***********************************************************************/
+ // @TODO: set request. Action can be passed as MarketplaceWebService_Model_SubmitFeedRequest
+ // object or array of parameters
 // Note that PHP memory streams have a default limit of 2M before switching to disk. While you
 // can set the limit higher to accomodate your feed in memory, it's recommended that you store
 // your feed on disk and use traditional file streams to submit your feeds. For conciseness, this
 // example uses a memory stream.
-
 function makeRequest($feed) {
     $marketplaceIdArray = array("Id" => array(MARKETPLACE_ID));
-
     $feedHandle = @fopen('php://memory', 'rw+');
     fwrite($feedHandle, $feed);
     rewind($feedHandle);
-
     $request = new MarketplaceWebService_Model_SubmitFeedRequest();
     $request->setMerchant(MERCHANT_ID);
     $request->setMarketplaceIdList($marketplaceIdArray);
@@ -68,13 +73,12 @@ function makeRequest($feed) {
     $request->setPurgeAndReplace(false);
     $request->setFeedContent($feedHandle);
     $request->setMWSAuthToken(MWS_AUTH_TOKEN);
-
     rewind($feedHandle);
     return $request;
 }
                                         
 /**
-  * Submit Feed Action
+  * Submit Feed Action Sample
   * Uploads a file for processing together with the necessary
   * metadata to process the file, such as which type of feed it is.
   * PurgeAndReplace if true means that your existing e.g. inventory is
@@ -91,7 +95,6 @@ function makeRequest($feed) {
               
                 echo ("Service Response\n");
                 echo ("=============================================================================\n");
-
                 echo("        SubmitFeedResponse\n");
                 if ($response->isSetSubmitFeedResult()) { 
                     echo("            SubmitFeedResult\n");
@@ -140,7 +143,6 @@ function makeRequest($feed) {
                         echo("                    " . $responseMetadata->getRequestId() . "\n");
                     }
                 } 
-
                 echo("            ResponseHeaderMetadata: " . $response->getResponseHeaderMetadata() . "\n");
      } catch (MarketplaceWebService_Exception $ex) {
          echo("Caught Exception: " . $ex->getMessage() . "\n");
@@ -151,6 +153,4 @@ function makeRequest($feed) {
          echo("XML: " . $ex->getXML() . "\n");
          echo("ResponseHeaderMetadata: " . $ex->getResponseHeaderMetadata() . "\n");
      }
-
  }
-                                                                
