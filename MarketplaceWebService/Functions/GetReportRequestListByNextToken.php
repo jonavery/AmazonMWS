@@ -13,43 +13,18 @@
 
  *  Marketplace Web Service PHP5 Library
  *  Generated: Thu May 07 13:07:36 PDT 2009
- * 
  */
 
 /**
- * Get Report List  Sample
+ * Get Report List  
  */
 
 include_once ('.config.inc.php'); 
 
-/************************************************************************
-* Uncomment to configure the client instance. Configuration settings
-* are:
-*
-* - MWS endpoint URL
-* - Proxy host and port.
-* - MaxErrorRetry.
-***********************************************************************/
 // IMPORTANT: Uncomment the approiate line for the country you wish to
 // sell in:
 // United States:
 //$serviceUrl = "https://mws.amazonservices.com";
-// United Kingdom
-//$serviceUrl = "https://mws.amazonservices.co.uk";
-// Germany
-//$serviceUrl = "https://mws.amazonservices.de";
-// France
-//$serviceUrl = "https://mws.amazonservices.fr";
-// Italy
-//$serviceUrl = "https://mws.amazonservices.it";
-// Japan
-//$serviceUrl = "https://mws.amazonservices.jp";
-// China
-//$serviceUrl = "https://mws.amazonservices.com.cn";
-// Canada
-//$serviceUrl = "https://mws.amazonservices.ca";
-// India
-//$serviceUrl = "https://mws.amazonservices.in";
 
 $config = array (
   'ServiceURL' => $serviceUrl,
@@ -68,48 +43,14 @@ $config = array (
  $service = new MarketplaceWebService_Client(
      AWS_ACCESS_KEY_ID, 
      AWS_SECRET_ACCESS_KEY, 
-     $config,
+     APPLICATION_VERSION,
      APPLICATION_NAME,
-     APPLICATION_VERSION);
+     $config);
  
-/************************************************************************
- * Uncomment to try out Mock Service that simulates MarketplaceWebService
- * responses without calling MarketplaceWebService service.
- *
- * Responses are loaded from local XML files. You can tweak XML files to
- * experiment with various outputs during development
- *
- * XML files available under MarketplaceWebService/Mock tree
- *
- ***********************************************************************/
- // $service = new MarketplaceWebService_Mock();
-
-/************************************************************************
- * Setup request parameters and uncomment invoke to try out 
- * sample for Get Report List Action
- ***********************************************************************/
- // @TODO: set request. Action can be passed as MarketplaceWebService_Model_GetReportListRequest
- // object or array of parameters
- 
-// $nextToken = '<The NextToken returned by GetReportRequestList>';
-     
-// $parameters = array (
-//   'Merchant' => MERCHANT_ID,
-//   'NextToken' => $nextToken,
-//   'MWSAuthToken' => '<MWS Auth Token>', // Optional
-// );
-// $request = new MarketplaceWebService_Model_GetReportRequestListByNextTokenRequest($parameters);
- 
-// $request = new MarketplaceWebService_Model_GetReportRequestListByNextTokenRequest();
-// $request->setMerchant(MERCHANT_ID);
-// $request->setNextToken($nextToken);
-// $request->setMWSAuthToken('<MWS Auth Token>'); // Optional
-// 
 // invokeGetReportRequestListByNextToken($service, $request);
-
                                                                     
 /**
-  * Get Report Request List By Next Token Action Sample
+  * Get Report Request List By Next Token Action 
   * returns a list of reports; by default the most recent ten reports,
   * regardless of their acknowledgement status
   *   
