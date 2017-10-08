@@ -53,7 +53,7 @@ $serviceUrl = "https://mws.amazonservices.com/FulfillmentInboundShipment/2010-10
  /***********************************************************************
  * Confirms shipment for pre-order.  
  ***********************************************************************/
- // @TODO: set request. Action can be passed as FBAInboundServiceMWS_Model_ConfirmPreorder
+// Create request 
  $request = new FBAInboundServiceMWS_Model_ConfirmPreorderRequest();
  $request->setSellerId(MERCHANT_ID);
  // object or array of parameters
@@ -61,9 +61,6 @@ $serviceUrl = "https://mws.amazonservices.com/FulfillmentInboundShipment/2010-10
 
 /**
   * Get Confirm Preorder Action
-  * Gets competitive pricing and related information for a product identified by
-  * the MarketplaceId and ASIN.
-  *
   * @param FBAInboundServiceMWS_Interface $service instance of FBAInboundServiceMWS_Interface
   * @param mixed $request FBAInboundServiceMWS_Model_ConfirmPreorder or array of parameters
 */
