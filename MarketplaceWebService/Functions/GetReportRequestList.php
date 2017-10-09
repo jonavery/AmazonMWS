@@ -124,6 +124,10 @@ $config = array (
                         {
                             echo("                    GeneratedReportId\n");
                             echo("                        " . $reportRequestInfo->getGeneratedReportId() . "\n");
+                            if ($id == $reportRequestInfo->getReportRequestId()) 
+                            {
+                                $generatedId = $reportRequestInfo->getGeneratedReportId();
+                            }
                         }
                         if ($reportRequestInfo->isSetStartedProcessingDate()) 
                         {
@@ -153,7 +157,7 @@ $config = array (
                 } 
 
                 echo("            ResponseHeaderMetadata: " . $response->getResponseHeaderMetadata() . "\n");
-                return $status;
+                return array ($status, $generatedId);
      } catch (MarketplaceWebService_Exception $ex) {
          echo("Caught Exception: " . $ex->getMessage() . "\n");
          echo("Response Status Code: " . $ex->getStatusCode() . "\n");

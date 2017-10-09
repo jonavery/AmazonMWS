@@ -31,9 +31,17 @@ unset($parameters);
 $reportStatus = invokeGetReportRequestList($service, $requestStatus, $reportRequestId);
 
 // Continue to check status of report until it is finished.
-while ($reportStatus != '_DONE_') {
+while ($reportStatus[0] != '_DONE_') {
     echo "Waiting for Amazon to process report...\n";
     sleep(45);
     $reportStatus = invokeGetReportRequestList($service, $requestStatus, $reportRequestId);
+    print_r($reportStatus);
+    exit;
 }
 echo "\nReport complete!\n\n";
+
+$requestGetReport = new MarketplaceWebService_Model_GetReportRequest();
+$requestGetReport->setMerchant(MERCHANT_ID);
+$requestGetReport->setReportId($reportStatus[1]);
+
+invokeGetReport($service, $requestGetReport);

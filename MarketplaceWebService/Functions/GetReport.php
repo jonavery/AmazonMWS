@@ -48,8 +48,6 @@ $config = array (
      APPLICATION_NAME,
      APPLICATION_VERSION);
   
-invokeGetReport($service, $request);
-
 /**
   * Get Report Action
   * The GetReport operation returns the contents of a report. Reports can potentially be
