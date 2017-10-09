@@ -41,12 +41,12 @@ $config = array (
  * are defined in the .config.inc.php located in the same 
  * directory as this sample
  ***********************************************************************/
- $service = new MarketplaceWebService_Client(
-     AWS_ACCESS_KEY_ID, 
-     AWS_SECRET_ACCESS_KEY, 
-     APPLICATION_VERSION,
-     APPLICATION_NAME,
-     $config);
+$service = new MarketplaceWebService_Client(
+    AWS_ACCESS_KEY_ID, 
+    AWS_SECRET_ACCESS_KEY, 
+    $config,
+    APPLICATION_VERSION,
+    APPLICATION_NAME);
  
 // Constructing the MarketplaceId array which will be passed in as the the MarketplaceIdList 
 // parameter to the RequestReportRequest object.
