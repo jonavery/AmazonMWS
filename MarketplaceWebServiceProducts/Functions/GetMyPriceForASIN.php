@@ -18,7 +18,7 @@
  */
 
 /**
- * Get My Price For ASIN Sample
+ * Get My Price For ASIN 
  */
 
 require_once('.config.inc.php');
@@ -32,14 +32,7 @@ require_once('.config.inc.php');
  ***********************************************************************/
 // More endpoints are listed in the MWS Developer Guide
 // North America:
-//$serviceUrl = "https://mws.amazonservices.com/Products/2011-10-01";
-// Europe
-//$serviceUrl = "https://mws-eu.amazonservices.com/Products/2011-10-01";
-// Japan
-//$serviceUrl = "https://mws.amazonservices.jp/Products/2011-10-01";
-// China
-//$serviceUrl = "https://mws.amazonservices.com.cn/Products/2011-10-01";
-
+$serviceUrl = "https://mws.amazonservices.com/Products/2011-10-01";
 
  $config = array (
    'ServiceURL' => $serviceUrl,
@@ -80,7 +73,7 @@ require_once('.config.inc.php');
  invokeGetMyPriceForASIN($service, $request);
 
 /**
-  * Get Get My Price For ASIN Action Sample
+  * Get My Price For ASIN Action 
   * Gets competitive pricing and related information for a product identified by
   * the MarketplaceId and ASIN.
   *
