@@ -22,7 +22,7 @@
 
 include_once ('.config.inc.php'); 
 
-// IMPORTANT: Uncomment the approiate line for the country you wish to
+// IMPORTANT: Uncomment the appropriate line for the country you wish to
 // sell in:
 // United States:
 $serviceUrl = "https://mws.amazonservices.com";
@@ -50,9 +50,7 @@ $config = array (
  
 // Constructing the MarketplaceId array which will be passed in as the the MarketplaceIdList 
 // parameter to the RequestReportRequest object.
-$marketplaceIdArray = array("Id" => array('<Marketplace_Id_1>','<Marketplace_Id_2>'));
- 
- invokeRequestReport($service, $request);
+$marketplaceIdArray = array("Id" => array(MARKETPLACE_ID));
  
 /**
   * Get Report List Action 
@@ -122,6 +120,7 @@ $marketplaceIdArray = array("Id" => array('<Marketplace_Id_1>','<Marketplace_Id_
                 } 
 
                 echo("            ResponseHeaderMetadata: " . $response->getResponseHeaderMetadata() . "\n");
+                return $reportRequestInfo->getReportRequestId();
      } catch (MarketplaceWebService_Exception $ex) {
          echo("Caught Exception: " . $ex->getMessage() . "\n");
          echo("Response Status Code: " . $ex->getStatusCode() . "\n");
