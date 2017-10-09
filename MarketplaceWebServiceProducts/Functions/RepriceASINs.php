@@ -7,7 +7,6 @@
  * These prices are then updated in the database.
  **********************************************************/
 
-require_once('SetItemPrice.php');
 require_once('GetLowestOfferListingsForASIN.php');
 $requestPrice = $request;
 

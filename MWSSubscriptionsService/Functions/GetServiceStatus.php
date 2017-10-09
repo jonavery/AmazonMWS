@@ -18,7 +18,7 @@
  */
 
 /**
- * Get Service Status Sample
+ * Get Service Status 
  */
 
 require_once('.config.inc.php');
@@ -33,13 +33,6 @@ require_once('.config.inc.php');
 // More endpoints are listed in the MWS Developer Guide
 // North America:
 $serviceUrl = "https://mws.amazonservices.com/Subscriptions/2013-07-01";
-// Europe
-//$serviceUrl = "https://mws-eu.amazonservices.com/Subscriptions/2013-07-01";
-// Japan
-//$serviceUrl = "https://mws.amazonservices.jp/Subscriptions/2013-07-01";
-// China
-//$serviceUrl = "https://mws.amazonservices.com.cn/Subscriptions/2013-07-01";
-
 
  $config = array (
    'ServiceURL' => $serviceUrl,
@@ -57,32 +50,14 @@ $serviceUrl = "https://mws.amazonservices.com/Subscriptions/2013-07-01";
         APPLICATION_VERSION,
         $config);
 
-/************************************************************************
- * Uncomment to try out Mock Service that simulates MWSSubscriptionsService
- * responses without calling MWSSubscriptionsService service.
- *
- * Responses are loaded from local XML files. You can tweak XML files to
- * experiment with various outputs during development
- *
- * XML files available under MWSSubscriptionsService/Mock tree
- *
- ***********************************************************************/
- // $service = new MWSSubscriptionsService_Mock();
-
-/************************************************************************
- * Setup request parameters and uncomment invoke to try out
- * sample for Get Service Status Action
- ***********************************************************************/
- // @TODO: set request. Action can be passed as MWSSubscriptionsService_Model_GetServiceStatus
  $request = new MWSSubscriptionsService_Model_GetServiceStatusRequest();
  $request->setSellerId(MERCHANT_ID);
  // object or array of parameters
  invokeGetServiceStatus($service, $request);
 
 /**
-  * Get Get Service Status Action Sample
-  * Gets competitive pricing and related information for a product identified by
-  * the MarketplaceId and ASIN.
+  * Get Service Status Action 
+  * Returns the operational status of the Subscriptions API section.
   *
   * @param MWSSubscriptionsService_Interface $service instance of MWSSubscriptionsService_Interface
   * @param mixed $request MWSSubscriptionsService_Model_GetServiceStatus or array of parameters

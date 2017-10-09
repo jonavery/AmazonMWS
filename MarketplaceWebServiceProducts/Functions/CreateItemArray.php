@@ -8,7 +8,6 @@
  * can be fed to Amazon via SubmitFeed calls.
  **********************************************************/
 
-require_once('SetItemPrice.php');
 require_once('GetMatchingProductForId.php');
 $requestId = $request;
 unset($request);
@@ -43,7 +42,6 @@ foreach ($items->item as $item) {
 	    "Width"=>(string)$item->Dimensions->Width,
 	    "Height"=>(string)$item->Dimensions->Height));
 }
-
 
 // Create an array to hold UPC's.
 $upcList = array();
