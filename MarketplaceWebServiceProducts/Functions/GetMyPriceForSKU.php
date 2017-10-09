@@ -18,7 +18,7 @@
  */
 
 /**
- * Get My Price For SKU Sample
+ * Get My Price For SKU 
  */
 
 require_once('.config.inc.php');
@@ -32,14 +32,7 @@ require_once('.config.inc.php');
  ***********************************************************************/
 // More endpoints are listed in the MWS Developer Guide
 // North America:
-//$serviceUrl = "https://mws.amazonservices.com/Products/2011-10-01";
-// Europe
-//$serviceUrl = "https://mws-eu.amazonservices.com/Products/2011-10-01";
-// Japan
-//$serviceUrl = "https://mws.amazonservices.jp/Products/2011-10-01";
-// China
-//$serviceUrl = "https://mws.amazonservices.com.cn/Products/2011-10-01";
-
+$serviceUrl = "https://mws.amazonservices.com/Products/2011-10-01";
 
  $config = array (
    'ServiceURL' => $serviceUrl,
@@ -57,32 +50,15 @@ require_once('.config.inc.php');
         APPLICATION_VERSION,
         $config);
 
-/************************************************************************
- * Uncomment to try out Mock Service that simulates MarketplaceWebServiceProducts
- * responses without calling MarketplaceWebServiceProducts service.
- *
- * Responses are loaded from local XML files. You can tweak XML files to
- * experiment with various outputs during development
- *
- * XML files available under MarketplaceWebServiceProducts/Mock tree
- *
- ***********************************************************************/
- // $service = new MarketplaceWebServiceProducts_Mock();
-
-/************************************************************************
- * Setup request parameters and uncomment invoke to try out
- * sample for Get My Price For SKU Action
- ***********************************************************************/
- // @TODO: set request. Action can be passed as MarketplaceWebServiceProducts_Model_GetMyPriceForSKU
  $request = new MarketplaceWebServiceProducts_Model_GetMyPriceForSKURequest();
  $request->setSellerId(MERCHANT_ID);
  // object or array of parameters
  invokeGetMyPriceForSKU($service, $request);
 
 /**
-  * Get Get My Price For SKU Action Sample
+  * Get Get My Price For SKU Action 
   * Gets competitive pricing and related information for a product identified by
-  * the MarketplaceId and ASIN.
+  * the MarketplaceId and SKU.
   *
   * @param MarketplaceWebServiceProducts_Interface $service instance of MarketplaceWebServiceProducts_Interface
   * @param mixed $request MarketplaceWebServiceProducts_Model_GetMyPriceForSKU or array of parameters
