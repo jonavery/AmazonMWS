@@ -50,15 +50,8 @@ $service = new MarketplaceWebServiceProducts_Client(
        APPLICATION_VERSION,
        $config);
 
-
-/************************************************************************
- * Setup request parameters and uncomment invoke to try out
- * sample for Get My Fees Estimate Action
- ***********************************************************************/
-// object or array of parameters
-
 /**
-  * Get Get My Fees Estimate Action Sample
+  * Get My Fees Estimate Action
   * Gets competitive pricing and related information for a product identified by
   * the MarketplaceId and ASIN.
   *

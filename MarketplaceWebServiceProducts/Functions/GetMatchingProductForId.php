@@ -32,13 +32,6 @@ require_once('.config.inc.php');
 // More endpoints are listed in the MWS Developer Guide
 // North America:
 $serviceUrl = "https://mws.amazonservices.com/Products/2011-10-01";
-// Europe
-//$serviceUrl = "https://mws-eu.amazonservices.com/Products/2011-10-01";
-// Japan
-//$serviceUrl = "https://mws.amazonservices.jp/Products/2011-10-01";
-// China
-//$serviceUrl = "https://mws.amazonservices.com.cn/Products/2011-10-01";
-
 
 $config = array (
     'ServiceURL' => $serviceUrl,
@@ -56,16 +49,10 @@ $service = new MarketplaceWebServiceProducts_Client(
     APPLICATION_VERSION,
     $config);
 
-/************************************************************************
- * Setup request parameters and uncomment invoke to try out
- * sample for Get Matching Product For Id Action
- ***********************************************************************/
-
 // Create request to be sent to Amazon.
 $request = new MarketplaceWebServiceProducts_Model_GetMatchingProductForIdRequest();
 $request->setSellerId(MERCHANT_ID);
 $request->setMarketplaceId(MARKETPLACE_ID);
-
 
 /**
   * Get Get Matching Product For Id Action

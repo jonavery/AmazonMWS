@@ -18,7 +18,7 @@
  */
 
 /**
- * Get Competitive Pricing For ASIN Sample
+ * Get Competitive Pricing For ASIN 
  */
 
 require_once('.config.inc.php');
@@ -33,13 +33,6 @@ require_once('.config.inc.php');
 // More endpoints are listed in the MWS Developer Guide
 // North America:
 $serviceUrl = "https://mws.amazonservices.com/Products/2011-10-01";
-// Europe
-//$serviceUrl = "https://mws-eu.amazonservices.com/Products/2011-10-01";
-// Japan
-//$serviceUrl = "https://mws.amazonservices.jp/Products/2011-10-01";
-// China
-//$serviceUrl = "https://mws.amazonservices.com.cn/Products/2011-10-01";
-
 
  $config = array (
    'ServiceURL' => $serviceUrl,
@@ -57,18 +50,13 @@ $serviceUrl = "https://mws.amazonservices.com/Products/2011-10-01";
         APPLICATION_VERSION,
         $config);
 
-/************************************************************************
- * Setup request parameters and uncomment invoke to try out
- * sample for Get Competitive Pricing For ASIN Action
- ***********************************************************************/
-
 // Create new request.
 $request = new MarketplaceWebServiceProducts_Model_GetCompetitivePricingForASINRequest();
 $request->setSellerId(MERCHANT_ID);
 $request->setMarketplaceId(MARKETPLACE_ID);
 
 /**
-  * Get Get Competitive Pricing For ASIN Action 
+  * Get Competitive Pricing For ASIN Action 
   * Gets competitive pricing and related information for a product identified by
   * the MarketplaceId and ASIN.
   *

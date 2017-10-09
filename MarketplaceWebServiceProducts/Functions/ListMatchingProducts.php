@@ -18,9 +18,8 @@
  */
 
 /**
- * List Matching Products Sample
+ * List Matching Products 
  */
-
 
 // Increase max runtime to 5 minutes - the max time allowed by Apache
 ini_set('max_execution_time', 300);
@@ -37,13 +36,6 @@ require_once('.config.inc.php');
 // More endpoints are listed in the MWS Developer Guide
 // North America:
 $serviceUrl = "https://mws.amazonservices.com/Products/2011-10-01";
-// Europe
-//$serviceUrl = "https://mws-eu.amazonservices.com/Products/2011-10-01";
-// Japan
-//$serviceUrl = "https://mws.amazonservices.jp/Products/2011-10-01";
-// China
-//$serviceUrl = "https://mws.amazonservices.com.cn/Products/2011-10-01";
-
 
  $config = array (
    'ServiceURL' => $serviceUrl,
@@ -61,10 +53,6 @@ $serviceUrl = "https://mws.amazonservices.com/Products/2011-10-01";
         APPLICATION_VERSION,
         $config);
 
-/************************************************************************
- * Setup request parameters and uncomment invoke to try out
- * sample for List Matching Products Action
- ***********************************************************************/
 // Create new request.
 $request = new MarketplaceWebServiceProducts_Model_ListMatchingProductsRequest();
 $request->setSellerId(MERCHANT_ID);
@@ -72,9 +60,8 @@ $request->setMarketplaceId(MARKETPLACE_ID);
 
 /**
   * Get List Matching Products Action
-  * Gets competitive pricing and related information for a product identified by
-  * the MarketplaceId and ASIN.
-  *
+  * Returns list of product attributes based on a phrase query, 
+  * GCID, UPC, EAN, ISBN, JAN or ASIN.  
   * @param MarketplaceWebServiceProducts_Interface $service instance of MarketplaceWebServiceProducts_Interface
   * @param mixed $request MarketplaceWebServiceProducts_Model_ListMatchingProducts or array of parameters
   */
