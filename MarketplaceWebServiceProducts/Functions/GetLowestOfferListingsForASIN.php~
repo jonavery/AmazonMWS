@@ -133,7 +133,7 @@ function parseOffers($itemArray, $requestPrice) {
 }
 
 /**
-  * Get Lowest Offer Listings For ASIN Action
+  * Get Get Lowest Offer Listings For ASIN Action
   * Gets competitive pricing and related information for a product identified by
   * the MarketplaceId and ASIN.
   *

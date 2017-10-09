@@ -44,9 +44,9 @@ $config = array (
  $service = new MarketplaceWebService_Client(
      AWS_ACCESS_KEY_ID, 
      AWS_SECRET_ACCESS_KEY, 
-     APPLICATION_VERSION,
+     $config,
      APPLICATION_NAME,
-     $config);
+     APPLICATION_VERSION);
  
 // Constructing the MarketplaceId array which will be passed in as the the MarketplaceIdList 
 // parameter to the RequestReportRequest object.

@@ -44,9 +44,9 @@ $config = array (
  $service = new MarketplaceWebService_Client(
      AWS_ACCESS_KEY_ID, 
      AWS_SECRET_ACCESS_KEY, 
-     $config,
+     APPLICATION_VERSION,
      APPLICATION_NAME,
-     APPLICATION_VERSION);
+     $config);
 
 //
 //invokeGetReportScheduleListByNextToken($service, $request);

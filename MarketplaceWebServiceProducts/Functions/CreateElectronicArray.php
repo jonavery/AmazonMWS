@@ -1,7 +1,7 @@
 <?php
 
 /***********************************************************
- * CreateItemArray.php queries the database and creates an
+ * CreateElectronicArray.php queries the database and creates an
  * array containing all the items ready for listing.
  *
  * The script then converts that array into an XML file that

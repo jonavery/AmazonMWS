@@ -13,11 +13,12 @@
 
  *  Marketplace Web Service PHP5 Library
  *  Generated: Thu May 07 13:07:36 PDT 2009
- * 
  */
 
 /**
- * Get Report Schedule List By Next Token  
+ * Manage Report Schedule
+ * Creates, updates, or deletes a report schedule
+ * for a given report type, such as order reports in particular.
  */
 
 include_once ('.config.inc.php'); 
@@ -44,43 +45,38 @@ $config = array (
  $service = new MarketplaceWebService_Client(
      AWS_ACCESS_KEY_ID, 
      AWS_SECRET_ACCESS_KEY, 
-     $config,
+     APPLICATION_VERSION,
      APPLICATION_NAME,
-     APPLICATION_VERSION);
+     $config);
 
-//
-//invokeGetReportScheduleListByNextToken($service, $request);
-                                                                                    
+//invokeManageReportSchedule($service, $request);
+                                                                                            
 /**
-  * Get Report Schedule List By Next Token Action
-  * retrieve the next batch of list items and if there are more items to retrieve
+  * Manage Report Schedule Action
+  * Creates, updates, or deletes a report schedule
+  * for a given report type, such as order reports in particular.
   *   
   * @param MarketplaceWebService_Interface $service instance of MarketplaceWebService_Interface
-  * @param mixed $request MarketplaceWebService_Model_GetReportScheduleListByNextToken or array of parameters
+  * @param mixed $request MarketplaceWebService_Model_ManageReportSchedule or array of parameters
   */
-  function invokeGetReportScheduleListByNextToken(MarketplaceWebService_Interface $service, $request) 
+  function invokeManageReportSchedule(MarketplaceWebService_Interface $service, $request) 
   {
       try {
-              $response = $service->getReportScheduleListByNextToken($request);
+              $response = $service->manageReportSchedule($request);
               
                 echo ("Service Response\n");
                 echo ("=============================================================================\n");
 
-                echo("        GetReportScheduleListByNextTokenResponse\n");
-                if ($response->isSetGetReportScheduleListByNextTokenResult()) { 
-                    echo("            GetReportScheduleListByNextTokenResult\n");
-                    $getReportScheduleListByNextTokenResult = $response->getGetReportScheduleListByNextTokenResult();
-                    if ($getReportScheduleListByNextTokenResult->isSetNextToken()) 
+                echo("        ManageReportScheduleResponse\n");
+                if ($response->isSetManageReportScheduleResult()) { 
+                    echo("            ManageReportScheduleResult\n");
+                    $manageReportScheduleResult = $response->getManageReportScheduleResult();
+                    if ($manageReportScheduleResult->isSetCount()) 
                     {
-                        echo("                NextToken\n");
-                        echo("                    " . $getReportScheduleListByNextTokenResult->getNextToken() . "\n");
+                        echo("                Count\n");
+                        echo("                    " . $manageReportScheduleResult->getCount() . "\n");
                     }
-                    if ($getReportScheduleListByNextTokenResult->isSetHasNext()) 
-                    {
-                        echo("                HasNext\n");
-                        echo("                    " . $getReportScheduleListByNextTokenResult->getHasNext() . "\n");
-                    }
-                    $reportScheduleList = $getReportScheduleListByNextTokenResult->getReportSchedule();
+                    $reportScheduleList = $manageReportScheduleResult->getReportScheduleList();
                     foreach ($reportScheduleList as $reportSchedule) {
                         echo("                ReportSchedule\n");
                         if ($reportSchedule->isSetReportType()) 
@@ -91,12 +87,12 @@ $config = array (
                         if ($reportSchedule->isSetSchedule()) 
                         {
                             echo("                    Schedule\n");
-                            echo("                        " . $reportSchedule->getSchedule()->format(DATE_FORMAT) . "\n");
+                            echo("                        " . $reportSchedule->getSchedule() . "\n");
                         }
                         if ($reportSchedule->isSetScheduledDate()) 
                         {
                             echo("                    ScheduledDate\n");
-                            echo("                        " . $reportSchedule->getScheduledDate() . "\n");
+                            echo("                        " . $reportSchedule->getScheduledDate()->format(DATE_FORMAT) . "\n");
                         }
                     }
                 } 
@@ -121,4 +117,4 @@ $config = array (
          echo("ResponseHeaderMetadata: " . $ex->getResponseHeaderMetadata() . "\n");
      }
  }
-?>
+            

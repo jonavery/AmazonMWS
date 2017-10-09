@@ -44,9 +44,9 @@ $config = array (
  $service = new MarketplaceWebService_Client(
      AWS_ACCESS_KEY_ID, 
      AWS_SECRET_ACCESS_KEY, 
-     APPLICATION_VERSION,
+     $config,
      APPLICATION_NAME,
-     $config);
+     APPLICATION_VERSION);
                                                                    
 /**
   * Get Report List Action 
