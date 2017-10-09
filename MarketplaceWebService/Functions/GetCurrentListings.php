@@ -7,28 +7,26 @@
 
 // Initialize needed files.
 require_once('RequestReport.php'); 
+require_once('GetReportRequestList.php');
 
 // Request a listings data report.
 $parameters = array(
-    'SellerId' => MERCHANT_ID,
     'ReportType' => '_GET_MERCHANT_LISTINGS_DATA_LITE_',
     'MarketplaceIdList' => $marketplaceIdArray
 );
 $requestReport = new MarketplaceWebService_Model_RequestReportRequest($parameters);
+$requestReport->setMerchant(MERCHANT_ID);
 unset($parameters);
 $reportRequestId = invokeRequestReport($service, $requestReport);
-print_r($reportRequestId);
-exit;
 
-require_once('GetReportRequestList.php');
 // Check the status of the report.
 $parameters = array(
-    'SellerId' => MERCHANT_ID,
     'ReportRequestIdList' => array(
         'Id' => array($reportRequestId)
     )
 );
 $requestStatus = new MarketplaceWebService_Model_GetReportRequestListRequest($parameters);
+$requestStatus->setMerchant(MERCHANT_ID);
 unset($parameters);
 $reportStatus = invokeGetReportRequestList($service, $requestStatus, $reportRequestId);
 
@@ -36,6 +34,6 @@ $reportStatus = invokeGetReportRequestList($service, $requestStatus, $reportRequ
 while ($reportStatus != '_DONE_') {
     echo "Waiting for Amazon to process report...\n";
     sleep(45);
-    $reportStatus = invokeGetReportRequestList($service, $request, $reportRequestId);
+    $reportStatus = invokeGetReportRequestList($service, $requestStatus, $reportRequestId);
 }
 echo "\nReport complete!\n\n";
