@@ -18,7 +18,7 @@
  */
 
 /**
- * Get Product Categories For ASIN Sample
+ * Get Product Categories For ASIN
  */
 
 require_once('.config.inc.php');
@@ -32,14 +32,7 @@ require_once('.config.inc.php');
  ***********************************************************************/
 // More endpoints are listed in the MWS Developer Guide
 // North America:
-//$serviceUrl = "https://mws.amazonservices.com/Products/2011-10-01";
-// Europe
-//$serviceUrl = "https://mws-eu.amazonservices.com/Products/2011-10-01";
-// Japan
-//$serviceUrl = "https://mws.amazonservices.jp/Products/2011-10-01";
-// China
-//$serviceUrl = "https://mws.amazonservices.com.cn/Products/2011-10-01";
-
+$serviceUrl = "https://mws.amazonservices.com/Products/2011-10-01";
 
  $config = array (
    'ServiceURL' => $serviceUrl,
@@ -57,33 +50,15 @@ require_once('.config.inc.php');
         APPLICATION_VERSION,
         $config);
 
-/************************************************************************
- * Uncomment to try out Mock Service that simulates MarketplaceWebServiceProducts
- * responses without calling MarketplaceWebServiceProducts service.
- *
- * Responses are loaded from local XML files. You can tweak XML files to
- * experiment with various outputs during development
- *
- * XML files available under MarketplaceWebServiceProducts/Mock tree
- *
- ***********************************************************************/
- // $service = new MarketplaceWebServiceProducts_Mock();
-
-/************************************************************************
- * Setup request parameters and uncomment invoke to try out
- * sample for Get Product Categories For ASIN Action
- ***********************************************************************/
- // @TODO: set request. Action can be passed as MarketplaceWebServiceProducts_Model_GetProductCategoriesForASIN
  $request = new MarketplaceWebServiceProducts_Model_GetProductCategoriesForASINRequest();
  $request->setSellerId(MERCHANT_ID);
  // object or array of parameters
  invokeGetProductCategoriesForASIN($service, $request);
 
 /**
-  * Get Get Product Categories For ASIN Action Sample
-  * Gets competitive pricing and related information for a product identified by
-  * the MarketplaceId and ASIN.
-  *
+  * Get Product Categories For ASIN Action 
+  * Returns the product category, identifier, parent categories back to the root for the marketplace based on ASIN
+  * 
   * @param MarketplaceWebServiceProducts_Interface $service instance of MarketplaceWebServiceProducts_Interface
   * @param mixed $request MarketplaceWebServiceProducts_Model_GetProductCategoriesForASIN or array of parameters
   */
