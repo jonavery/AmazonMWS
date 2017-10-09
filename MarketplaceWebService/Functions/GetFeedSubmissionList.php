@@ -43,7 +43,6 @@ $service = new MarketplaceWebService_Client(
     APPLICATION_NAME,
     APPLICATION_VERSION);
 
-define('DATE_FORMAT', 'Y-m-d H:i:s T');
 $parameters = array (
     'Merchant' => MERCHANT_ID,
     'MWSAuthToken' => MWS_AUTH_TOKEN,
