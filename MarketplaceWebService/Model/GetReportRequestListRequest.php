@@ -79,7 +79,7 @@ class MarketplaceWebService_Model_GetReportRequestListRequest extends Marketplac
         parent::__construct($data);
     }
 
-        /**
+    /**
      * Gets the value of the Marketplace property.
      * 
      * @return string Marketplace
