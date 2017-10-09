@@ -17,7 +17,7 @@
 /**
  * Returns a list of all feed submissions submitted in the previous 90 days.  
  */
-include_once ('.config.inc.php'); 
+require_once (__DIR__ . '/../../FBAInboundServiceMWS/Functions/.config.inc.php');
 
 // IMPORTANT: Uncomment the appropriate line for the country you wish to
 // sell in:
@@ -36,13 +36,22 @@ $config = array (
  * are defined in the .config.inc.php located in the same 
  * directory as this sample
  ***********************************************************************/
- $service = new MarketplaceWebService_Client(
-     AWS_ACCESS_KEY_ID, 
-     AWS_SECRET_ACCESS_KEY, 
-     $config,
-     APPLICATION_NAME,
-     APPLICATION_VERSION);
- 
+$service = new MarketplaceWebService_Client(
+    AWS_ACCESS_KEY_ID, 
+    AWS_SECRET_ACCESS_KEY, 
+    $config,
+    APPLICATION_NAME,
+    APPLICATION_VERSION);
+
+define('DATE_FORMAT', 'Y-m-d H:i:s T');
+$parameters = array (
+    'Merchant' => MERCHANT_ID,
+    'MWSAuthToken' => MWS_AUTH_TOKEN,
+    'SubmittedFromDate' => date('Y-m-d'),
+    'SubmittedToDate' => date('Y-m-d', mktime(0, 0, 0, date("m"), date("d")+1,   date("Y")))
+);
+$request = new MarketplaceWebService_Model_GetFeedSubmissionListRequest($parameters);
+invokeGetFeedSubmissionList($service, $request);
                                                                             
 /**
   * Get Feed Submission List Action 
@@ -51,7 +60,7 @@ $config = array (
   * @param MarketplaceWebService_Interface $service instance of MarketplaceWebService_Interface
   * @param mixed $request MarketplaceWebService_Model_GetFeedSubmissionList or array of parameters
   */
-  function invokeGetFeedSubmissionList(MarketplaceWebService_Interface $service, $request) 
+  function invokeGetFeedSubmissionList(MarketplaceWebService_Interface $service, $request, $id = Null) 
   {
       try {
               $response = $service->getFeedSubmissionList($request);
@@ -84,6 +93,10 @@ $config = array (
                         {
                             echo("                    FeedType\n");
                             echo("                        " . $feedSubmissionInfo->getFeedType() . "\n");
+                            if ($id == $feedSubmissionInfo->getFeedSubmissionId())
+                            {
+                                $type = $feedSubmissionInfo->getFeedProcessingStatus();
+                            }
                         }
                         if ($feedSubmissionInfo->isSetSubmittedDate()) 
                         {
@@ -94,6 +107,10 @@ $config = array (
                         {
                             echo("                    FeedProcessingStatus\n");
                             echo("                        " . $feedSubmissionInfo->getFeedProcessingStatus() . "\n");
+                            if ($id == $feedSubmissionInfo->getFeedSubmissionId())
+                            {
+                                $status = $feedSubmissionInfo->getFeedProcessingStatus();
+                            }
                         }
                         if ($feedSubmissionInfo->isSetStartedProcessingDate()) 
                         {
@@ -117,6 +134,7 @@ $config = array (
                     }
                 } 
                 echo("            ResponseHeaderMetadata: " . $response->getResponseHeaderMetadata() . "\n");
+                return $status;
      } catch (MarketplaceWebService_Exception $ex) {
          echo("Caught Exception: " . $ex->getMessage() . "\n");
          echo("Response Status Code: " . $ex->getStatusCode() . "\n");
