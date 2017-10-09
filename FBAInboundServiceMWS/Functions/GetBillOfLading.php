@@ -1,12 +1,12 @@
 <?php
 /*******************************************************************************
  * Copyright 2009-2016 Amazon Services. All Rights Reserved.
- * Licensed under the Apache License, Version 2.0 (the "License"); 
+ * Licensed under the Apache License, Version 2.0 (the "License");
  *
- * You may not use this file except in compliance with the License. 
+ * You may not use this file except in compliance with the License.
  * You may obtain a copy of the License at: http://aws.amazon.com/apache2.0
- * This file is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR 
- * CONDITIONS OF ANY KIND, either express or implied. See the License for the 
+ * This file is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+ * CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
  *******************************************************************************
  * PHP Version 5
@@ -49,14 +49,14 @@ $serviceUrl = "https://mws.amazonservices.com/FulfillmentInboundShipment/2010-10
         APPLICATION_NAME,
         APPLICATION_VERSION,
         $config);
- 
+
  $request = new FBAInboundServiceMWS_Model_GetBillOfLadingRequest();
  $request->setSellerId(MERCHANT_ID);
  // object or array of parameters
  invokeGetBillOfLading($service, $request);
 
 /**
-  * Get Get Bill Of Lading Action
+  * Get Bill Of Lading Action
   * @param FBAInboundServiceMWS_Interface $service instance of FBAInboundServiceMWS_Interface
   * @param mixed $request FBAInboundServiceMWS_Model_GetBillOfLading or array of parameters
   */
