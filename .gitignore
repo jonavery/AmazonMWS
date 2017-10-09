@@ -1,5 +1,5 @@
 /FBAInboundServiceMWS/Functions/.config.inc.php
-/FeedsMWS/FBAInboundServiceMWS/Functions/.config.inc.php
-/MarketplaceWebServiceProducts/FBAInboundServiceMWS/Functions/.config.inc.php
+/MarketplaceWebService/Functions/.config.inc.php
+/MarketplaceWebServiceProducts/Functions/.config.inc.php
 /MWSSubscriptionsService/Functions/.config.inc.php
 /AWS/config.php
