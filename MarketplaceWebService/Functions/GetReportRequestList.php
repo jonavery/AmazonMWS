@@ -48,8 +48,6 @@ $config = array (
      APPLICATION_NAME,
      APPLICATION_VERSION);
  
-//invokeGetReportRequestList($service, $request);
-                                                                    
 /**
   * Get Report List Action 
   * returns a list of reports; by default the most recent ten reports,
@@ -57,8 +55,9 @@ $config = array (
   *   
   * @param MarketplaceWebService_Interface $service instance of MarketplaceWebService_Interface
   * @param mixed $request MarketplaceWebService_Model_GetReportList or array of parameters
+  * @param string [$id] ReportRequestId of the report the user would like to check on
   */
-  function invokeGetReportRequestList(MarketplaceWebService_Interface $service, $request) 
+  function invokeGetReportRequestList(MarketplaceWebService_Interface $service, $request, $id = Null) 
   {
       try {
               $response = $service->getReportRequestList($request);
@@ -83,61 +82,64 @@ $config = array (
                     $reportRequestInfoList = $getReportRequestListResult->getReportRequestInfoList();
                     foreach ($reportRequestInfoList as $reportRequestInfo) {
                         echo("                ReportRequestInfo\n");
-                    if ($reportRequestInfo->isSetReportRequestId()) 
-                          {
-                              echo("                    ReportRequestId\n");
-                              echo("                        " . $reportRequestInfo->getReportRequestId() . "\n");
-                          }
-                          if ($reportRequestInfo->isSetReportType()) 
-                          {
-                              echo("                    ReportType\n");
-                              echo("                        " . $reportRequestInfo->getReportType() . "\n");
-                          }
-                          if ($reportRequestInfo->isSetStartDate()) 
-                          {
-                              echo("                    StartDate\n");
-                              echo("                        " . $reportRequestInfo->getStartDate()->format(DATE_FORMAT) . "\n");
-                          }
-                          if ($reportRequestInfo->isSetEndDate()) 
-                          {
-                              echo("                    EndDate\n");
-                              echo("                        " . $reportRequestInfo->getEndDate()->format(DATE_FORMAT) . "\n");
-                          }
-                          // add start
-                          if ($reportRequestInfo->isSetScheduled()) 
-                          {
-                              echo("                    Scheduled\n");
-                              echo("                        " . $reportRequestInfo->getScheduled() . "\n");
-                          }
-                          // add end
-                          if ($reportRequestInfo->isSetSubmittedDate()) 
-                          {
-                              echo("                    SubmittedDate\n");
-                              echo("                        " . $reportRequestInfo->getSubmittedDate()->format(DATE_FORMAT) . "\n");
-                          }
-                          if ($reportRequestInfo->isSetReportProcessingStatus()) 
-                          {
-                              echo("                    ReportProcessingStatus\n");
-                              echo("                        " . $reportRequestInfo->getReportProcessingStatus() . "\n");
-                          }
-                          // add start
-                          if ($reportRequestInfo->isSetGeneratedReportId()) 
-                          {
-                              echo("                    GeneratedReportId\n");
-                              echo("                        " . $reportRequestInfo->getGeneratedReportId() . "\n");
-                          }
-                          if ($reportRequestInfo->isSetStartedProcessingDate()) 
-                          {
-                              echo("                    StartedProcessingDate\n");
-                              echo("                        " . $reportRequestInfo->getStartedProcessingDate()->format(DATE_FORMAT) . "\n");
-                          }
-                          if ($reportRequestInfo->isSetCompletedDate()) 
-                          {
-                              echo("                    CompletedDate\n");
-                              echo("                        " . $reportRequestInfo->getCompletedDate()->format(DATE_FORMAT) . "\n");
-                          }
-                          // add end
-                          
+                        if ($reportRequestInfo->isSetReportRequestId()) 
+                        {
+                            echo("                    ReportRequestId\n");
+                            echo("                        " . $reportRequestInfo->getReportRequestId() . "\n");
+                        }
+                        if ($reportRequestInfo->isSetReportType()) 
+                        {
+                            echo("                    ReportType\n");
+                            echo("                        " . $reportRequestInfo->getReportType() . "\n");
+                        }
+                        if ($reportRequestInfo->isSetStartDate()) 
+                        {
+                            echo("                    StartDate\n");
+                            echo("                        " . $reportRequestInfo->getStartDate()->format(DATE_FORMAT) . "\n");
+                        }
+                        if ($reportRequestInfo->isSetEndDate()) 
+                        {
+                            echo("                    EndDate\n");
+                            echo("                        " . $reportRequestInfo->getEndDate()->format(DATE_FORMAT) . "\n");
+                        }
+                        // add start
+                        if ($reportRequestInfo->isSetScheduled()) 
+                        {
+                            echo("                    Scheduled\n");
+                            echo("                        " . $reportRequestInfo->getScheduled() . "\n");
+                        }
+                        // add end
+                        if ($reportRequestInfo->isSetSubmittedDate()) 
+                        {
+                            echo("                    SubmittedDate\n");
+                            echo("                        " . $reportRequestInfo->getSubmittedDate()->format(DATE_FORMAT) . "\n");
+                        }
+                        if ($reportRequestInfo->isSetReportProcessingStatus()) 
+                        {
+                            echo("                    ReportProcessingStatus\n");
+                            echo("                        " . $reportRequestInfo->getReportProcessingStatus() . "\n");
+                        }
+                        // add start
+                        if ($reportRequestInfo->isSetGeneratedReportId()) 
+                        {
+                            echo("                    GeneratedReportId\n");
+                            echo("                        " . $reportRequestInfo->getGeneratedReportId() . "\n");
+                        }
+                        if ($reportRequestInfo->isSetStartedProcessingDate()) 
+                        {
+                            echo("                    StartedProcessingDate\n");
+                            echo("                        " . $reportRequestInfo->getStartedProcessingDate()->format(DATE_FORMAT) . "\n");
+                        }
+                        if ($reportRequestInfo->isSetCompletedDate()) 
+                        {
+                            echo("                    CompletedDate\n");
+                            echo("                        " . $reportRequestInfo->getCompletedDate()->format(DATE_FORMAT) . "\n");
+                        }
+                        // add end
+                        if ($id == $reportRequestInfo->getReportRequestId()) 
+                        {
+                            $status = $reportRequestInfo->getReportProcessingStatus();
+                        }
                     }
                 } 
                 if ($response->isSetResponseMetadata()) { 
@@ -151,6 +153,7 @@ $config = array (
                 } 
 
                 echo("            ResponseHeaderMetadata: " . $response->getResponseHeaderMetadata() . "\n");
+                return $status;
      } catch (MarketplaceWebService_Exception $ex) {
          echo("Caught Exception: " . $ex->getMessage() . "\n");
          echo("Response Status Code: " . $ex->getStatusCode() . "\n");

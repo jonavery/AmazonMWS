@@ -94,6 +94,7 @@ function makeRequest($feed) {
                         {
                             echo("                    FeedSubmissionId\n");
                             echo("                        " . $feedSubmissionInfo->getFeedSubmissionId() . "\n");
+                            $feedSubmissionId = $feedSubmissionInfo->getFeedSubmissionId();
                         }
                         if ($feedSubmissionInfo->isSetFeedType()) 
                         {
@@ -132,6 +133,7 @@ function makeRequest($feed) {
                     }
                 } 
                 echo("            ResponseHeaderMetadata: " . $response->getResponseHeaderMetadata() . "\n");
+                return $feedSubmissionId;
      } catch (MarketplaceWebService_Exception $ex) {
          echo("Caught Exception: " . $ex->getMessage() . "\n");
          echo("Response Status Code: " . $ex->getStatusCode() . "\n");
