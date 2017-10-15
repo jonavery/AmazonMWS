@@ -56,7 +56,7 @@ $serviceUrl = "https://mws.amazonservices.com/Products/2011-10-01";
  invokeGetMyPriceForSKU($service, $request);
 
 /**
-  * Get Get My Price For SKU Action 
+  * Get My Price For SKU Action 
   * Gets competitive pricing and related information for a product identified by
   * the MarketplaceId and SKU.
   *
@@ -68,9 +68,6 @@ $serviceUrl = "https://mws.amazonservices.com/Products/2011-10-01";
   {
       try {
         $response = $service->GetMyPriceForSKU($request);
-
-        echo ("Service Response\n");
-        echo ("=============================================================================\n");
 
         $dom = new DOMDocument();
         $dom->loadXML($response->toXML());
