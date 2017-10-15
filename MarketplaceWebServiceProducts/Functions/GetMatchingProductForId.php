@@ -55,7 +55,7 @@ $request->setSellerId(MERCHANT_ID);
 $request->setMarketplaceId(MARKETPLACE_ID);
 
 /**
-  * Get Get Matching Product For Id Action
+  * Get Matching Product For Id Action
   * Gets competitive pricing and related information for a product identified by
   * the MarketplaceId and UPC.
   *
