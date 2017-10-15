@@ -56,7 +56,7 @@ $serviceUrl = "https://mws.amazonservices.com/Products/2011-10-01";
  invokeGetLowestPricedOffersForASIN($service, $request);
 
 /**
-  * Get Get Lowest Priced Offers For ASIN Action
+  * Get Lowest Priced Offers For ASIN Action
   * Gets competitive pricing and related information for a product identified by
   * the MarketplaceId and ASIN.
   *
@@ -68,9 +68,6 @@ $serviceUrl = "https://mws.amazonservices.com/Products/2011-10-01";
   {
       try {
         $response = $service->GetLowestPricedOffersForASIN($request);
-
-        echo ("Service Response\n");
-        echo ("=============================================================================\n");
 
         $dom = new DOMDocument();
         $dom->loadXML($response->toXML());
