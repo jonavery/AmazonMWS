@@ -50,23 +50,6 @@ $serviceUrl = "https://mws.amazonservices.com/Products/2011-10-01";
         APPLICATION_VERSION,
         $config);
 
-/************************************************************************
- * Uncomment to try out Mock Service that simulates MarketplaceWebServiceProducts
- * responses without calling MarketplaceWebServiceProducts service.
- *
- * Responses are loaded from local XML files. You can tweak XML files to
- * experiment with various outputs during development
- *
- * XML files available under MarketplaceWebServiceProducts/Mock tree
- *
- ***********************************************************************/
- // $service = new MarketplaceWebServiceProducts_Mock();
-
-/************************************************************************
- * Setup request parameters and uncomment invoke to try out
- * sample for Get My Price For ASIN Action
- ***********************************************************************/
- // @TODO: set request. Action can be passed as MarketplaceWebServiceProducts_Model_GetMyPriceForASIN
  $request = new MarketplaceWebServiceProducts_Model_GetMyPriceForASINRequest();
  $request->setSellerId(MERCHANT_ID);
  // object or array of parameters
@@ -85,9 +68,6 @@ $serviceUrl = "https://mws.amazonservices.com/Products/2011-10-01";
   {
       try {
         $response = $service->GetMyPriceForASIN($request);
-
-        echo ("Service Response\n");
-        echo ("=============================================================================\n");
 
         $dom = new DOMDocument();
         $dom->loadXML($response->toXML());
