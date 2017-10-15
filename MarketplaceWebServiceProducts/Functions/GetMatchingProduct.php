@@ -68,9 +68,6 @@ $serviceUrl = "https://mws.amazonservices.com/Products/2011-10-01";
       try {
         $response = $service->GetMatchingProduct($request);
 
-        echo ("Service Response\n");
-        echo ("=============================================================================\n");
-
         $dom = new DOMDocument();
         $dom->loadXML($response->toXML());
         $dom->preserveWhiteSpace = false;
