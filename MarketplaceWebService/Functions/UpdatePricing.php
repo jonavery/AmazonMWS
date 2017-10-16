@@ -10,6 +10,8 @@
  * accordingly on Amazon.
  **********************************************************/
 
+require_once(__DIR__ . '/../../MarketplaceWebServiceProducts/Functions/SetItemPrice.php');
+
 function parseReport($file) {
     $result = array();
     $fp = fopen($file,'r');
@@ -25,21 +27,21 @@ function parseReport($file) {
 
 // Open report and parse as array.
 echo "Loading listing report... ";
-$reportArray = parseReport('test-report.txt');
+$reportArray = parseReport('AFN-report.txt');
 echo "Success! \n\n";
-//print_r(array_slice($reportArray, -20));
+
+// Create ASIN array to be passed to SQL SELECT statement.
+$asinArray = array_column($reportArray, 'asin');
+$inArray = "?" . str_repeat(",?", count($asinArray) - 1);
+
 /******
  * $reportArray key names:
-['item-name']
 ['seller-sku']
-['price']
-['quantity']
-['open-date']
-['item-note']
-['item-condition']
-['product-id']
-['pending-quantity']
-['fulfillment-channel']
+['fulfillment-channel-sku']
+['asin']
+['condition-type']
+['Warehouse-Condition-code']
+['Quantity Available']
 
 item-condition:
 1 - Used - Like New
@@ -71,13 +73,10 @@ if ($db->connect_errno) {
 } 
 echo "Connected successfully to MySQL database. \n";
 
-// Create ASIN array to be passed to SQL SELECT statement.
-$asinArray = array_column($reportArray, 'product-id');
-$inArray = "?" . str_repeat(",?", count($asinArray) - 1);
 
 // Select all ASINs from price table that are in ASIN array.
 $stmt = $db->prepare("
-    SELECT ASIN as 'product-id', SalePrice as 'price' 
+    SELECT ASIN, SalePrice
     FROM prices
     WHERE ASIN IN ($inArray)
 ");
@@ -93,6 +92,7 @@ function arrayToTab($array) {
     return $tabCSV;
 }
 
+print_r($asinPDOS);
 $tabCSV = arrayToTab($asinPDOS);
 file_put_contents("prices.txt", $tabCSV);
 
