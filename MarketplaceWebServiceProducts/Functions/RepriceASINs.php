@@ -92,7 +92,7 @@ foreach($itemArray as $key => &$item) {
     $item["Price"] = pricer($item["Price"], $listCond, $itemCond, $item["FeedbackCount"]);
 
     // Save price in database.
-    $stmt = $db->prepare('UPDATE prices SET ListPrice = :price WHERE ASIN = :asin');
+    $stmt = $db->prepare('UPDATE prices SET SalePrice = :price WHERE ASIN = :asin');
     $stmt->execute([$item["Price"], $item["ASIN"]]);
 }
 echo "Database update complete.";
