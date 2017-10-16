@@ -24,8 +24,10 @@ function parseReport($file) {
 }
 
 // Open report and parse as array.
+echo "Loading listing report... ";
 $reportArray = parseReport('test-report.txt');
-print_r(array_slice($reportArray, -20));
+echo "Success! \n\n";
+//print_r(array_slice($reportArray, -20));
 /******
  * $reportArray key names:
 ['item-name']
@@ -49,10 +51,40 @@ item-condition:
 11- New
  ******/
 
+// Define database parameters.
+$host = "localhost";
+$db = "klasrunc_inventory";
+$user = "klasrunc_php";
+$pass = "K1@srun";
+$char = "utf8";
+$dsn = "mysql:host=$host;dbname=$db;charset=$char";
+$opt = [
+    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+    PDO::ATTR_EMULATE_PREPARES   => false,
+];
 
+// Create and check database connection
+$db = new PDO($dsn, $user, $pass, $opt);
+if ($db->connect_errno) {
+    die("Connection failed: " . $db->connect_error);
+} 
+echo "Connected successfully to MySQL database. \n";
 
+// Create ASIN array to be passed to SQL SELECT statement.
+$asinArray = array_column($reportArray, 'product-id');
+$inArray = "?" . str_repeat(",?", count($asinArray) - 1);
 
+// Select all ASINs from price table that are in ASIN array.
+$stmt = $db->prepare("
+    SELECT *
+    FROM prices
+    WHERE ASIN IN ($inArray)
+");
+$stmt->execute($asinArray);
+$asinPDOS = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+print_r($asinPDOS);
 
 
 ?>
