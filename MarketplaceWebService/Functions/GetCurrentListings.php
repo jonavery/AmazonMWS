@@ -13,7 +13,7 @@ require_once('GetReport.php');
 
 // Request a listings data report.
 $parameters = array(
-    'ReportType' => '_GET_MERCHANT_LISTINGS_DATA_',
+    'ReportType' => '_GET_AFN_INVENTORY_DATA_',
 );
 $requestReport = new MarketplaceWebService_Model_RequestReportRequest($parameters);
 $requestReport->setMerchant(MERCHANT_ID);
