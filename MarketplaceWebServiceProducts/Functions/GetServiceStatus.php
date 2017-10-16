@@ -56,7 +56,7 @@ $serviceUrl = "https://mws.amazonservices.com/Products/2011-10-01";
  invokeGetServiceStatus($service, $request);
 
 /**
-  * Get Get Service Status Action 
+  * Get Service Status Action 
   * Returns the operational status of the Products API AMWS. Status values are GREEN, YELLOW, and RED.
   * @param MarketplaceWebServiceProducts_Interface $service instance of MarketplaceWebServiceProducts_Interface
   * @param mixed $request MarketplaceWebServiceProducts_Model_GetServiceStatus or array of parameters
@@ -66,9 +66,6 @@ $serviceUrl = "https://mws.amazonservices.com/Products/2011-10-01";
   {
       try {
         $response = $service->GetServiceStatus($request);
-
-        echo ("Service Response\n");
-        echo ("=============================================================================\n");
 
         $dom = new DOMDocument();
         $dom->loadXML($response->toXML());

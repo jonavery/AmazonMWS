@@ -58,7 +58,7 @@ $serviceUrl = "https://mws.amazonservices.com/Products/2011-10-01";
 /**
   * Get Competitive Pricing For SKU Action 
   * Gets competitive pricing and related information for a product identified by
-  * the MarketplaceId and ASIN.
+  * the MarketplaceId and SKU.
   *
   * @param MarketplaceWebServiceProducts_Interface $service instance of MarketplaceWebServiceProducts_Interface
   * @param mixed $request MarketplaceWebServiceProducts_Model_GetCompetitivePricingForSKU or array of parameters

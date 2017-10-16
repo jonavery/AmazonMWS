@@ -56,9 +56,9 @@ $serviceUrl = "https://mws.amazonservices.com/Products/2011-10-01";
  invokeGetLowestPricedOffersForSKU($service, $request);
 
 /**
-  * Get Get Lowest Priced Offers For SKU Action 
+  * Get Lowest Priced Offers For SKU Action 
   * Gets competitive pricing and related information for a product identified by
-  * the MarketplaceId and ASIN.
+  * the MarketplaceId and SKU.
   *
   * @param MarketplaceWebServiceProducts_Interface $service instance of MarketplaceWebServiceProducts_Interface
   * @param mixed $request MarketplaceWebServiceProducts_Model_GetLowestPricedOffersForSKU or array of parameters
@@ -68,9 +68,6 @@ $serviceUrl = "https://mws.amazonservices.com/Products/2011-10-01";
   {
       try {
         $response = $service->GetLowestPricedOffersForSKU($request);
-
-        echo ("Service Response\n");
-        echo ("=============================================================================\n");
 
         $dom = new DOMDocument();
         $dom->loadXML($response->toXML());
