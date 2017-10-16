@@ -77,14 +77,23 @@ $inArray = "?" . str_repeat(",?", count($asinArray) - 1);
 
 // Select all ASINs from price table that are in ASIN array.
 $stmt = $db->prepare("
-    SELECT *
+    SELECT ASIN as 'product-id', SalePrice as 'price' 
     FROM prices
     WHERE ASIN IN ($inArray)
 ");
 $stmt->execute($asinArray);
 $asinPDOS = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-print_r($asinPDOS);
+// NOTE: Does not function with tabs and newlines in values
+function arrayToTab($array) {
+    $tabCSV = implode("\t", array_keys($array[0])); 
+    foreach($array as $row) {
+        $tabCSV = implode("\n",array($tabCSV, implode("\t", $row)));
+    }
+    return $tabCSV;
+}
 
+$tabCSV = arrayToTab($asinPDOS);
+file_put_contents("prices.txt", $tabCSV);
 
 ?>
