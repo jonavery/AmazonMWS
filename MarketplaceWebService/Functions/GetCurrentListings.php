@@ -40,9 +40,14 @@ while ($reportStatus[0] != '_DONE_') {
 echo "\nReport complete!\n\n";
 
 // Get the completed report from Amazon.
+$filename = 'report_'.date('Y-m-d_H:i:s').'txt';
+$handle = fopen($filename, 'x+');
+
 $requestGetReport = new MarketplaceWebService_Model_GetReportRequest();
 $requestGetReport->setMerchant(MERCHANT_ID);
+$requestGetReport->setReport($handle);
 $requestGetReport->setReportId($reportStatus[1]);
-print_r($requestGetReport);
 
 echo invokeGetReport($service, $requestGetReport);
+fwrite($handle, $response);
+fclose($handle);
