@@ -28,7 +28,6 @@
     define ('MERCHANT_ID', 'A3FA9W3CDIWR8F');
     define ('MARKETPLACE_ID', 'ATVPDKIKX0DER');
 
-
    /************************************************************************
     * OPTIONAL ON SOME INSTALLATIONS
     *
@@ -37,6 +36,7 @@
     * If library is installed in PHP include path, this is not needed
     ***********************************************************************/
     set_include_path(get_include_path() . PATH_SEPARATOR . '../../.');
+    define('DATE_FORMAT', 'Y-m-d H:i:s T');
 
    /************************************************************************
     * OPTIONAL ON SOME INSTALLATIONS

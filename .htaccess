@@ -1,0 +1,10 @@
+order deny,allow
+allow from all
+#allow from 24.234.216.165
+#allow from 64.233.
+#allow from 66.102.
+#allow from 66.249.
+#allow from 72.14.
+#allow from 74.125.
+#allow from 209.85.
+#allow from 216.239.
