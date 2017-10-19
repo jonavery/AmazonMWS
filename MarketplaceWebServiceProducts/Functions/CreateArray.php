@@ -10,17 +10,17 @@
 ****************************************************************/
 
 // Match and request id for product
-require_once('GetMatchingProductForId.php');
+require_once(__DIR__ . '/GetMatchingProductForId.php');
 $requestId = $request;
 unset($request);
 
 // Get the lowest price for product
-require_once('GetLowestOfferListingsForAsin.php');
+require_once(__DIR__ . '/GetLowestOfferListingsForAsin.php');
 $requestPrice = $request;
 unset($request);
 
 // Get the list 
-require_once('ListMatchingProducts.php');
+require_once(__DIR__ . '/ListMatchingProducts.php');
 $requestMatch = $request;
 unset ($request);
 

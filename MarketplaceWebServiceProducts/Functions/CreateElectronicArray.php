@@ -8,13 +8,13 @@
  * can be fed to Amazon via SubmitFeed calls.
  **********************************************************/
 
-require_once('GetMatchingProductForId.php');
+require_once(__DIR__ . '/GetMatchingProductForId.php');
 $requestId = $request;
 unset($request);
-require_once('GetLowestOfferListingsForASIN.php');
+require_once(__DIR__ . '/GetLowestOfferListingsForASIN.php');
 $requestPrice = $request;
 unset($request);
-require_once('ListMatchingProducts.php');
+require_once(__DIR__ . '/ListMatchingProducts.php');
 $requestMatch = $request;
 unset($request);
 

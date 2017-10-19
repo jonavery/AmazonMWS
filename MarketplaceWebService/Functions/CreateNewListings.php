@@ -16,7 +16,7 @@
  * processing.
  *******************************************************************/
 // Load SubmitFeed file.
-require_once('SubmitFeed.php');
+require_once(__DIR__ . '/SubmitFeed.php');
 
 // Load urls to XML files.
 $prdctURL = "https://script.google.com/macros/s/AKfycbxWIIZ7hy2GM77s1QP4D6qWU5ZJE-5WBT4CZPC3rbQaXHNfsZY/exec";

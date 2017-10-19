@@ -21,7 +21,7 @@
  * Get Product Categories For ASIN
  */
 
-require_once('.config.inc.php');
+require_once(__DIR__ . '/.config.inc.php');
 
 /************************************************************************
  * Instantiate Implementation of MarketplaceWebServiceProducts

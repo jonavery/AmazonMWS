@@ -6,9 +6,9 @@
  **********************************************************/
 
 // Initialize needed files.
-require_once('RequestReport.php'); 
-require_once('GetReportRequestList.php');
-require_once('GetReport.php');
+require_once(__DIR__ . '/RequestReport.php'); 
+require_once(__DIR__ . '/GetReportRequestList.php');
+require_once(__DIR__ . '/GetReport.php');
 
 
 // Request a listings data report.

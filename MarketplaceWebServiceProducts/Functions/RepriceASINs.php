@@ -7,7 +7,7 @@
  * These prices are then updated in the database.
  **********************************************************/
 
-require_once('GetLowestOfferListingsForASIN.php');
+require_once(__DIR__ . '/GetLowestOfferListingsForASIN.php');
 $requestPrice = $request;
 
 // Define database parameters.

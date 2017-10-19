@@ -21,7 +21,7 @@
  * Void previously-confirmed Transport Request before VoidDeadline
  */
 
-require_once('.config.inc.php');
+require_once(__DIR__ . '/.config.inc.php');
 
 /************************************************************************
  * Instantiate Implementation of FBAInboundServiceMWS
