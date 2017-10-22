@@ -25,9 +25,8 @@ $requestMatch = $request;
 unset ($request);
 
 // List xml based on selection input (e, sp, o)
-
 $type = htmlspecialchars($_GET["type"]);
-	Switch($type) {
+Switch($type) {
 	case 'e':
 		$url = "https://script.google.com/macros/s/AKfycbx8EuLlIqz8EPVXYV0kHDfgxLxUsoNL_4cZhtHlvcC0bl7IQG0/exec";
 		break;
@@ -96,7 +95,7 @@ foreach($itemArray as $key => &$item) {
     }
     $requestCount++;
 
-// Set the ID and ID type to be converted to an ASIN.
+    // Set the ID and ID type to be converted to an ASIN.
 	$requestID->setIdType('UPC');
 	$upcObject = new MarketplaceWebserviceProducts_Model_IdListType();
 	$upcObject->SetId($item["UPC"]);
@@ -104,7 +103,7 @@ foreach($itemArray as $key => &$item) {
 
 	$xmlid = invokeGetMatchingProductForId($service, $requestId);
 
-// Parse the XML response and add ASINS to item array.
+    // Parse the XML response and add ASINS to item array.
 	$asins = new SimpleXMLElement($xmlID);
 	$result = $asins->GetMatchingProductforIdResult;
 	if (@count($result->Products)) {
@@ -112,23 +111,25 @@ foreach($itemArray as $key => &$item) {
 		$item["ASIN"] = (string)$product->Identifiers->MarketplaceASIN->ASIN;
 	}
 
-// Sleep for required time to avoid throttling.
+    // Sleep for required time to avoid throttling.
 	$time_end = microtime(true);
 	if ($requestCount > 19 && ($time_end - $time_start) < 200000) {
 		usleep(200000 - ($time_end - $time_start));
 	}
 	$time_start = microtime(true);
 }
+
+
 	echo "Generating prices... \n";
 	$itemArray = parseOffers($itemArray, $requestPrice);
 	print_r($itemArray);
 
-		$itemJSON = json_encode($itemArray);
-		file_put_contents("MWS.json", $itemJSON);
+    $itemJSON = json_encode($itemArray);
+    file_put_contents("MWS.json", $itemJSON);
 
 // Based on the selection input (e, sp, o) show the following message
- $case = htmlspecialchars($_GET["type"]);
-	Switch($type) {
+$case = htmlspecialchars($_GET["type"]);
+Switch($type) {
 	case 'e':
 		echo "Success! Electronics MWS.json has been created. Run 'Populate MWS Tab' and 'Post Listings' to list products on Amazon.";
 		break;
