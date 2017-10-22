@@ -12,7 +12,7 @@ $requestPrice = $request;
 require_once(__DIR__ . '/.config.inc.php');
 
 // Create and check database connection
-$pdo = createPDO();
+$pdo = createPDO("inventory");
 if ($pdo->connect_errno) {
     die("Connection failed: " . $pdo->connect_error);
 } 
