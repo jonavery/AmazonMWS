@@ -14,7 +14,7 @@ $requestPrice = $request;
 $host = "localhost";
 $db = "inventory";
 $user = "php";
-$pass = "K1@srun";
+$pass = 'K1@$run';
 $char = "utf8";
 $dsn = "mysql:host=$host;dbname=$db;charset=$char";
 $opt = [
