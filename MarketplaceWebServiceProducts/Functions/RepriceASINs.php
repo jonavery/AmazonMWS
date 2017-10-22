@@ -12,8 +12,8 @@ $requestPrice = $request;
 
 // Define database parameters.
 $host = "localhost";
-$db = "klasrunc_inventory";
-$user = "klasrunc_php";
+$db = "inventory";
+$user = "php";
 $pass = "K1@srun";
 $char = "utf8";
 $dsn = "mysql:host=$host;dbname=$db;charset=$char";
