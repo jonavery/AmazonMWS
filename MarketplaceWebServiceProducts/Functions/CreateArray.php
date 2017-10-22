@@ -15,7 +15,7 @@ $requestId = $request;
 unset($request);
 
 // Get the lowest price for product
-require_once(__DIR__ . '/GetLowestOfferListingsForAsin.php');
+require_once(__DIR__ . '/GetLowestOfferListingsForASIN.php');
 $requestPrice = $request;
 unset($request);
 
@@ -62,7 +62,7 @@ foreach ($items->item as $item) {
 			"Length"=>(string)$item->Dimensions->Length,
 			"Width"=>(string)$item->Dimensions->Width,
 			"Height"=>(string)$item->Dimensions->Height));		
-	}
+}
 // Create an array to hold UPC's
 $upclist = array();
 
@@ -87,7 +87,7 @@ foreach($itemArray as $key => $item) {
 		$match = new SimpleXMLElement($xmlMatch);
 		$item["ASIN"] = (string)$match->ListMatchingProductsResult->Products->Product->Identifiers->MarketplaceASIN->ASIN;
 		
-		// Sleep for required time to aviud throttling.
+		// Sleep for required time to avoid throttling.
 		$match_end = microtime(true);
 		if ($requestCount > 19 && ($match_end - $match_start) < 5000000) {
 			usleep(5000000 - ($match_end - match_start));
@@ -111,7 +111,7 @@ foreach($itemArray as $key => $item) {
 	$result = $asins->GetMatchingProductforIdResult;
 	if (@count($result->Products)) {
 		$product = $result->Products->product->children();
-		$item["ASIN"] = (string)$product->Identifiers->MarketplaceAsin->ASIN;
+		$item["ASIN"] = (string)$product->Identifiers->MarketplaceASIN->ASIN;
 	}
 
 // Sleep for required time to avoid throttling.
