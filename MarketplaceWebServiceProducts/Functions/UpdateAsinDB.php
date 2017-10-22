@@ -5,24 +5,12 @@
  * its values against the Google Sheets AsinDB.
  *
  **********************************************************/
-
-// Define database parameters.
-$host = "localhost";
-$db = "inventory";
-$user = "php";
-$pass = 'K1@$run';
-$char = "utf8";
-$dsn = "mysql:host=$host;dbname=$db;charset=$char";
-$opt = [
-    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-    PDO::ATTR_EMULATE_PREPARES   => false,
-];
+require_once(__DIR__ . '/.config.inc.php');
 
 // Create and check database connection
-$db = new PDO($dsn, $user, $pass, $opt);
-if ($db->connect_errno) {
-    die("Connection failed: " . $db->connect_error);
+$pdo = createPDO();
+if ($pdo->connect_errno) {
+    die("Connection failed: " . $pdo->connect_error);
 } 
 echo "Connected successfully to MySQL database. \n";
 
@@ -38,7 +26,7 @@ $asinArray = array_column($googleArray, 1);
 $inArray = "?" . str_repeat(",?", count($asinArray) - 1);
 
 // Select all ASINs from price table that are in ASIN array.
-$stmt = $db->prepare("
+$stmt = $pdo->prepare("
     SELECT ASIN
     FROM prices
     WHERE ASIN IN ($inArray)
@@ -54,7 +42,7 @@ $valueArray = array_intersect_key($googleArray, $diff);
 
 echo "Comparing ASINs in MySQL to those in GoogleDB... \n";
 // Insert all ASINs not in prices table.
-$stmt = $db->prepare("
+$stmt = $pdo->prepare("
     INSERT INTO prices (Title, ASIN, AERdesignation, SalePrice, FeeTotal, NetProfit, SaleRank)
     VALUES (?,?,?,?,?,?,?)
 ");

@@ -11,6 +11,7 @@
  **********************************************************/
 
 require_once(__DIR__ . '/../../MarketplaceWebServiceProducts/Functions/SetItemPrice.php');
+require_once(__DIR__ . '/.config.inc.php');
 
 function parseReport($file) {
     $result = array();
@@ -53,29 +54,16 @@ item-condition:
 11- New
  ******/
 
-// Define database parameters.
-$host = "localhost";
-$db = "inventory";
-$user = "php";
-$pass = 'K1@$run';
-$char = "utf8";
-$dsn = "mysql:host=$host;dbname=$db;charset=$char";
-$opt = [
-    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-    PDO::ATTR_EMULATE_PREPARES   => false,
-];
-
 // Create and check database connection
-$db = new PDO($dsn, $user, $pass, $opt);
-if ($db->connect_errno) {
-    die("Connection failed: " . $db->connect_error);
+$pdo = createPDO();
+if ($pdo->connect_errno) {
+    die("Connection failed: " . $pdo->connect_error);
 } 
 echo "Connected successfully to MySQL database. \n";
 
 
 // Select all ASINs from price table that are in ASIN array.
-$stmt = $db->prepare("
+$stmt = $pdo->prepare("
     SELECT ASIN, SalePrice
     FROM prices
     WHERE ASIN IN ($inArray)
