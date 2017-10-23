@@ -27,9 +27,9 @@ $inArray = "?" . str_repeat(",?", count($asinArray) - 1);
 
 // Select all ASINs from price table that are in ASIN array.
 $stmt = $pdo->prepare("
-    SELECT ASIN
+    SELECT asin
     FROM prices
-    WHERE ASIN IN ($inArray)
+    WHERE asin IN ($inArray)
 ");
 $stmt->execute($asinArray);
 $asinPDOS = $stmt->fetchAll(PDO::FETCH_COLUMN,0);
@@ -43,7 +43,7 @@ $valueArray = array_intersect_key($googleArray, $diff);
 echo "Comparing ASINs in MySQL to those in GoogleDB... \n";
 // Insert all ASINs not in prices table.
 $stmt = $pdo->prepare("
-    INSERT INTO prices (Title, ASIN, AERdesignation, SalePrice, FeeTotal, NetProfit, SaleRank)
+    INSERT INTO prices (title, asin, aer_designation, sale_price, fee_total, net_profit, sale_rank)
     VALUES (?,?,?,?,?,?,?)
 ");
 foreach($valueArray as $row) {

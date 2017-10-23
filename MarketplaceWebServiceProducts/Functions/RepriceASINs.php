@@ -21,10 +21,10 @@ echo "Connected successfully to MySQL database. \n";
 // Select all ASINs from price table that have not been updated in the last hour.
 $updated = date('Y-m-d H:i:s', strtotime('-1 hour'));
 $stmt = $pdo->prepare('
-    SELECT ASIN
+    SELECT asin
     FROM prices
-    WHERE LastUpdated < ?
-    ORDER BY LastUpdated ASC
+    WHERE last_updated < ?
+    ORDER BY last_updated ASC
     LIMIT 250
 ');
 $stmt->execute([$updated]);
@@ -35,7 +35,7 @@ echo "Updating prices... \n";
 $itemArray = [];
 foreach ($asinPDOS as $row) {
     // Cache ASIN.
-    $asin = $row['ASIN'];
+    $asin = $row['asin'];
 
     // Reset throttling parameter.
     $requestCount = 0;
@@ -80,7 +80,7 @@ foreach($itemArray as $key => &$item) {
     $item["Price"] = pricer($item["Price"], $listCond, $itemCond, $item["FeedbackCount"]);
 
     // Save price in database.
-    $stmt = $pdo->prepare('UPDATE prices SET SalePrice = :price WHERE ASIN = :asin');
+    $stmt = $pdo->prepare('UPDATE prices SET sale_price = :price WHERE asin = :asin');
     $stmt->execute([$item["Price"], $item["ASIN"]]);
 }
 echo "Database update complete.";

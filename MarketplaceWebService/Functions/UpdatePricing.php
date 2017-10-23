@@ -64,7 +64,7 @@ echo "Connected successfully to MySQL database. \n";
 
 // Select all ASINs from price table that are in ASIN array.
 $stmt = $pdo->prepare("
-    SELECT ASIN, SalePrice
+    SELECT asin, sale_price
     FROM prices
     WHERE ASIN IN ($inArray)
 ");
