@@ -13,23 +13,14 @@
 require_once(__DIR__ . '/../../MarketplaceWebServiceProducts/Functions/SetItemPrice.php');
 require_once(__DIR__ . '/.config.inc.php');
 
-function parseReport($file) {
-    $result = array();
-    $fp = fopen($file,'r');
-    if (($headers = fgetcsv($fp, 0, "\t")) !== FALSE)
-      if ($headers)
-        while (($line = fgetcsv($fp, 0, "\t")) !== FALSE) 
-          if ($line)
-            if (sizeof($line)==sizeof($headers))
-              $result[] = array_combine($headers,$line);
-    fclose($fp);
-    return $result;
-}
-
 // Open report and parse as array.
 echo "Loading listing report... ";
 $reportArray = parseReport('AFN-report.txt');
 echo "Success! \n\n";
+
+// Filter out all out-of-stock items
+$reportArray = arrayFind($reportArray, 'Quantity Available', 1);
+print_r($reportArray);
 
 // Create ASIN array to be passed to SQL SELECT statement.
 $asinArray = array_column($reportArray, 'asin');
@@ -71,7 +62,27 @@ $stmt = $pdo->prepare("
 $stmt->execute($asinArray);
 $asinPDOS = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+
+print_r($asinPDOS);
+exit;
+$tabCSV = arrayToTab($asinPDOS);
+file_put_contents("prices.txt", $tabCSV);
+
+function parseReport($file) {
+    $result = array();
+    $fp = fopen($file,'r');
+    if (($headers = fgetcsv($fp, 0, "\t")) !== FALSE)
+      if ($headers)
+        while (($line = fgetcsv($fp, 0, "\t")) !== FALSE) 
+          if ($line)
+            if (sizeof($line)==sizeof($headers))
+              $result[] = array_combine($headers,$line);
+    fclose($fp);
+    return $result;
+}
+
 // NOTE: Does not function with tabs and newlines in values
+// @TODO: Replace with fputcsv().
 function arrayToTab($array) {
     $tabCSV = implode("\t", array_keys($array[0])); 
     foreach($array as $row) {
@@ -80,8 +91,14 @@ function arrayToTab($array) {
     return $tabCSV;
 }
 
-print_r($asinPDOS);
-$tabCSV = arrayToTab($asinPDOS);
-file_put_contents("prices.txt", $tabCSV);
+function arrayFind($arr, $key, $val) {
+    $ret = [];
+    foreach($arr as $elem) {
+        if($elem[$key] == $val) {
+            $ret[]= $elem;
+        }
+    }
+    return $ret;
+}
 
 ?>
