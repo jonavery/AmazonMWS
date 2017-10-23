@@ -9,6 +9,7 @@
 require_once(__DIR__ . '/RequestReport.php'); 
 require_once(__DIR__ . '/GetReportRequestList.php');
 require_once(__DIR__ . '/GetReport.php');
+require_once(__DIR__ . '/UpdatePricing.php');
 
 
 // Request a listings data report.
@@ -40,7 +41,7 @@ while ($reportStatus[0] != '_DONE_') {
 echo "\nReport complete!\n\n";
 
 // Get the completed report from Amazon.
-$filename = 'report_'.date('Y-m-d_H:i:s').'txt';
+$filename = 'report_'.date('AFN-report').'.txt';
 $handle = fopen($filename, 'x+');
 
 $requestGetReport = new MarketplaceWebService_Model_GetReportRequest();
@@ -48,6 +49,8 @@ $requestGetReport->setMerchant(MERCHANT_ID);
 $requestGetReport->setReport($handle);
 $requestGetReport->setReportId($reportStatus[1]);
 
-echo invokeGetReport($service, $requestGetReport);
+invokeGetReport($service, $requestGetReport);
 fwrite($handle, $response);
 fclose($handle);
+
+
