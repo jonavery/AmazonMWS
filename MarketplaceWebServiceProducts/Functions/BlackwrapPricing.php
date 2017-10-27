@@ -4,7 +4,7 @@
  * array containing prices for items in the order.
  **********************************************************/
 // Increase max runtime to 5 minutes - the max time allowed by Apache
-ini_set('max_execution_time', 300);
+ini_set('max_execution_time', 100000);
 require_once(__DIR__ . '/GetMatchingProductForId.php');
 $requestId = $request;
 unset($request);
@@ -16,6 +16,13 @@ $requestMatch = $request;
 unset($request);
 require_once(__DIR__ . '/GetMyFeesEstimate.php');
 
+// Retrieve starting line from URL.
+if (array_key_exists("line", $_GET)) {
+    $offset = htmlspecialchars($_GET["line"]);
+} else {
+    $offset = 0;
+}
+
 // Load XML file.
 $url = "https://script.google.com/macros/s/AKfycbwFxIlDhKpBIkJywpzz9iSbkWeO50EXLS5Oj7xS7IYzCoK-jxND/exec";
 // Parse data from XML into an array.
@@ -23,7 +30,7 @@ $itemsXML = file_get_contents($url);
 $items = new SimpleXMLElement($itemsXML);
 $itemArray = array();
 foreach ($items->item as $key => $item) {
-    // if ($key < 125) {continue;}
+    if ($key < $offset) {continue;}
     switch (strlen((string)$item->UPC)) {
         case 11:
             $upc = "0".(string)$item->UPC;
