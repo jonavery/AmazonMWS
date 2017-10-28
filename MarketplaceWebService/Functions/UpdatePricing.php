@@ -63,6 +63,18 @@ $stmt = $pdo->prepare("
 $stmt->execute($asinArray);
 $asinPDOS = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+//@TODO: Filter report array to only contain items to be updated.
+$inter = array_intersect($asinArray, array_column($asinPDOS, 'asin');
+$update = array_intersect_key($asinArray, $inter);
+
+//@TODO: Rename/set fields:
+// field-name => value
+// sku => $asinArray[$row]['seller-sku']
+// price => $asinPDOS[$asinArray[$row]['asin']]
+// fulfillment-channel => "amazon"
+
+//@TODO: Update prices in report array.
+
 // Convert array into flat, tab-delimited text file.
 $handle = fopen("prices.txt", 'w+');
 $tabCSV = arrayToTab($asinPDOS);
@@ -83,14 +95,6 @@ function parseReport($file) {
               $result[] = array_combine($headers,$line);
     fclose($fp);
     return $result;
-}
-
-function arrayToTab($array) {
-    $tabCSV = implode("\t", array_keys($array[0])); 
-    foreach($array as $row) {
-        $tabCSV = implode("\n",array($tabCSV, implode("\t", $row)));
-    }
-    return $tabCSV;
 }
 
 function arrayFind($arr, $key, $val) {
