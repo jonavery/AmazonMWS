@@ -57,16 +57,20 @@ echo "Connected successfully to MySQL database. \n";
 $stmt = $pdo->prepare("
     SELECT asin, sale_price
     FROM prices
-    WHERE ASIN IN ($inArray)
+    WHERE asin IN ($inArray)
+    AND sale_price > 0
 ");
 $stmt->execute($asinArray);
 $asinPDOS = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-
-print_r($asinPDOS);
-exit;
+// Convert array into flat, tab-delimited text file.
+$handle = fopen("prices.txt", 'w+');
 $tabCSV = arrayToTab($asinPDOS);
-file_put_contents("prices.txt", $tabCSV);
+fputcsv($handle, array_keys($asinPDOS[1]), "\t");
+foreach ($asinPDOS as $row) {
+    fputcsv($handle, $row, "\t");
+}
+fclose($handle);
 
 function parseReport($file) {
     $result = array();
@@ -81,8 +85,6 @@ function parseReport($file) {
     return $result;
 }
 
-// NOTE: Does not function with tabs and newlines in values
-// @TODO: Replace with fputcsv().
 function arrayToTab($array) {
     $tabCSV = implode("\t", array_keys($array[0])); 
     foreach($array as $row) {
