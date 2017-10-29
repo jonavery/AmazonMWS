@@ -12,6 +12,8 @@
 
 require_once(__DIR__ . '/../../MarketplaceWebServiceProducts/Functions/SetItemPrice.php');
 require_once(__DIR__ . '/.config.inc.php');
+require_once(__DIR__ . '/SubmitFeed.php');
+
 
 // Open report and parse as array.
 echo "Loading listing report... ";
@@ -20,30 +22,10 @@ echo "Success! \n\n";
 
 // Filter out all out-of-stock items
 $reportArray = arrayFind($reportArray, 'Quantity Available', 1);
-print_r($reportArray);
 
 // Create ASIN array to be passed to SQL SELECT statement.
 $asinArray = array_column($reportArray, 'asin');
 $inArray = "?" . str_repeat(",?", count($asinArray) - 1);
-
-/******
- * $reportArray key names:
-['seller-sku']
-['fulfillment-channel-sku']
-['asin']
-['condition-type']
-['Warehouse-Condition-code']
-['Quantity Available']
-
-item-condition:
-1 - Used - Like New
-2 - Used - Very Good
-3 - Used - Good
-4 - Used - Acceptable
-5 - Collectible - Like New
-6 - Collectible - Very Good
-11- New
- ******/
 
 // Create and check database connection
 $pdo = createPDO("inventory");
@@ -51,7 +33,6 @@ if ($pdo->connect_errno) {
     die("Connection failed: " . $pdo->connect_error);
 } 
 echo "Connected successfully to MySQL database. \n";
-
 
 // Select all ASINs from price table that are in ASIN array.
 $stmt = $pdo->prepare("
@@ -61,29 +42,46 @@ $stmt = $pdo->prepare("
     AND sale_price > 0
 ");
 $stmt->execute($asinArray);
-$asinPDOS = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$arrayPDOS = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-//@TODO: Filter report array to only contain items to be updated.
-$inter = array_intersect($asinArray, array_column($asinPDOS, 'asin');
-$update = array_intersect_key($asinArray, $inter);
+// Filter report array to only contain items to be updated.
+$asinPDOS = array_column($arrayPDOS, 'asin');
+$inter = array_intersect($asinArray, $asinPDOS);
+$updatePrep = array_intersect_key($reportArray, $inter);
 
-//@TODO: Rename/set fields:
-// field-name => value
-// sku => $asinArray[$row]['seller-sku']
-// price => $asinPDOS[$asinArray[$row]['asin']]
-// fulfillment-channel => "amazon"
+// Load list of SKU's to be skipped.
+$skipURL = "https://script.google.com/macros/s/AKfycbxDydTVlIpT5NEitTxMekuuuMX0eJABrcML3PigN8R4lF-Wm02e/exec";
+$skipJSON = file_get_contents($skipURL);
 
-//@TODO: Update prices in report array.
+// Rename/set fields:
+$updateFinal = array();
+foreach ($updatePrep as $key => &$row) {
+    $asin = $row['asin'];
+    $price = $arrayPDOS[array_search($asin, $asinPDOS)]['sale_price'];
+    $cond = substr($row['condition-type'], 4);
+    $updateFinal[] = array(
+        'sku' => $row['seller-sku'],
+        'price' => pricer($price, 2, numCond($cond)),
+        'fulfillment-channel' => "amazon"
+    );
+
+}
+
 
 // Convert array into flat, tab-delimited text file.
 $handle = fopen("prices.txt", 'w+');
-$tabCSV = arrayToTab($asinPDOS);
-fputcsv($handle, array_keys($asinPDOS[1]), "\t");
+fputcsv($handle, array_keys($updateFinal[0], "\t");
 foreach ($asinPDOS as $row) {
     fputcsv($handle, $row, "\t");
 }
 fclose($handle);
 
+/***
+ * parseReport parses a tab-delimited text file and returns it
+ * as a PHP array object.
+ *
+ * @param $file {string} - string path/to/file.txt to be converted
+ ***/
 function parseReport($file) {
     $result = array();
     $fp = fopen($file,'r');
@@ -97,6 +95,14 @@ function parseReport($file) {
     return $result;
 }
 
+/***
+ * arrayFind looks through a multi-dimensional array and returns all elements where
+ * one field equals a certain value.
+ *
+ * @param $arr {array} - array object to be searched
+ * @param $key {int}||{string} - integer or string index to search in each element
+ * @param $val {*} - value to find
+ ***/
 function arrayFind($arr, $key, $val) {
     $ret = [];
     foreach($arr as $elem) {
