@@ -11,7 +11,6 @@
  **********************************************************/
 
 require_once(__DIR__ . '/../../MarketplaceWebServiceProducts/Functions/SetItemPrice.php');
-require_once(__DIR__ . '/.config.inc.php');
 require_once(__DIR__ . '/SubmitFeed.php');
 
 
@@ -63,6 +62,7 @@ foreach ($updatePrep as $key => &$row) {
     if (in_array($row['seller-sku'], $skipArray) {continue;}
     $asin = $row['asin'];
     $price = $arrayPDOS[array_search($asin, $asinPDOS)]['sale_price'];
+    if ($price == 0) {continue;}
     $cond = substr($row['condition-type'], 4);
     $updateFinal[] = array(
         'sku' => $row['seller-sku'],
@@ -79,6 +79,13 @@ foreach ($updateFinal as $row) {
 }
 fclose($handle);
 echo "Success! \n\n";
+
+// Submit flat file to Amazon feed.
+$feed = file_get_contents("prices.txt");
+$request = makeRequest($feed);
+$request->setFeedType('');
+invokeSubmitFeed($service, $request);
+@fclose($feedHandle);
 
 /***
  * parseReport parses a tab-delimited text file and returns it
