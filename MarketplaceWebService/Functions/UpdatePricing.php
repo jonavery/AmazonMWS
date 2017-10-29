@@ -50,6 +50,7 @@ $inter = array_intersect($asinArray, $asinPDOS);
 $updatePrep = array_intersect_key($reportArray, $inter);
 
 // Load list of SKU's to be skipped.
+echo "Loading list of SKU's to be skipped \n";
 $skipURL = "https://script.google.com/macros/s/AKfycbxDydTVlIpT5NEitTxMekuuuMX0eJABrcML3PigN8R4lF-Wm02e/exec";
 $skipJSON = file_get_contents($skipURL);
 
@@ -64,17 +65,18 @@ foreach ($updatePrep as $key => &$row) {
         'price' => pricer($price, 2, numCond($cond)),
         'fulfillment-channel' => "amazon"
     );
-
 }
+print_r($updateFinal);
 
 
 // Convert array into flat, tab-delimited text file.
 $handle = fopen("prices.txt", 'w+');
-fputcsv($handle, array_keys($updateFinal[0], "\t");
-foreach ($asinPDOS as $row) {
+fputcsv($handle, array_keys($updateFinal[0]), "\t");
+foreach ($updateFinal as $row) {
     fputcsv($handle, $row, "\t");
 }
 fclose($handle);
+echo "Created flat file. \n";
 
 /***
  * parseReport parses a tab-delimited text file and returns it
