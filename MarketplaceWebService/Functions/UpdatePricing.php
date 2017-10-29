@@ -59,7 +59,7 @@ echo "Success! \n\n";
 echo "Creating flat file...";
 $updateFinal = array();
 foreach ($updatePrep as $key => &$row) {
-    if (in_array($row['seller-sku'], $skipArray) {continue;}
+    if (in_array($row['seller-sku'], $skipArray)) {continue;}
     $asin = $row['asin'];
     $price = $arrayPDOS[array_search($asin, $asinPDOS)]['sale_price'];
     if ($price == 0) {continue;}
@@ -84,8 +84,9 @@ echo "Success! \n\n";
 $feed = file_get_contents("prices.txt");
 $request = makeRequest($feed);
 $request->setFeedType('_POST_FLAT_FILE_PRICEANDQUANTITYONLY_UPDATE_DATA_');
-invokeSubmitFeed($service, $request);
+//invokeSubmitFeed($service, $request);
 @fclose($feedHandle);
+echo "Feed submitted to Amazon. \n\n";
 
 /***
  * parseReport parses a tab-delimited text file and returns it
