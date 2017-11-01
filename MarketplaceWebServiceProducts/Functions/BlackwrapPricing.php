@@ -24,13 +24,12 @@ if (array_key_exists("line", $_GET)) {
 }
 
 // Load XML file.
-$url = "https://script.google.com/macros/s/AKfycbwFxIlDhKpBIkJywpzz9iSbkWeO50EXLS5Oj7xS7IYzCoK-jxND/exec";
+$url = "https://script.google.com/macros/s/AKfycbwFxIlDhKpBIkJywpzz9iSbkWeO50EXLS5Oj7xS7IYzCoK-jxND/exec?line=$offset";
 // Parse data from XML into an array.
 $itemsXML = file_get_contents($url);
 $items = new SimpleXMLElement($itemsXML);
 $itemArray = array();
 foreach ($items->item as $key => $item) {
-    if ($key < $offset) {continue;}
     switch (strlen((string)$item->UPC)) {
         case 11:
             $upc = "0".(string)$item->UPC;
