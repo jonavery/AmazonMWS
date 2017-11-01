@@ -58,6 +58,7 @@ foreach ($asinPDOS as $row) {
             "FulfilledBy" => (string)$listing->Qualifiers->FulfillmentChannel,
             "FeedbackCount" => (int)$listing->SellerFeedbackCount
         );
+        echo "ASIN: $asin \t PRICE: " . (string)$listing->Price->LandedPrice->Amount . "\n";
         break;
     }
 
