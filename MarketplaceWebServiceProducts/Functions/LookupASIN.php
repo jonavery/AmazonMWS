@@ -82,6 +82,13 @@ foreach($itemArray as $key => &$item) {
         $product = $result->Products->Product->children();
         $item["ASIN"] = (string)$product->Identifiers->MarketplaceASIN->ASIN;
     }
+
+    if ($item["ASIN"] == "") {
+        $requestMatch->setQuery($item["Title"]);
+        $xmlMatch = invokeListMatchingProducts($service, $requestMatch);
+        $match = new SimpleXMLElement($xmlMatch);
+        $item["ASIN"] = (string)$match->ListMatchingProductsResult->Products->Product->Identifiers->MarketplaceASIN->ASIN;
+    }
     
     // Sleep for required time to avoid throttling.
     $match_end = microtime(true);

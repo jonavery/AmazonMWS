@@ -84,7 +84,7 @@ echo "Success! \n\n";
 $feed = file_get_contents("prices.txt");
 $request = makeRequest($feed);
 $request->setFeedType('_POST_FLAT_FILE_PRICEANDQUANTITYONLY_UPDATE_DATA_');
-//invokeSubmitFeed($service, $request);
+invokeSubmitFeed($service, $request);
 @fclose($feedHandle);
 echo "Feed submitted to Amazon. \n\n";
 
