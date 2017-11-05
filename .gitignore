@@ -1,3 +1,5 @@
+.htaccess
+.config.inc.php
 /FBAInboundServiceMWS/Functions/.config.inc.php
 /MarketplaceWebService/Functions/.config.inc.php
 /MarketplaceWebServiceProducts/Functions/.config.inc.php

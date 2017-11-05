@@ -21,13 +21,13 @@
  * Get Service Status of the Fulfillment Inbound Shipment API section of AMWS 
  */
 
-require_once(__DIR__ . '/.config.inc.php');
+require_once(__DIR__ . '/../../includes.php');
 
 /************************************************************************
  * Instantiate Implementation of FBAInboundServiceMWS
  *
  * AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY constants
- * are defined in the .config.inc.php located in the same
+ * are defined in the ../../includes.php located in the same
  * directory as this sample
  ***********************************************************************/
 // More endpoints are listed in the MWS Developer Guide

@@ -20,7 +20,7 @@
  * Get Feed Submission List By Next Token  
  */
 
-include_once ('.config.inc.php'); 
+include_once ('../../includes.php'); 
 
 // IMPORTANT: Uncomment the approiate line for the country you wish to
 // sell in:
@@ -38,7 +38,7 @@ $config = array (
  * Instantiate Implementation of MarketplaceWebService
  * 
  * AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY constants 
- * are defined in the .config.inc.php located in the same 
+ * are defined in the ../../includes.php located in the same 
  * directory as this sample
  ***********************************************************************/
  $service = new MarketplaceWebService_Client(
