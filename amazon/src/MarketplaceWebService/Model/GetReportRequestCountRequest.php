@@ -19,7 +19,7 @@
 /**
  *  @see MarketplaceWebService_Model
  */
-include_once ('MarketplaceWebService/Model.php');  
+include_once (__DIR__ . '/../Model.php');  
 
     
 
@@ -65,8 +65,8 @@ class MarketplaceWebService_Model_GetReportRequestCountRequest extends Marketpla
         'Marketplace' => array('FieldValue' => null, 'FieldType' => 'string'),
         'Merchant' => array('FieldValue' => null, 'FieldType' => 'string'),
         'MWSAuthToken' => array('FieldValue' => null, 'FieldType' => 'string'),
-        'ReportTypeList' => array('FieldValue' => null, 'FieldType' => 'MarketplaceWebService_Model_TypeList'),
-        'ReportProcessingStatusList' => array('FieldValue' => null, 'FieldType' => 'MarketplaceWebService_Model_StatusList'),
+        'ReportTypeList' => array('FieldValue' => null, 'FieldType' => __DIR__ . '_Model_TypeList'),
+        'ReportProcessingStatusList' => array('FieldValue' => null, 'FieldType' => __DIR__ . '_Model_StatusList'),
         'RequestedFromDate' => array('FieldValue' => null, 'FieldType' => 'DateTime'),
         'RequestedToDate' => array('FieldValue' => null, 'FieldType' => 'DateTime'),
         );

@@ -19,7 +19,7 @@
 /**
  *  @see MarketplaceWebService_Model
  */
-include_once ('MarketplaceWebService/Model.php');  
+include_once (__DIR__ . '/../Model.php');  
 
     
 
@@ -61,7 +61,7 @@ class MarketplaceWebService_Model_UpdateReportAcknowledgementsRequest extends Ma
         'Marketplace' => array('FieldValue' => null, 'FieldType' => 'string'),
         'Merchant' => array('FieldValue' => null, 'FieldType' => 'string'),
         'MWSAuthToken' => array('FieldValue' => null, 'FieldType' => 'string'),
-        'ReportIdList' => array('FieldValue' => null, 'FieldType' => 'MarketplaceWebService_Model_IdList'),
+        'ReportIdList' => array('FieldValue' => null, 'FieldType' => __DIR__ . '_Model_IdList'),
         'Acknowledged' => array('FieldValue' => null, 'FieldType' => 'bool'),
         );
         parent::__construct($data);

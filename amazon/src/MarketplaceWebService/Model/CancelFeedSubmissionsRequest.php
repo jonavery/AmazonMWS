@@ -19,7 +19,7 @@
 /**
  *  @see MarketplaceWebService_Model
  */
-include_once ('MarketplaceWebService/Model.php');  
+include_once (__DIR__ . '/../Model.php');  
 
     
 
@@ -65,8 +65,8 @@ class MarketplaceWebService_Model_CancelFeedSubmissionsRequest extends Marketpla
         'Marketplace' => array('FieldValue' => null, 'FieldType' => 'string'),
         'Merchant' => array('FieldValue' => null, 'FieldType' => 'string'),
         'MWSAuthToken' => array('FieldValue' => null, 'FieldType' => 'string'),
-        'FeedSubmissionIdList' => array('FieldValue' => null, 'FieldType' => 'MarketplaceWebService_Model_IdList'),
-        'FeedTypeList' => array('FieldValue' => null, 'FieldType' => 'MarketplaceWebService_Model_TypeList'),
+        'FeedSubmissionIdList' => array('FieldValue' => null, 'FieldType' => __DIR__ . '_Model_IdList'),
+        'FeedTypeList' => array('FieldValue' => null, 'FieldType' => __DIR__ . '_Model_TypeList'),
         'SubmittedFromDate' => array('FieldValue' => null, 'FieldType' => 'DateTime'),
         'SubmittedToDate' => array('FieldValue' => null, 'FieldType' => 'DateTime'),
         );

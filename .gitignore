@@ -2,6 +2,7 @@
 .config.inc.php
 /FBAInboundServiceMWS/Functions/.config.inc.php
 /MarketplaceWebService/Functions/.config.inc.php
+/MarketplaceWebService/Functions/report_*
 /MarketplaceWebServiceProducts/Functions/.config.inc.php
 /MWSSubscriptionsService/Functions/.config.inc.php
 /AWS/config.php

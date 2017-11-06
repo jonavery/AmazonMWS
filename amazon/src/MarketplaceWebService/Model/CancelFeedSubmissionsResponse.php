@@ -19,7 +19,7 @@
 /**
  *  @see MarketplaceWebService_Model
  */
-include_once ('MarketplaceWebService/Model.php');  
+include_once (__DIR__ . '/../Model.php');  
 
     
 
@@ -54,8 +54,8 @@ class MarketplaceWebService_Model_CancelFeedSubmissionsResponse extends Marketpl
     public function __construct($data = null)
     {
         $this->fields = array (
-        'CancelFeedSubmissionsResult' => array('FieldValue' => null, 'FieldType' => 'MarketplaceWebService_Model_CancelFeedSubmissionsResult'),
-        'ResponseMetadata' => array('FieldValue' => null, 'FieldType' => 'MarketplaceWebService_Model_ResponseMetadata'),
+        'CancelFeedSubmissionsResult' => array('FieldValue' => null, 'FieldType' => __DIR__ . '_Model_CancelFeedSubmissionsResult'),
+        'ResponseMetadata' => array('FieldValue' => null, 'FieldType' => __DIR__ . '_Model_ResponseMetadata'),
         );
         parent::__construct($data);
     }

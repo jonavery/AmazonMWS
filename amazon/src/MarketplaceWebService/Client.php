@@ -19,7 +19,7 @@
 /**
  *  @see MarketplaceWebService_Interface
  */
-include_once ('MarketplaceWebService/Interface.php');
+include_once (__DIR__ . '/Interface.php');
 include_once ('RequestType.php');
 
 define('CONVERTED_PARAMETERS_KEY', 'PARAMETERS');
@@ -262,10 +262,10 @@ class MarketplaceWebService_Client implements MarketplaceWebService_Interface
   public function getReport($request)
   {
     if (!$request instanceof MarketplaceWebService_Model_GetReportRequest) {
-      include_once ('MarketplaceWebService/Model/GetReportRequest.php');
+      include_once (__DIR__ . '/Model/GetReportRequest.php');
       $request = new MarketplaceWebService_Model_GetReportRequest($request);
     }
-    include_once ('MarketplaceWebService/Model/GetReportResponse.php');
+    include_once (__DIR__ . '/Model/GetReportResponse.php');
 
     $httpResponse = $this->invoke($this->convertGetReport($request), $request->getReport());
     $response = MarketplaceWebService_Model_GetReportResponse::fromXML($httpResponse['ResponseBody']);
@@ -288,10 +288,10 @@ class MarketplaceWebService_Client implements MarketplaceWebService_Interface
   public function getReportScheduleCount($request)
   {
     if (!$request instanceof MarketplaceWebService_Model_GetReportScheduleCountRequest) {
-      include_once ('MarketplaceWebService/Model/GetReportScheduleCountRequest.php');
+      include_once (__DIR__ . '/Model/GetReportScheduleCountRequest.php');
       $request = new MarketplaceWebService_Model_GetReportScheduleCountRequest($request);
     }
-    include_once ('MarketplaceWebService/Model/GetReportScheduleCountResponse.php');
+    include_once (__DIR__ . '/Model/GetReportScheduleCountResponse.php');
     $httpResponse = $this->invoke($this->convertGetReportScheduleCount($request));
     $response = MarketplaceWebService_Model_GetReportScheduleCountResponse::fromXML($httpResponse['ResponseBody']);
     $response->setResponseHeaderMetadata($httpResponse['ResponseHeaderMetadata']);
@@ -313,10 +313,10 @@ class MarketplaceWebService_Client implements MarketplaceWebService_Interface
   public function getReportRequestListByNextToken($request)
   {
     if (!$request instanceof MarketplaceWebService_Model_GetReportRequestListByNextTokenRequest) {
-      include_once ('MarketplaceWebService/Model/GetReportRequestListByNextTokenRequest.php');
+      include_once (__DIR__ . '/Model/GetReportRequestListByNextTokenRequest.php');
       $request = new MarketplaceWebService_Model_GetReportRequestListByNextTokenRequest($request);
     }
-    include_once ('MarketplaceWebService/Model/GetReportRequestListByNextTokenResponse.php');
+    include_once (__DIR__ . '/Model/GetReportRequestListByNextTokenResponse.php');
     $httpResponse = $this->invoke($this->convertGetReportRequestListByNextToken($request));
     $response = MarketplaceWebService_Model_GetReportRequestListByNextTokenResponse::fromXML($httpResponse['ResponseBody']);
     $response->setResponseHeaderMetadata($httpResponse['ResponseHeaderMetadata']);
@@ -338,10 +338,10 @@ class MarketplaceWebService_Client implements MarketplaceWebService_Interface
   public function updateReportAcknowledgements($request)
   {
     if (!$request instanceof MarketplaceWebService_Model_UpdateReportAcknowledgementsRequest) {
-      include_once ('MarketplaceWebService/Model/UpdateReportAcknowledgementsRequest.php');
+      include_once (__DIR__ . '/Model/UpdateReportAcknowledgementsRequest.php');
       $request = new MarketplaceWebService_Model_UpdateReportAcknowledgementsRequest($request);
     }
-    include_once ('MarketplaceWebService/Model/UpdateReportAcknowledgementsResponse.php');
+    include_once (__DIR__ . '/Model/UpdateReportAcknowledgementsResponse.php');
     $httpResponse = $this->invoke($this->convertUpdateReportAcknowledgements($request));
     $response = MarketplaceWebService_Model_UpdateReportAcknowledgementsResponse::fromXML($httpResponse['ResponseBody']);
     $response->setResponseHeaderMetadata($httpResponse['ResponseHeaderMetadata']);
@@ -367,10 +367,10 @@ class MarketplaceWebService_Client implements MarketplaceWebService_Interface
   public function submitFeed($request)
   {
     if (!$request instanceof MarketplaceWebService_Model_SubmitFeedRequest) {
-      include_once ('MarketplaceWebService/Model/SubmitFeedRequest.php');
+      include_once (__DIR__ . '/Model/SubmitFeedRequest.php');
       $request = new MarketplaceWebService_Model_SubmitFeedRequest($request);
     }
-    include_once ('MarketplaceWebService/Model/SubmitFeedResponse.php');
+    include_once (__DIR__ . '/Model/SubmitFeedResponse.php');
     $httpResponse = $this->invoke($this->convertSubmitFeed($request), $request->getFeedContent());
     $response = MarketplaceWebService_Model_SubmitFeedResponse::fromXML($httpResponse['ResponseBody']);
     $response->setResponseHeaderMetadata($httpResponse['ResponseHeaderMetadata']);
@@ -394,10 +394,10 @@ class MarketplaceWebService_Client implements MarketplaceWebService_Interface
   public function getReportCount($request)
   {
     if (!$request instanceof MarketplaceWebService_Model_GetReportCountRequest) {
-      include_once ('MarketplaceWebService/Model/GetReportCountRequest.php');
+      include_once (__DIR__ . '/Model/GetReportCountRequest.php');
       $request = new MarketplaceWebService_Model_GetReportCountRequest($request);
     }
-    include_once ('MarketplaceWebService/Model/GetReportCountResponse.php');
+    include_once (__DIR__ . '/Model/GetReportCountResponse.php');
     $httpResponse = $this->invoke($this->convertGetReportCount($request));
     $response = MarketplaceWebService_Model_GetReportCountResponse::fromXML($httpResponse['ResponseBody']);
     $response->setResponseHeaderMetadata($httpResponse['ResponseHeaderMetadata']);
@@ -419,10 +419,10 @@ class MarketplaceWebService_Client implements MarketplaceWebService_Interface
   public function getFeedSubmissionListByNextToken($request)
   {
     if (!$request instanceof MarketplaceWebService_Model_GetFeedSubmissionListByNextTokenRequest) {
-      include_once ('MarketplaceWebService/Model/GetFeedSubmissionListByNextTokenRequest.php');
+      include_once (__DIR__ . '/Model/GetFeedSubmissionListByNextTokenRequest.php');
       $request = new MarketplaceWebService_Model_GetFeedSubmissionListByNextTokenRequest($request);
     }
-    include_once ('MarketplaceWebService/Model/GetFeedSubmissionListByNextTokenResponse.php');
+    include_once (__DIR__ . '/Model/GetFeedSubmissionListByNextTokenResponse.php');
     $httpResponse = $this->invoke($this->convertGetFeedSubmissionListByNextToken($request));
     $response = MarketplaceWebService_Model_GetFeedSubmissionListByNextTokenResponse::fromXML($httpResponse['ResponseBody']);
     $response->setResponseHeaderMetadata($httpResponse['ResponseHeaderMetadata']);
@@ -445,10 +445,10 @@ class MarketplaceWebService_Client implements MarketplaceWebService_Interface
   public function cancelFeedSubmissions($request)
   {
     if (!$request instanceof MarketplaceWebService_Model_CancelFeedSubmissionsRequest) {
-      include_once ('MarketplaceWebService/Model/CancelFeedSubmissionsRequest.php');
+      include_once (__DIR__ . '/Model/CancelFeedSubmissionsRequest.php');
       $request = new MarketplaceWebService_Model_CancelFeedSubmissionsRequest($request);
     }
-    include_once ('MarketplaceWebService/Model/CancelFeedSubmissionsResponse.php');
+    include_once (__DIR__ . '/Model/CancelFeedSubmissionsResponse.php');
     $httpResponse = $this->invoke($this->convertCancelFeedSubmissions($request));
     $response = MarketplaceWebService_Model_CancelFeedSubmissionsResponse::fromXML($httpResponse['ResponseBody']);
     $response->setResponseHeaderMetadata($httpResponse['ResponseHeaderMetadata']);
@@ -470,10 +470,10 @@ class MarketplaceWebService_Client implements MarketplaceWebService_Interface
   public function requestReport($request)
   {
     if (!$request instanceof MarketplaceWebService_Model_RequestReportRequest) {
-      include_once ('MarketplaceWebService/Model/RequestReportRequest.php');
+      include_once (__DIR__ . '/Model/RequestReportRequest.php');
       $request = new MarketplaceWebService_Model_RequestReportRequest($request);
     }
-    include_once ('MarketplaceWebService/Model/RequestReportResponse.php');
+    include_once (__DIR__ . '/Model/RequestReportResponse.php');
     $httpResponse = $this->invoke($this->convertRequestReport($request));
     $response = MarketplaceWebService_Model_RequestReportResponse::fromXML($httpResponse['ResponseBody']);
     $response->setResponseHeaderMetadata($httpResponse['ResponseHeaderMetadata']);
@@ -495,10 +495,10 @@ class MarketplaceWebService_Client implements MarketplaceWebService_Interface
   public function getFeedSubmissionCount($request)
   {
     if (!$request instanceof MarketplaceWebService_Model_GetFeedSubmissionCountRequest) {
-      include_once ('MarketplaceWebService/Model/GetFeedSubmissionCountRequest.php');
+      include_once (__DIR__ . '/Model/GetFeedSubmissionCountRequest.php');
       $request = new MarketplaceWebService_Model_GetFeedSubmissionCountRequest($request);
     }
-    include_once ('MarketplaceWebService/Model/GetFeedSubmissionCountResponse.php');
+    include_once (__DIR__ . '/Model/GetFeedSubmissionCountResponse.php');
     $httpResponse = $this->invoke($this->convertGetFeedSubmissionCount($request));
     $response = MarketplaceWebService_Model_GetFeedSubmissionCountResponse::fromXML($httpResponse['ResponseBody']);
     $response->setResponseHeaderMetadata($httpResponse['ResponseHeaderMetadata']);
@@ -521,10 +521,10 @@ class MarketplaceWebService_Client implements MarketplaceWebService_Interface
   public function cancelReportRequests($request)
   {
     if (!$request instanceof MarketplaceWebService_Model_CancelReportRequestsRequest) {
-      include_once ('MarketplaceWebService/Model/CancelReportRequestsRequest.php');
+      include_once (__DIR__ . '/Model/CancelReportRequestsRequest.php');
       $request = new MarketplaceWebService_Model_CancelReportRequestsRequest($request);
     }
-    include_once ('MarketplaceWebService/Model/CancelReportRequestsResponse.php');
+    include_once (__DIR__ . '/Model/CancelReportRequestsResponse.php');
     $httpResponse = $this->invoke($this->convertCancelReportRequests($request));
     $response = MarketplaceWebService_Model_CancelReportRequestsResponse::fromXML($httpResponse['ResponseBody']);
     $response->setResponseHeaderMetadata($httpResponse['ResponseHeaderMetadata']);
@@ -547,10 +547,10 @@ class MarketplaceWebService_Client implements MarketplaceWebService_Interface
   public function getReportList($request)
   {
     if (!$request instanceof MarketplaceWebService_Model_GetReportListRequest) {
-      include_once ('MarketplaceWebService/Model/GetReportListRequest.php');
+      include_once (__DIR__ . '/Model/GetReportListRequest.php');
       $request = new MarketplaceWebService_Model_GetReportListRequest($request);
     }
-    include_once ('MarketplaceWebService/Model/GetReportListResponse.php');
+    include_once (__DIR__ . '/Model/GetReportListResponse.php');
     $httpResponse = $this->invoke($this->convertGetReportList($request));
     $response = MarketplaceWebService_Model_GetReportListResponse::fromXML($httpResponse['ResponseBody']);
     $response->setResponseHeaderMetadata($httpResponse['ResponseHeaderMetadata']);
@@ -572,10 +572,10 @@ class MarketplaceWebService_Client implements MarketplaceWebService_Interface
   public function getFeedSubmissionResult($request)
   {
     if (!$request instanceof MarketplaceWebService_Model_GetFeedSubmissionResultRequest) {
-      include_once ('MarketplaceWebService/Model/GetFeedSubmissionResultRequest.php');
+      include_once (__DIR__ . '/Model/GetFeedSubmissionResultRequest.php');
       $request = new MarketplaceWebService_Model_GetFeedSubmissionResultRequest($request);
     }
-    include_once ('MarketplaceWebService/Model/GetFeedSubmissionResultResponse.php');
+    include_once (__DIR__ . '/Model/GetFeedSubmissionResultResponse.php');
     $httpResponse = $this->invoke($this->convertGetFeedSubmissionResult($request), $request->getFeedSubmissionResult());
     $response = MarketplaceWebService_Model_GetFeedSubmissionResultResponse::fromXML($httpResponse['ResponseBody']);
     $response->setResponseHeaderMetadata($httpResponse['ResponseHeaderMetadata']);
@@ -597,10 +597,10 @@ class MarketplaceWebService_Client implements MarketplaceWebService_Interface
   public function getFeedSubmissionList($request)
   {
     if (!$request instanceof MarketplaceWebService_Model_GetFeedSubmissionListRequest) {
-      include_once ('MarketplaceWebService/Model/GetFeedSubmissionListRequest.php');
+      include_once (__DIR__ . '/Model/GetFeedSubmissionListRequest.php');
       $request = new MarketplaceWebService_Model_GetFeedSubmissionListRequest($request);
     }
-    include_once ('MarketplaceWebService/Model/GetFeedSubmissionListResponse.php');
+    include_once (__DIR__ . '/Model/GetFeedSubmissionListResponse.php');
     $httpResponse = $this->invoke($this->convertGetFeedSubmissionList($request));
     $response = MarketplaceWebService_Model_GetFeedSubmissionListResponse::fromXML($httpResponse['ResponseBody']);
     $response->setResponseHeaderMetadata($httpResponse['ResponseHeaderMetadata']);
@@ -622,10 +622,10 @@ class MarketplaceWebService_Client implements MarketplaceWebService_Interface
   public function getReportRequestList($request)
   {
     if (!$request instanceof MarketplaceWebService_Model_GetReportRequestListRequest) {
-      include_once ('MarketplaceWebService/Model/GetReportRequestListRequest.php');
+      include_once (__DIR__ . '/Model/GetReportRequestListRequest.php');
       $request = new MarketplaceWebService_Model_GetReportRequestListRequest($request);
     }
-    include_once ('MarketplaceWebService/Model/GetReportRequestListResponse.php');
+    include_once (__DIR__ . '/Model/GetReportRequestListResponse.php');
     $httpResponse = $this->invoke($this->convertGetReportRequestList($request));
     $response = MarketplaceWebService_Model_GetReportRequestListResponse::fromXML($httpResponse['ResponseBody']);
     $response->setResponseHeaderMetadata($httpResponse['ResponseHeaderMetadata']);
@@ -647,10 +647,10 @@ class MarketplaceWebService_Client implements MarketplaceWebService_Interface
   public function getReportScheduleListByNextToken($request)
   {
     if (!$request instanceof MarketplaceWebService_Model_GetReportScheduleListByNextTokenRequest) {
-      include_once ('MarketplaceWebService/Model/GetReportScheduleListByNextTokenRequest.php');
+      include_once (__DIR__ . '/Model/GetReportScheduleListByNextTokenRequest.php');
       $request = new MarketplaceWebService_Model_GetReportScheduleListByNextTokenRequest($request);
     }
-    include_once ('MarketplaceWebService/Model/GetReportScheduleListByNextTokenResponse.php');
+    include_once (__DIR__ . '/Model/GetReportScheduleListByNextTokenResponse.php');
     $httpResponse = $this->invoke($this->convertGetReportScheduleListByNextToken($request));
     $response = MarketplaceWebService_Model_GetReportScheduleListByNextTokenResponse::fromXML($httpResponse['ResponseBody']);
     $response->setResponseHeaderMetadata($httpResponse['ResponseHeaderMetadata']);
@@ -672,10 +672,10 @@ class MarketplaceWebService_Client implements MarketplaceWebService_Interface
   public function getReportListByNextToken($request)
   {
     if (!$request instanceof MarketplaceWebService_Model_GetReportListByNextTokenRequest) {
-      include_once ('MarketplaceWebService/Model/GetReportListByNextTokenRequest.php');
+      include_once (__DIR__ . '/Model/GetReportListByNextTokenRequest.php');
       $request = new MarketplaceWebService_Model_GetReportListByNextTokenRequest($request);
     }
-    include_once ('MarketplaceWebService/Model/GetReportListByNextTokenResponse.php');
+    include_once (__DIR__ . '/Model/GetReportListByNextTokenResponse.php');
     $httpResponse = $this->invoke($this->convertGetReportListByNextToken($request));
     $response = MarketplaceWebService_Model_GetReportListByNextTokenResponse::fromXML($httpResponse['ResponseBody']);
     $response->setResponseHeaderMetadata($httpResponse['ResponseHeaderMetadata']);
@@ -698,10 +698,10 @@ class MarketplaceWebService_Client implements MarketplaceWebService_Interface
   public function manageReportSchedule($request)
   {
     if (!$request instanceof MarketplaceWebService_Model_ManageReportScheduleRequest) {
-      include_once ('MarketplaceWebService/Model/ManageReportScheduleRequest.php');
+      include_once (__DIR__ . '/Model/ManageReportScheduleRequest.php');
       $request = new MarketplaceWebService_Model_ManageReportScheduleRequest($request);
     }
-    include_once ('MarketplaceWebService/Model/ManageReportScheduleResponse.php');
+    include_once (__DIR__ . '/Model/ManageReportScheduleResponse.php');
     $httpResponse = $this->invoke($this->convertManageReportSchedule($request));
     $response = MarketplaceWebService_Model_ManageReportScheduleResponse::fromXML($httpResponse['ResponseBody']);
     $response->setResponseHeaderMetadata($httpResponse['ResponseHeaderMetadata']);
@@ -724,10 +724,10 @@ class MarketplaceWebService_Client implements MarketplaceWebService_Interface
   public function getReportRequestCount($request)
   {
     if (!$request instanceof MarketplaceWebService_Model_GetReportRequestCountRequest) {
-      include_once ('MarketplaceWebService/Model/GetReportRequestCountRequest.php');
+      include_once (__DIR__ . '/Model/GetReportRequestCountRequest.php');
       $request = new MarketplaceWebService_Model_GetReportRequestCountRequest($request);
     }
-    include_once ('MarketplaceWebService/Model/GetReportRequestCountResponse.php');
+    include_once (__DIR__ . '/Model/GetReportRequestCountResponse.php');
     $httpResponse = $this->invoke($this->convertGetReportRequestCount($request));
     $response = MarketplaceWebService_Model_GetReportRequestCountResponse::fromXML($httpResponse['ResponseBody']);
     $response->setResponseHeaderMetadata($httpResponse['ResponseHeaderMetadata']);
@@ -749,10 +749,10 @@ class MarketplaceWebService_Client implements MarketplaceWebService_Interface
   public function getReportScheduleList($request)
   {
     if (!$request instanceof MarketplaceWebService_Model_GetReportScheduleListRequest) {
-      include_once ('MarketplaceWebService/Model/GetReportScheduleListRequest.php');
+      include_once (__DIR__ . '/Model/GetReportScheduleListRequest.php');
       $request = new MarketplaceWebService_Model_GetReportScheduleListRequest($request);
     }
-    include_once ('MarketplaceWebService/Model/GetReportScheduleListResponse.php');
+    include_once (__DIR__ . '/Model/GetReportScheduleListResponse.php');
     $httpResponse = $this->invoke($this->convertGetReportScheduleList($request));
     $response = MarketplaceWebService_Model_GetReportScheduleListResponse::fromXML($httpResponse['ResponseBody']);
     $response->setResponseHeaderMetadata($httpResponse['ResponseHeaderMetadata']);
@@ -829,7 +829,7 @@ class MarketplaceWebService_Client implements MarketplaceWebService_Interface
           		
           	case 500:
           	case 503:
-          		include_once('MarketplaceWebService/Model/ErrorResponse.php');
+          		include_once(__DIR__ . '/Model/ErrorResponse.php');
 		          $errorResponse = MarketplaceWebService_Model_ErrorResponse::fromXML($response['ResponseBody']);
 		          
 		          // We will not retry throttling errors since this would just add to the throttling problem.
@@ -851,7 +851,7 @@ class MarketplaceWebService_Client implements MarketplaceWebService_Interface
           
           /* Rethrow on deserializer error */
         } catch (Exception $e) {
-          include_once ('MarketplaceWebService/Exception.php');
+          include_once (__DIR__ . '/Exception.php');
             throw new MarketplaceWebService_Exception(array('Exception' => $e, 'Message' => $e->getMessage()));
         }
 
@@ -887,7 +887,7 @@ class MarketplaceWebService_Client implements MarketplaceWebService_Interface
       $exProps["Message"] = "Internal Error";
     }
     
-    include_once ('MarketplaceWebService/Exception.php');
+    include_once (__DIR__ . '/Exception.php');
     return new MarketplaceWebService_Exception($exProps);
   }
 
@@ -920,7 +920,7 @@ class MarketplaceWebService_Client implements MarketplaceWebService_Interface
 
     $parsedHeader = $this->parseHttpHeader($header);
 
-    include_once('MarketplaceWebService/Model/ResponseHeaderMetadata.php');
+    include_once(__DIR__ . '/Model/ResponseHeaderMetadata.php');
     $responseHeaderMetadata = new MarketplaceWebService_Model_ResponseHeaderMetadata(
               $parsedHeader['x-mws-request-id'],
               $parsedHeader['x-mws-response-context'],
@@ -970,7 +970,7 @@ class MarketplaceWebService_Client implements MarketplaceWebService_Interface
     rewind($streamHandle);
 
     if (!($receivedMd5Hash === $expectedMd5Hash)) {
-      include_once ('MarketplaceWebService/Exception.php');
+      include_once (__DIR__ . '/Exception.php');
       throw new MarketplaceWebService_Exception(
           array(
             'Message' => 'Received Content-MD5 = ' . $receivedMd5Hash . ' but expected ' . $expectedMd5Hash, 
@@ -1086,7 +1086,7 @@ class MarketplaceWebService_Client implements MarketplaceWebService_Interface
     if ($requestType == RequestType::POST_UPLOAD) {
 
       if (is_null($streamHandle) || !is_resource($streamHandle)) {
-        include_once ('MarketplaceWebService/Exception.php');
+        include_once (__DIR__ . '/Exception.php');
         throw new MarketplaceWebService_Exception(
           array ('Message' => 'Missing stream resource.'));
       }

@@ -19,7 +19,7 @@
 /**
  *  @see MarketplaceWebService_Model
  */
-include_once ('MarketplaceWebService/Model.php');  
+include_once (__DIR__ . '/../Model.php');  
 
     
 
@@ -54,8 +54,8 @@ class MarketplaceWebService_Model_GetFeedSubmissionResultResponse extends Market
     public function __construct($data = null)
     {
         $this->fields = array (
-        'GetFeedSubmissionResultResult' => array('FieldValue' => null, 'FieldType' => 'MarketplaceWebService_Model_GetFeedSubmissionResultResult'),
-        'ResponseMetadata' => array('FieldValue' => null, 'FieldType' => 'MarketplaceWebService_Model_ResponseMetadata'),
+        'GetFeedSubmissionResultResult' => array('FieldValue' => null, 'FieldType' => __DIR__ . '_Model_GetFeedSubmissionResultResult'),
+        'ResponseMetadata' => array('FieldValue' => null, 'FieldType' => __DIR__ . '_Model_ResponseMetadata'),
         );
         parent::__construct($data);
     }

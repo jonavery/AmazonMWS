@@ -19,7 +19,7 @@
 /**
  *  @see MarketplaceWebService_Model
  */
-include_once ('MarketplaceWebService/Model.php');  
+include_once (__DIR__ . '/../Model.php');  
 
     
 
@@ -52,7 +52,7 @@ class MarketplaceWebService_Model_SubmitFeedResult extends MarketplaceWebService
     public function __construct($data = null)
     {
         $this->fields = array (
-        'FeedSubmissionInfo' => array('FieldValue' => null, 'FieldType' => 'MarketplaceWebService_Model_FeedSubmissionInfo'),
+        'FeedSubmissionInfo' => array('FieldValue' => null, 'FieldType' => __DIR__ . '_Model_FeedSubmissionInfo'),
         );
         parent::__construct($data);
     }

@@ -19,8 +19,8 @@
 /**
  *  @see MarketplaceWebService_Model
  */
-include_once ('MarketplaceWebService/Model.php'); 
-include_once ('MarketplaceWebService/Model/ContentType.php');
+include_once (__DIR__ . '/../Model.php'); 
+include_once (__DIR__ . '/../Model/ContentType.php');
     
 
 /**
@@ -75,12 +75,12 @@ class MarketplaceWebService_Model_SubmitFeedRequest extends MarketplaceWebServic
         'Marketplace' => array('FieldValue' => null, 'FieldType' => 'string'),
         'Merchant' => array('FieldValue' => null, 'FieldType' => 'string'),
         'MWSAuthToken' => array('FieldValue' => null, 'FieldType' => 'string'),
-        'MarketplaceIdList' => array('FieldValue' => null, 'FieldType' => 'MarketplaceWebService_Model_IdList'),
+        'MarketplaceIdList' => array('FieldValue' => null, 'FieldType' => __DIR__ . '_Model_IdList'),
         'FeedContent' => array ('FieldValue' => null, 'FieldType' => 'string'),
         'FeedType' => array('FieldValue' => null, 'FieldType' => 'string'),
         'PurgeAndReplace' => array('FieldValue' => null, 'FieldType' => 'bool'),
         'ContentMd5' => array ('FieldValue' => null, 'FieldType' => 'string'),
- 	'ContentType' => array ('FieldValue' => self::$DEFAULT_CONTENT_TYPE, 'FieldType' => 'MarketplaceWebService_Model_ContentType')      
+ 	'ContentType' => array ('FieldValue' => self::$DEFAULT_CONTENT_TYPE, 'FieldType' => __DIR__ . '_Model_ContentType')      
         );
         
         parent::__construct($data);

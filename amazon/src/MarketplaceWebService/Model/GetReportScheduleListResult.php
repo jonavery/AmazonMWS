@@ -19,7 +19,7 @@
 /**
  *  @see MarketplaceWebService_Model
  */
-include_once ('MarketplaceWebService/Model.php');  
+include_once (__DIR__ . '/../Model.php');  
 
     
 
@@ -58,7 +58,7 @@ class MarketplaceWebService_Model_GetReportScheduleListResult extends Marketplac
         $this->fields = array (
         'NextToken' => array('FieldValue' => null, 'FieldType' => 'string'),
         'HasNext' => array('FieldValue' => null, 'FieldType' => 'bool'),
-        'ReportSchedule' => array('FieldValue' => array(), 'FieldType' => array('MarketplaceWebService_Model_ReportSchedule')),
+        'ReportSchedule' => array('FieldValue' => array(), 'FieldType' => array(__DIR__ . '_Model_ReportSchedule')),
         );
         parent::__construct($data);
     }

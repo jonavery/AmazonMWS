@@ -19,7 +19,7 @@
 /**
  *  @see MarketplaceWebService_Model
  */
-include_once ('MarketplaceWebService/Model.php');  
+include_once (__DIR__ . '/../Model.php');  
 
     
 
@@ -54,8 +54,8 @@ class MarketplaceWebService_Model_GetReportCountResponse extends MarketplaceWebS
     public function __construct($data = null)
     {
         $this->fields = array (
-        'GetReportCountResult' => array('FieldValue' => null, 'FieldType' => 'MarketplaceWebService_Model_GetReportCountResult'),
-        'ResponseMetadata' => array('FieldValue' => null, 'FieldType' => 'MarketplaceWebService_Model_ResponseMetadata'),
+        'GetReportCountResult' => array('FieldValue' => null, 'FieldType' => __DIR__ . '_Model_GetReportCountResult'),
+        'ResponseMetadata' => array('FieldValue' => null, 'FieldType' => __DIR__ . '_Model_ResponseMetadata'),
         );
         parent::__construct($data);
     }

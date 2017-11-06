@@ -19,7 +19,7 @@
 /**
  *  @see MarketplaceWebService_Model
  */
-include_once ('MarketplaceWebService/Model.php');  
+include_once (__DIR__ . '/../Model.php');  
 
     
 
@@ -65,8 +65,8 @@ class MarketplaceWebService_Model_GetFeedSubmissionCountRequest extends Marketpl
         'Marketplace' => array('FieldValue' => null, 'FieldType' => 'string'),
         'Merchant' => array('FieldValue' => null, 'FieldType' => 'string'),
         'MWSAuthToken' => array('FieldValue' => null, 'FieldType' => 'string'),
-        'FeedTypeList' => array('FieldValue' => null, 'FieldType' => 'MarketplaceWebService_Model_TypeList'),
-        'FeedProcessingStatusList' => array('FieldValue' => null, 'FieldType' => 'MarketplaceWebService_Model_StatusList'),
+        'FeedTypeList' => array('FieldValue' => null, 'FieldType' => __DIR__ . '_Model_TypeList'),
+        'FeedProcessingStatusList' => array('FieldValue' => null, 'FieldType' => __DIR__ . '_Model_StatusList'),
         'SubmittedFromDate' => array('FieldValue' => null, 'FieldType' => 'DateTime'),
         'SubmittedToDate' => array('FieldValue' => null, 'FieldType' => 'DateTime'),
         );

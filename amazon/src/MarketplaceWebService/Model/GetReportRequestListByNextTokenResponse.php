@@ -19,7 +19,7 @@
 /**
  *  @see MarketplaceWebService_Model
  */
-include_once ('MarketplaceWebService/Model.php');  
+include_once (__DIR__ . '/../Model.php');  
 
     
 
@@ -54,8 +54,8 @@ class MarketplaceWebService_Model_GetReportRequestListByNextTokenResponse extend
     public function __construct($data = null)
     {
         $this->fields = array (
-        'GetReportRequestListByNextTokenResult' => array('FieldValue' => null, 'FieldType' => 'MarketplaceWebService_Model_GetReportRequestListByNextTokenResult'),
-        'ResponseMetadata' => array('FieldValue' => null, 'FieldType' => 'MarketplaceWebService_Model_ResponseMetadata'),
+        'GetReportRequestListByNextTokenResult' => array('FieldValue' => null, 'FieldType' => __DIR__ . '_Model_GetReportRequestListByNextTokenResult'),
+        'ResponseMetadata' => array('FieldValue' => null, 'FieldType' => __DIR__ . '_Model_ResponseMetadata'),
         );
         parent::__construct($data);
     }
