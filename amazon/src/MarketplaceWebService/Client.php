@@ -20,7 +20,7 @@
  *  @see MarketplaceWebService_Interface
  */
 include_once (__DIR__ . '/Interface.php');
-include_once ('RequestType.php');
+include_once (__DIR__ . '/../RequestType.php');
 
 define('CONVERTED_PARAMETERS_KEY', 'PARAMETERS');
 define('CONVERTED_HEADERS_KEY', 'HEADERS');
