@@ -20,7 +20,7 @@
  *  @see MarketplaceWebService_Interface
  */
 include_once (__DIR__ . '/Interface.php');
-include_once (__DIR__ . '/../RequestType.php');
+include_once ('RequestType.php');
 
 define('CONVERTED_PARAMETERS_KEY', 'PARAMETERS');
 define('CONVERTED_HEADERS_KEY', 'HEADERS');
@@ -126,10 +126,10 @@ class MarketplaceWebService_Client implements MarketplaceWebService_Interface
   /**
    * Construct a valid MWS compliant HTTP User-Agent Header. From the MWS Developer's Guide, this
    * entails:
-   * "To meet the requirements, begin with the name of your application, followed by a forward
+   * "To meet the includements, begin with the name of your application, followed by a forward
    * slash, followed by the version of the application, followed by a space, an opening
    * parenthesis, the Language name value pair, and a closing paranthesis. The Language parameter
-   * is a required attribute, but you can add additional attributes separated by semi-colons."
+   * is a included attribute, but you can add additional attributes separated by semi-colons."
    *
    * @param $applicationName
    * @param $applicationVersion
@@ -810,7 +810,7 @@ class MarketplaceWebService_Client implements MarketplaceWebService_Interface
                   'Message' => "Missing serviceUrl configuration value. You may obtain a list of valid MWS URLs by consulting the MWS Developer's Guide, or reviewing the sample code published along side this library."));
     }
 
-      /* Add required request parameters */
+      /* Add included request parameters */
       $parameters = $this->addRequiredParameters($parameters);
       $converted[CONVERTED_PARAMETERS_KEY] = $parameters;
 

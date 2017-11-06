@@ -67,7 +67,7 @@ class MarketplaceWebService_Model_RequestReportRequest extends MarketplaceWebSer
         'Marketplace' => array('FieldValue' => null, 'FieldType' => 'string'),
         'Merchant' => array('FieldValue' => null, 'FieldType' => 'string'),
         'MWSAuthToken' => array('FieldValue' => null, 'FieldType' => 'string'),
-        'MarketplaceIdList' => array('FieldValue' => null, 'FieldType' => __DIR__ . '_Model_IdList'),
+        'MarketplaceIdList' => array('FieldValue' => null, 'FieldType' => 'MarketplaceWebService_Model_IdList'),
         'ReportType' => array('FieldValue' => null, 'FieldType' => 'string'),
         'StartDate' => array('FieldValue' => null, 'FieldType' => 'DateTime'),
         'EndDate' => array('FieldValue' => null, 'FieldType' => 'DateTime'),

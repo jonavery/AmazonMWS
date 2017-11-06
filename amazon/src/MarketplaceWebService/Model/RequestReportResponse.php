@@ -54,8 +54,8 @@ class MarketplaceWebService_Model_RequestReportResponse extends MarketplaceWebSe
     public function __construct($data = null)
     {
         $this->fields = array (
-        'RequestReportResult' => array('FieldValue' => null, 'FieldType' => __DIR__ . '_Model_RequestReportResult'),
-        'ResponseMetadata' => array('FieldValue' => null, 'FieldType' => __DIR__ . '_Model_ResponseMetadata'),
+        'RequestReportResult' => array('FieldValue' => null, 'FieldType' => 'MarketplaceWebService_Model_RequestReportResult'),
+        'ResponseMetadata' => array('FieldValue' => null, 'FieldType' => 'MarketplaceWebService_Model_ResponseMetadata'),
         );
         parent::__construct($data);
     }

@@ -54,8 +54,8 @@ class MarketplaceWebService_Model_GetReportScheduleCountResponse extends Marketp
     public function __construct($data = null)
     {
         $this->fields = array (
-        'GetReportScheduleCountResult' => array('FieldValue' => null, 'FieldType' => __DIR__ . '_Model_GetReportScheduleCountResult'),
-        'ResponseMetadata' => array('FieldValue' => null, 'FieldType' => __DIR__ . '_Model_ResponseMetadata'),
+        'GetReportScheduleCountResult' => array('FieldValue' => null, 'FieldType' => 'MarketplaceWebService_Model_GetReportScheduleCountResult'),
+        'ResponseMetadata' => array('FieldValue' => null, 'FieldType' => 'MarketplaceWebService_Model_ResponseMetadata'),
         );
         parent::__construct($data);
     }

@@ -52,7 +52,7 @@ class MarketplaceWebService_Model_RequestReportResult extends MarketplaceWebServ
     public function __construct($data = null)
     {
         $this->fields = array (
-        'ReportRequestInfo' => array('FieldValue' => null, 'FieldType' => __DIR__ . '_Model_ReportRequestInfo'),
+        'ReportRequestInfo' => array('FieldValue' => null, 'FieldType' => 'MarketplaceWebService_Model_ReportRequestInfo'),
         );
         parent::__construct($data);
     }

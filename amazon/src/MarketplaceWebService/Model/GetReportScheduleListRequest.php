@@ -59,7 +59,7 @@ class MarketplaceWebService_Model_GetReportScheduleListRequest extends Marketpla
         'Marketplace' => array('FieldValue' => null, 'FieldType' => 'string'),
         'Merchant' => array('FieldValue' => null, 'FieldType' => 'string'),
         'MWSAuthToken' => array('FieldValue' => null, 'FieldType' => 'string'),
-        'ReportTypeList' => array('FieldValue' => null, 'FieldType' => __DIR__ . '_Model_TypeList'),
+        'ReportTypeList' => array('FieldValue' => null, 'FieldType' => 'MarketplaceWebService_Model_TypeList'),
         );
         parent::__construct($data);
     }

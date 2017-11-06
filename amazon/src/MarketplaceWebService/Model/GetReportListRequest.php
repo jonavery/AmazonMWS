@@ -70,11 +70,11 @@ class MarketplaceWebService_Model_GetReportListRequest extends MarketplaceWebSer
         'Merchant' => array('FieldValue' => null, 'FieldType' => 'string'),
         'MWSAuthToken' => array('FieldValue' => null, 'FieldType' => 'string'),
         'MaxCount' => array('FieldValue' => null, 'FieldType' => 'string'),
-        'ReportTypeList' => array('FieldValue' => null, 'FieldType' => __DIR__ . '_Model_TypeList'),
+        'ReportTypeList' => array('FieldValue' => null, 'FieldType' => 'MarketplaceWebService_Model_TypeList'),
         'Acknowledged' => array('FieldValue' => null, 'FieldType' => 'bool'),
         'AvailableFromDate' => array('FieldValue' => null, 'FieldType' => 'DateTime'),
         'AvailableToDate' => array('FieldValue' => null, 'FieldType' => 'DateTime'),
-        'ReportRequestIdList' => array('FieldValue' => null, 'FieldType' => __DIR__ . '_Model_IdList'),
+        'ReportRequestIdList' => array('FieldValue' => null, 'FieldType' => 'MarketplaceWebService_Model_IdList'),
         );
         parent::__construct($data);
     }

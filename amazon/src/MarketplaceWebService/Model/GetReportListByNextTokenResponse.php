@@ -54,8 +54,8 @@ class MarketplaceWebService_Model_GetReportListByNextTokenResponse extends Marke
     public function __construct($data = null)
     {
         $this->fields = array (
-        'GetReportListByNextTokenResult' => array('FieldValue' => null, 'FieldType' => __DIR__ . '_Model_GetReportListByNextTokenResult'),
-        'ResponseMetadata' => array('FieldValue' => null, 'FieldType' => __DIR__ . '_Model_ResponseMetadata'),
+        'GetReportListByNextTokenResult' => array('FieldValue' => null, 'FieldType' => 'MarketplaceWebService_Model_GetReportListByNextTokenResult'),
+        'ResponseMetadata' => array('FieldValue' => null, 'FieldType' => 'MarketplaceWebService_Model_ResponseMetadata'),
         );
         parent::__construct($data);
     }

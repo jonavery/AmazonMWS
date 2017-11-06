@@ -54,8 +54,8 @@ class MarketplaceWebService_Model_GetReportRequestListResponse extends Marketpla
     public function __construct($data = null)
     {
         $this->fields = array (
-        'GetReportRequestListResult' => array('FieldValue' => null, 'FieldType' => __DIR__ . '_Model_GetReportRequestListResult'),
-        'ResponseMetadata' => array('FieldValue' => null, 'FieldType' => __DIR__ . '_Model_ResponseMetadata'),
+        'GetReportRequestListResult' => array('FieldValue' => null, 'FieldType' => 'MarketplaceWebService_Model_GetReportRequestListResult'),
+        'ResponseMetadata' => array('FieldValue' => null, 'FieldType' => 'MarketplaceWebService_Model_ResponseMetadata'),
         );
         parent::__construct($data);
     }

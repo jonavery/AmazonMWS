@@ -55,7 +55,7 @@ class MarketplaceWebService_Model_CancelReportRequestsResult extends Marketplace
     {
         $this->fields = array (
         'Count' => array('FieldValue' => null, 'FieldType' => 'int'),
-        'ReportRequestInfo' => array('FieldValue' => array(), 'FieldType' => array(__DIR__ . '_Model_ReportRequestInfo')),
+        'ReportRequestInfo' => array('FieldValue' => array(), 'FieldType' => array('MarketplaceWebService_Model_ReportRequestInfo')),
         );
         parent::__construct($data);
     }

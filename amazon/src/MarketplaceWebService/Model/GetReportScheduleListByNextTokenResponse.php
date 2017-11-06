@@ -54,8 +54,8 @@ class MarketplaceWebService_Model_GetReportScheduleListByNextTokenResponse exten
     public function __construct($data = null)
     {
         $this->fields = array (
-        'GetReportScheduleListByNextTokenResult' => array('FieldValue' => null, 'FieldType' => __DIR__ . '_Model_GetReportScheduleListByNextTokenResult'),
-        'ResponseMetadata' => array('FieldValue' => null, 'FieldType' => __DIR__ . '_Model_ResponseMetadata'),
+        'GetReportScheduleListByNextTokenResult' => array('FieldValue' => null, 'FieldType' => 'MarketplaceWebService_Model_GetReportScheduleListByNextTokenResult'),
+        'ResponseMetadata' => array('FieldValue' => null, 'FieldType' => 'MarketplaceWebService_Model_ResponseMetadata'),
         );
         parent::__construct($data);
     }

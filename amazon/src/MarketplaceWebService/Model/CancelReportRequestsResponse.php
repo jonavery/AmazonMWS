@@ -54,8 +54,8 @@ class MarketplaceWebService_Model_CancelReportRequestsResponse extends Marketpla
     public function __construct($data = null)
     {
         $this->fields = array (
-        'CancelReportRequestsResult' => array('FieldValue' => null, 'FieldType' => __DIR__ . '_Model_CancelReportRequestsResult'),
-        'ResponseMetadata' => array('FieldValue' => null, 'FieldType' => __DIR__ . '_Model_ResponseMetadata'),
+        'CancelReportRequestsResult' => array('FieldValue' => null, 'FieldType' => 'MarketplaceWebService_Model_CancelReportRequestsResult'),
+        'ResponseMetadata' => array('FieldValue' => null, 'FieldType' => 'MarketplaceWebService_Model_ResponseMetadata'),
         );
         parent::__construct($data);
     }

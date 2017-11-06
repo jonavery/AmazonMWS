@@ -54,8 +54,8 @@ class MarketplaceWebService_Model_SubmitFeedResponse extends MarketplaceWebServi
     public function __construct($data = null)
     {
         $this->fields = array (
-        'SubmitFeedResult' => array('FieldValue' => null, 'FieldType' => __DIR__ . '_Model_SubmitFeedResult'),
-        'ResponseMetadata' => array('FieldValue' => null, 'FieldType' => __DIR__ . '_Model_ResponseMetadata'),
+        'SubmitFeedResult' => array('FieldValue' => null, 'FieldType' => 'MarketplaceWebService_Model_SubmitFeedResult'),
+        'ResponseMetadata' => array('FieldValue' => null, 'FieldType' => 'MarketplaceWebService_Model_ResponseMetadata'),
         );
         parent::__construct($data);
     }

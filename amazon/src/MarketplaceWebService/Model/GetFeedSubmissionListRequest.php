@@ -69,10 +69,10 @@ class MarketplaceWebService_Model_GetFeedSubmissionListRequest extends Marketpla
         'Marketplace' => array('FieldValue' => null, 'FieldType' => 'string'),
         'Merchant' => array('FieldValue' => null, 'FieldType' => 'string'),
         'MWSAuthToken' => array('FieldValue' => null, 'FieldType' => 'string'),
-        'FeedSubmissionIdList' => array('FieldValue' => null, 'FieldType' => __DIR__ . '_Model_IdList'),
+        'FeedSubmissionIdList' => array('FieldValue' => null, 'FieldType' => 'MarketplaceWebService_Model_IdList'),
         'MaxCount' => array('FieldValue' => null, 'FieldType' => 'string'),
-        'FeedTypeList' => array('FieldValue' => null, 'FieldType' => __DIR__ . '_Model_TypeList'),
-        'FeedProcessingStatusList' => array('FieldValue' => null, 'FieldType' => __DIR__ . '_Model_StatusList'),
+        'FeedTypeList' => array('FieldValue' => null, 'FieldType' => 'MarketplaceWebService_Model_TypeList'),
+        'FeedProcessingStatusList' => array('FieldValue' => null, 'FieldType' => 'MarketplaceWebService_Model_StatusList'),
         'SubmittedFromDate' => array('FieldValue' => null, 'FieldType' => 'DateTime'),
         'SubmittedToDate' => array('FieldValue' => null, 'FieldType' => 'DateTime'),
         );

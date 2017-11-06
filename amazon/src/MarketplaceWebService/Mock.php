@@ -19,7 +19,7 @@
 /**
  *  @see MarketplaceWebService_Interface
  */
-include_once (__DIR__ . '/Interface.php'); 
+require_once ('MarketplaceWebService/Interface.php'); 
 
 /**
  * The Amazon Marketplace Web Service contain APIs for inventory and order management.
@@ -45,7 +45,7 @@ class  MarketplaceWebService_Mock implements MarketplaceWebService_Interface
      */
     public function getReport($request) 
     {
-        include_once (__DIR__ . '/Model/GetReportResponse.php');
+        require_once ('MarketplaceWebService/Model/GetReportResponse.php');
         return MarketplaceWebService_Model_GetReportResponse::fromXML($this->invoke('GetReport'));
     }
 
@@ -64,7 +64,7 @@ class  MarketplaceWebService_Mock implements MarketplaceWebService_Interface
      */
     public function getReportScheduleCount($request) 
     {
-        include_once (__DIR__ . '/Model/GetReportScheduleCountResponse.php');
+        require_once ('MarketplaceWebService/Model/GetReportScheduleCountResponse.php');
         return MarketplaceWebService_Model_GetReportScheduleCountResponse::fromXML($this->invoke('GetReportScheduleCount'));
     }
 
@@ -83,7 +83,7 @@ class  MarketplaceWebService_Mock implements MarketplaceWebService_Interface
      */
     public function getReportRequestListByNextToken($request) 
     {
-        include_once (__DIR__ . '/Model/GetReportRequestListByNextTokenResponse.php');
+        require_once ('MarketplaceWebService/Model/GetReportRequestListByNextTokenResponse.php');
         return MarketplaceWebService_Model_GetReportRequestListByNextTokenResponse::fromXML($this->invoke('GetReportRequestListByNextToken'));
     }
 
@@ -102,7 +102,7 @@ class  MarketplaceWebService_Mock implements MarketplaceWebService_Interface
      */
     public function updateReportAcknowledgements($request) 
     {
-        include_once (__DIR__ . '/Model/UpdateReportAcknowledgementsResponse.php');
+        require_once ('MarketplaceWebService/Model/UpdateReportAcknowledgementsResponse.php');
         return MarketplaceWebService_Model_UpdateReportAcknowledgementsResponse::fromXML($this->invoke('UpdateReportAcknowledgements'));
     }
 
@@ -125,7 +125,7 @@ class  MarketplaceWebService_Mock implements MarketplaceWebService_Interface
      */
     public function submitFeed($request) 
     {
-        include_once (__DIR__ . '/Model/SubmitFeedResponse.php');
+        require_once ('MarketplaceWebService/Model/SubmitFeedResponse.php');
         return MarketplaceWebService_Model_SubmitFeedResponse::fromXML($this->invoke('SubmitFeed'));
     }
 
@@ -146,7 +146,7 @@ class  MarketplaceWebService_Mock implements MarketplaceWebService_Interface
      */
     public function getReportCount($request) 
     {
-        include_once (__DIR__ . '/Model/GetReportCountResponse.php');
+        require_once ('MarketplaceWebService/Model/GetReportCountResponse.php');
         return MarketplaceWebService_Model_GetReportCountResponse::fromXML($this->invoke('GetReportCount'));
     }
 
@@ -165,7 +165,7 @@ class  MarketplaceWebService_Mock implements MarketplaceWebService_Interface
      */
     public function getFeedSubmissionListByNextToken($request) 
     {
-        include_once (__DIR__ . '/Model/GetFeedSubmissionListByNextTokenResponse.php');
+        require_once ('MarketplaceWebService/Model/GetFeedSubmissionListByNextTokenResponse.php');
         return MarketplaceWebService_Model_GetFeedSubmissionListByNextTokenResponse::fromXML($this->invoke('GetFeedSubmissionListByNextToken'));
     }
 
@@ -185,7 +185,7 @@ class  MarketplaceWebService_Mock implements MarketplaceWebService_Interface
      */
     public function cancelFeedSubmissions($request) 
     {
-        include_once (__DIR__ . '/Model/CancelFeedSubmissionsResponse.php');
+        require_once ('MarketplaceWebService/Model/CancelFeedSubmissionsResponse.php');
         return MarketplaceWebService_Model_CancelFeedSubmissionsResponse::fromXML($this->invoke('CancelFeedSubmissions'));
     }
 
@@ -204,7 +204,7 @@ class  MarketplaceWebService_Mock implements MarketplaceWebService_Interface
      */
     public function requestReport($request) 
     {
-        include_once (__DIR__ . '/Model/RequestReportResponse.php');
+        require_once ('MarketplaceWebService/Model/RequestReportResponse.php');
         return MarketplaceWebService_Model_RequestReportResponse::fromXML($this->invoke('RequestReport'));
     }
 
@@ -223,7 +223,7 @@ class  MarketplaceWebService_Mock implements MarketplaceWebService_Interface
      */
     public function getFeedSubmissionCount($request) 
     {
-        include_once (__DIR__ . '/Model/GetFeedSubmissionCountResponse.php');
+        require_once ('MarketplaceWebService/Model/GetFeedSubmissionCountResponse.php');
         return MarketplaceWebService_Model_GetFeedSubmissionCountResponse::fromXML($this->invoke('GetFeedSubmissionCount'));
     }
 
@@ -243,7 +243,7 @@ class  MarketplaceWebService_Mock implements MarketplaceWebService_Interface
      */
     public function cancelReportRequests($request) 
     {
-        include_once (__DIR__ . '/Model/CancelReportRequestsResponse.php');
+        require_once ('MarketplaceWebService/Model/CancelReportRequestsResponse.php');
         return MarketplaceWebService_Model_CancelReportRequestsResponse::fromXML($this->invoke('CancelReportRequests'));
     }
 
@@ -263,7 +263,7 @@ class  MarketplaceWebService_Mock implements MarketplaceWebService_Interface
      */
     public function getReportList($request) 
     {
-        include_once (__DIR__ . '/Model/GetReportListResponse.php');
+        require_once ('MarketplaceWebService/Model/GetReportListResponse.php');
         return MarketplaceWebService_Model_GetReportListResponse::fromXML($this->invoke('GetReportList'));
     }
 
@@ -282,7 +282,7 @@ class  MarketplaceWebService_Mock implements MarketplaceWebService_Interface
      */
     public function getFeedSubmissionResult($request) 
     {
-        include_once (__DIR__ . '/Model/GetFeedSubmissionResultResponse.php');
+        require_once ('MarketplaceWebService/Model/GetFeedSubmissionResultResponse.php');
         return MarketplaceWebService_Model_GetFeedSubmissionResultResponse::fromXML($this->invoke('GetFeedSubmissionResult'));
     }
 
@@ -301,7 +301,7 @@ class  MarketplaceWebService_Mock implements MarketplaceWebService_Interface
      */
     public function getFeedSubmissionList($request) 
     {
-        include_once (__DIR__ . '/Model/GetFeedSubmissionListResponse.php');
+        require_once ('MarketplaceWebService/Model/GetFeedSubmissionListResponse.php');
         return MarketplaceWebService_Model_GetFeedSubmissionListResponse::fromXML($this->invoke('GetFeedSubmissionList'));
     }
 
@@ -320,7 +320,7 @@ class  MarketplaceWebService_Mock implements MarketplaceWebService_Interface
      */
     public function getReportRequestList($request) 
     {
-        include_once (__DIR__ . '/Model/GetReportRequestListResponse.php');
+        require_once ('MarketplaceWebService/Model/GetReportRequestListResponse.php');
         return MarketplaceWebService_Model_GetReportRequestListResponse::fromXML($this->invoke('GetReportRequestList'));
     }
 
@@ -339,7 +339,7 @@ class  MarketplaceWebService_Mock implements MarketplaceWebService_Interface
      */
     public function getReportScheduleListByNextToken($request) 
     {
-        include_once (__DIR__ . '/Model/GetReportScheduleListByNextTokenResponse.php');
+        require_once ('MarketplaceWebService/Model/GetReportScheduleListByNextTokenResponse.php');
         return MarketplaceWebService_Model_GetReportScheduleListByNextTokenResponse::fromXML($this->invoke('GetReportScheduleListByNextToken'));
     }
 
@@ -358,7 +358,7 @@ class  MarketplaceWebService_Mock implements MarketplaceWebService_Interface
      */
     public function getReportListByNextToken($request) 
     {
-        include_once (__DIR__ . '/Model/GetReportListByNextTokenResponse.php');
+        require_once ('MarketplaceWebService/Model/GetReportListByNextTokenResponse.php');
         return MarketplaceWebService_Model_GetReportListByNextTokenResponse::fromXML($this->invoke('GetReportListByNextToken'));
     }
 
@@ -378,7 +378,7 @@ class  MarketplaceWebService_Mock implements MarketplaceWebService_Interface
      */
     public function manageReportSchedule($request) 
     {
-        include_once (__DIR__ . '/Model/ManageReportScheduleResponse.php');
+        require_once ('MarketplaceWebService/Model/ManageReportScheduleResponse.php');
         return MarketplaceWebService_Model_ManageReportScheduleResponse::fromXML($this->invoke('ManageReportSchedule'));
     }
 
@@ -398,7 +398,7 @@ class  MarketplaceWebService_Mock implements MarketplaceWebService_Interface
      */
     public function getReportRequestCount($request) 
     {
-        include_once (__DIR__ . '/Model/GetReportRequestCountResponse.php');
+        require_once ('MarketplaceWebService/Model/GetReportRequestCountResponse.php');
         return MarketplaceWebService_Model_GetReportRequestCountResponse::fromXML($this->invoke('GetReportRequestCount'));
     }
 
@@ -417,7 +417,7 @@ class  MarketplaceWebService_Mock implements MarketplaceWebService_Interface
      */
     public function getReportScheduleList($request) 
     {
-        include_once (__DIR__ . '/Model/GetReportScheduleListResponse.php');
+        require_once ('MarketplaceWebService/Model/GetReportScheduleListResponse.php');
         return MarketplaceWebService_Model_GetReportScheduleListResponse::fromXML($this->invoke('GetReportScheduleList'));
     }
 

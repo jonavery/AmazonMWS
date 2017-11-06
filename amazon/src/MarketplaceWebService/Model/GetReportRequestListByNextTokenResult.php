@@ -58,7 +58,7 @@ class MarketplaceWebService_Model_GetReportRequestListByNextTokenResult extends 
         $this->fields = array (
         'NextToken' => array('FieldValue' => null, 'FieldType' => 'string'),
         'HasNext' => array('FieldValue' => null, 'FieldType' => 'bool'),
-        'ReportRequestInfo' => array('FieldValue' => array(), 'FieldType' => array(__DIR__ . '_Model_ReportRequestInfo')),
+        'ReportRequestInfo' => array('FieldValue' => array(), 'FieldType' => array('MarketplaceWebService_Model_ReportRequestInfo')),
         );
         parent::__construct($data);
     }

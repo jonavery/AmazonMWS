@@ -54,8 +54,8 @@ class MarketplaceWebService_Model_GetFeedSubmissionListByNextTokenResponse exten
     public function __construct($data = null)
     {
         $this->fields = array (
-        'GetFeedSubmissionListByNextTokenResult' => array('FieldValue' => null, 'FieldType' => __DIR__ . '_Model_GetFeedSubmissionListByNextTokenResult'),
-        'ResponseMetadata' => array('FieldValue' => null, 'FieldType' => __DIR__ . '_Model_ResponseMetadata'),
+        'GetFeedSubmissionListByNextTokenResult' => array('FieldValue' => null, 'FieldType' => 'MarketplaceWebService_Model_GetFeedSubmissionListByNextTokenResult'),
+        'ResponseMetadata' => array('FieldValue' => null, 'FieldType' => 'MarketplaceWebService_Model_ResponseMetadata'),
         );
         parent::__construct($data);
     }

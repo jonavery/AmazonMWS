@@ -55,7 +55,7 @@ class MarketplaceWebService_Model_CancelFeedSubmissionsResult extends Marketplac
     {
         $this->fields = array (
         'Count' => array('FieldValue' => null, 'FieldType' => 'int'),
-        'FeedSubmissionInfo' => array('FieldValue' => array(), 'FieldType' => array(__DIR__ . '_Model_FeedSubmissionInfo')),
+        'FeedSubmissionInfo' => array('FieldValue' => array(), 'FieldType' => array('MarketplaceWebService_Model_FeedSubmissionInfo')),
         );
         parent::__construct($data);
     }

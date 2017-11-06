@@ -54,8 +54,8 @@ class MarketplaceWebService_Model_GetFeedSubmissionCountResponse extends Marketp
     public function __construct($data = null)
     {
         $this->fields = array (
-        'GetFeedSubmissionCountResult' => array('FieldValue' => null, 'FieldType' => __DIR__ . '_Model_GetFeedSubmissionCountResult'),
-        'ResponseMetadata' => array('FieldValue' => null, 'FieldType' => __DIR__ . '_Model_ResponseMetadata'),
+        'GetFeedSubmissionCountResult' => array('FieldValue' => null, 'FieldType' => 'MarketplaceWebService_Model_GetFeedSubmissionCountResult'),
+        'ResponseMetadata' => array('FieldValue' => null, 'FieldType' => 'MarketplaceWebService_Model_ResponseMetadata'),
         );
         parent::__construct($data);
     }

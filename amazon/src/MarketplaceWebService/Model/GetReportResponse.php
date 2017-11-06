@@ -54,8 +54,8 @@ class MarketplaceWebService_Model_GetReportResponse extends MarketplaceWebServic
     public function __construct($data = null)
     {
         $this->fields = array (
-        'GetReportResult' => array('FieldValue' => null, 'FieldType' => __DIR__ . '_Model_GetReportResult'),
-        'ResponseMetadata' => array('FieldValue' => null, 'FieldType' => __DIR__ . '_Model_ResponseMetadata'),
+        'GetReportResult' => array('FieldValue' => null, 'FieldType' => 'MarketplaceWebService_Model_GetReportResult'),
+        'ResponseMetadata' => array('FieldValue' => null, 'FieldType' => 'MarketplaceWebService_Model_ResponseMetadata'),
         );
         parent::__construct($data);
     }

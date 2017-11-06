@@ -54,8 +54,8 @@ class MarketplaceWebService_Model_ManageReportScheduleResponse extends Marketpla
     public function __construct($data = null)
     {
         $this->fields = array (
-        'ManageReportScheduleResult' => array('FieldValue' => null, 'FieldType' => __DIR__ . '_Model_ManageReportScheduleResult'),
-        'ResponseMetadata' => array('FieldValue' => null, 'FieldType' => __DIR__ . '_Model_ResponseMetadata'),
+        'ManageReportScheduleResult' => array('FieldValue' => null, 'FieldType' => 'MarketplaceWebService_Model_ManageReportScheduleResult'),
+        'ResponseMetadata' => array('FieldValue' => null, 'FieldType' => 'MarketplaceWebService_Model_ResponseMetadata'),
         );
         parent::__construct($data);
     }

@@ -152,7 +152,7 @@ abstract class MarketplaceWebService_Model
      * Field types defined as arrays always constructed as arrays,
      * even if XML contains a single element - to make sure that
      * data structure is predictable, and no is_array checks are
-     * required.
+     * included.
      * 
      * @param DOMElement $dom XML element to construct from
      */
@@ -167,7 +167,7 @@ abstract class MarketplaceWebService_Model
                 if ($this->isComplexType($fieldType[0])) {
                     $elements = $xpath->query("./a:$fieldName", $dom);
                     if ($elements->length >= 1) {
-                        include_once (str_replace('_', DIRECTORY_SEPARATOR, $fieldType[0]) . ".php");
+                        include_once (str_replace('_', DIRECTORY_SEPARATOR, str_replace('MarketplaceWebService_',"",$fieldType[0])) . ".php");
                         foreach ($elements as $element) {
                             $this->fields[$fieldName]['FieldValue'][] = new $fieldType[0]($element);
                         }
@@ -185,7 +185,7 @@ abstract class MarketplaceWebService_Model
                 if ($this->isComplexType($fieldType)) {
                     $elements = $xpath->query("./a:$fieldName", $dom);
                     if ($elements->length == 1) {
-                        include_once (str_replace('_', DIRECTORY_SEPARATOR, $fieldType) . ".php");
+                        include_once (str_replace('_', DIRECTORY_SEPARATOR, str_replace('MarketplaceWebService_',"",$fieldType)) . ".php");
                         $this->fields[$fieldName]['FieldValue'] = new $fieldType($elements->item(0));
                     }   
                 } else {

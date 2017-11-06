@@ -54,7 +54,7 @@ class MarketplaceWebService_Model_ErrorResponse extends MarketplaceWebService_Mo
     public function __construct($data = null)
     {
         $this->fields = array (
-        'Error' => array('FieldValue' => array(), 'FieldType' => __DIR__ . '_Model_Error'),
+        'Error' => array('FieldValue' => array(), 'FieldType' => 'MarketplaceWebService_Model_Error'),
         'RequestId' => array('FieldValue' => null, 'FieldType' => 'string'),
         );
         parent::__construct($data);

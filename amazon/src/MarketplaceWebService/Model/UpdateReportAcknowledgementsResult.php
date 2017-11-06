@@ -55,7 +55,7 @@ class MarketplaceWebService_Model_UpdateReportAcknowledgementsResult extends Mar
     {
         $this->fields = array (
         'Count' => array('FieldValue' => null, 'FieldType' => 'int'),
-        'ReportInfo' => array('FieldValue' => array(), 'FieldType' => array(__DIR__ . '_Model_ReportInfo')),
+        'ReportInfo' => array('FieldValue' => array(), 'FieldType' => array('MarketplaceWebService_Model_ReportInfo')),
         );
         parent::__construct($data);
     }

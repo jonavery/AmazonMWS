@@ -54,8 +54,8 @@ class MarketplaceWebService_Model_GetFeedSubmissionListResponse extends Marketpl
     public function __construct($data = null)
     {
         $this->fields = array (
-        'GetFeedSubmissionListResult' => array('FieldValue' => null, 'FieldType' => __DIR__ . '_Model_GetFeedSubmissionListResult'),
-        'ResponseMetadata' => array('FieldValue' => null, 'FieldType' => __DIR__ . '_Model_ResponseMetadata'),
+        'GetFeedSubmissionListResult' => array('FieldValue' => null, 'FieldType' => 'MarketplaceWebService_Model_GetFeedSubmissionListResult'),
+        'ResponseMetadata' => array('FieldValue' => null, 'FieldType' => 'MarketplaceWebService_Model_ResponseMetadata'),
         );
         parent::__construct($data);
     }
