@@ -1,3 +1,8 @@
+<form method="post" action="">
+<input type="text" name="value">
+<input type="submit">
+</form>
+
 <?php
 /************************************************************************
  * This script combines functions from the Inbound Shipment API to
@@ -488,8 +493,3 @@ foreach ($itemShip->Message as $message) {
 
 echo "Success! Shipments and labels have been created. Go to SellerCentral to view shipments and print labels.";
 ?>
-
-<form method="post" action="">
-<input type="text" name="value">
-<input type="submit">
-</form>

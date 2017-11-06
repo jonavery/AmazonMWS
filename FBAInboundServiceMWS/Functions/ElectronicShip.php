@@ -1,3 +1,8 @@
+<form method="post" action="">
+<input type="text" name="value">
+<input type="submit">
+</form>
+
 <?php
 /************************************************************************
  * This script combines functions from the Inbound Shipment API to
@@ -17,7 +22,7 @@ require_once(__DIR__ . '/GetTransportContent.php');
 require_once(__DIR__ . '/ConfirmTransportRequest.php');
 require_once(__DIR__ . '/GetUniquePackageLabels.php');
 
-if ($_POST['value']!=PASSWORD) {exit;}
+if ($_POST['value']!=PASSWORD) {return "Please enter password.";}
 
 // Cache URL 
 $urlShip = "https://script.google.com/macros/s/AKfycbxBN9iOFmN5fJH5_iEPwEMK36a98SX7xFF4bfHaBfD0y29Ff7zN/exec";
@@ -473,7 +478,3 @@ foreach ($shipmentSKU as $ship) {
 echo "Success! Shipments and labels have been created. Go to SellerCentral to view shipments and print labels.";
 ?>
 
-<form method="post" action="">
-<input type="text" name="value">
-<input type="submit">
-</form>
