@@ -71,8 +71,8 @@ $request->setMarketplaceId(MARKETPLACE_ID);
  * @param {mixed} $requestPrice MarketplaceWebServiceProducts_Model_GetLowestOfferListingsForASIN or array of parameters
  ************************************************************/
 
-$requestCount = 0;
 function parseOffers($itemArray, $requestPrice) {
+    $requestCount = 0;
     $serviceUrl = "https://mws.amazonservices.com/Products/2011-10-01";
 
     $config = array (
@@ -120,14 +120,25 @@ function parseOffers($itemArray, $requestPrice) {
         }
         $time_start = microtime(true);
 
-        // Convert conditions to number form.
-        echo "ItemCond: " . $itemCond = numCond(subStr($item["Condition"], 4)) . "\n";
-        echo "ListCond: " . $listCond = numCond($item["ListCond"]) . "\n";
-        echo $item["ASIN"] . "\n";
-        echo "PriceIn: " . $item["ListPrice"] . "\n";
+        // Set all parameters to be sent to pricer.
+        if (array_key_exists("Condition", $item)) {
+            echo "\n\nItemCond: " . $itemCond = numCond(subStr($item["Condition"], 4));
+        } else {echo "\n\nItemCond: " . $itemCond = "";}
+        if (array_key_exists("ListCond", $item)) {
+            echo "\tListCond: " . $listCond = numCond($item["ListCond"]);
+        } else {echo "\tListCond: " . $listCond = "";}
+        if (array_key_exists("ASIN", $item)) {
+            echo "\tASIN: " . $item["ASIN"];
+        } else {continue;}
+        if (array_key_exists("ListPrice", $item)) {
+            echo "\tPriceIn: " . $item["ListPrice"];
+        } else {echo "\tPriceIn: " . $item["ListPrice"] = "";}
+        if (array_key_exists("FeedbackCount", $item)) {
+            echo "\tFeedbackCount: " . $item["FeedbackCount"];
+        } else {echo "\tFeedbackCount: " . $item["FeedbackCount"] = 0;}
 
         // Set price of item.
-        echo "PriceOut: " . $item["ItemPrice"] = pricer($item["ListPrice"], $listCond, $itemCond, $item["FeedbackCount"]) . "\n\n\n";
+        echo "PriceOut: " . $item["ItemPrice"] = pricer($item["ListPrice"], $listCond, $itemCond, $item["FeedbackCount"]);
     }
     return $itemArray;
 }
