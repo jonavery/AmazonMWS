@@ -47,7 +47,7 @@ $requestGetReport->setMerchant(MERCHANT_ID);
 $requestGetReport->setReport($handle);
 $requestGetReport->setReportId($reportStatus[1]);
 
-invokeGetReport($service, $requestGetReport);
+$response = invokeGetReport($service, $requestGetReport);
 fwrite($handle, $response);
 fclose($handle);
 
