@@ -131,14 +131,14 @@ function parseOffers($itemArray, $requestPrice) {
             echo "\tASIN: " . $item["ASIN"];
         } else {continue;}
         if (array_key_exists("ListPrice", $item)) {
-            echo "\tPriceIn: " . $item["ListPrice"];
-        } else {echo "\tPriceIn: " . $item["ListPrice"] = "";}
+            echo "\tPriceIn: $" . $item["ListPrice"];
+        } else {echo "\tPriceIn: $" . $item["ListPrice"] = "";}
         if (array_key_exists("FeedbackCount", $item)) {
             echo "\tFeedbackCount: " . $item["FeedbackCount"];
         } else {echo "\tFeedbackCount: " . $item["FeedbackCount"] = 0;}
 
         // Set price of item.
-        echo "PriceOut: " . $item["ItemPrice"] = pricer($item["ListPrice"], $listCond, $itemCond, $item["FeedbackCount"]);
+        echo "\tPriceOut: $" . $item["ItemPrice"] = pricer($item["ListPrice"], $listCond, $itemCond, $item["FeedbackCount"]);
     }
     return $itemArray;
 }
