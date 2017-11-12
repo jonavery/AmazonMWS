@@ -39,7 +39,7 @@ while ($reportStatus[0] != '_DONE_') {
 echo "\nReport complete!\n\n";
 
 // Get the completed report from Amazon.
-$filename = 'report_'.date('AFN-report').'.txt';
+$filename = 'AFN-report.txt';
 $handle = fopen($filename, 'x+');
 
 $requestGetReport = new MarketplaceWebService_Model_GetReportRequest();
