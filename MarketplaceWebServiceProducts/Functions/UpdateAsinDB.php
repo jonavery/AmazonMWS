@@ -43,8 +43,8 @@ $valueArray = array_intersect_key($googleArray, $diff);
 echo "Comparing ASINs in MySQL to those in GoogleDB... \n";
 // Insert all ASINs not in prices table.
 $stmt = $pdo->prepare("
-    INSERT INTO prices (title, asin, aer_designation, sale_price, fee_total, net_profit, sale_rank)
-    VALUES (?,?,?,?,?,?,?)
+    INSERT INTO prices (title, asin, aer_designation, sale_price, fee_total, net_profit, sale_rank, msrp)
+    VALUES (?,?,?,?,?,?,?,?)
 ");
 foreach($valueArray as $row) {
     $stmt->execute($row);

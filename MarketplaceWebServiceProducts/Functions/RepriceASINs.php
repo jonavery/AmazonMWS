@@ -23,7 +23,7 @@ $stmt = $pdo->prepare('
     SELECT asin
     FROM prices
     WHERE aer_designation = "A"
-    AND last_updated < :updated
+    AND last_updated < ?
     ORDER BY last_updated ASC
     LIMIT 250
 ');
