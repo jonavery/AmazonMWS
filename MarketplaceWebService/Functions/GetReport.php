@@ -89,7 +89,7 @@ $config = array (
                 echo (stream_get_contents($request->getReport()) . "\n");
 
                 echo("            ResponseHeaderMetadata: " . $response->getResponseHeaderMetadata() . "\n");
-                return $response;
+                return stream_get_contents($request->getReport());
      } catch (MarketplaceWebService_Exception $ex) {
          echo("Caught Exception: " . $ex->getMessage() . "\n");
          echo("Response Status Code: " . $ex->getStatusCode() . "\n");
