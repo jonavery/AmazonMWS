@@ -35,6 +35,10 @@ while ($reportStatus[0] != '_DONE_') {
     echo "Waiting for Amazon to process report...\n";
     sleep(45);
     $reportStatus = invokeGetReportRequestList($service, $requestStatus, $reportRequestId);
+    if $reportStatus[0] == '_CANCELLED_' {
+        echo "Please wait 30 minutes between report requests of the same type. \n";
+        return;
+    }
 }
 echo "\nReport complete!\n\n";
 
