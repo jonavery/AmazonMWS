@@ -26,6 +26,7 @@ function pricer($listPrice, $listCond, $itemCond, $feedback = 0) {
     );
     if ((int)$feedback > 2000000 && $listCond < 5) {$listCond++;}
     $itemPrice = $listPrice * $priceMatrix[$itemCond-1][$listCond-1];
+    if ($listPrice == 0) {return "MANUAL";}
     return round($itemPrice, 2);
 }
 

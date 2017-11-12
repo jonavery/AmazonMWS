@@ -9,7 +9,6 @@
 
 require_once(__DIR__ . '/GetLowestOfferListingsForASIN.php');
 $requestPrice = $request;
-require_once(__DIR__ . '/../../includes.php');
 
 // Create and check database connection
 $pdo = createPDO("inventory");
@@ -23,6 +22,8 @@ $updated = date('Y-m-d H:i:s', strtotime('-1 hour'));
 $stmt = $pdo->prepare('
     SELECT asin
     FROM prices
+    WHERE aer_designation = "A"
+    AND last_updated < :updated
     ORDER BY last_updated ASC
     LIMIT 250
 ');
