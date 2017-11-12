@@ -23,7 +23,6 @@ $updated = date('Y-m-d H:i:s', strtotime('-1 hour'));
 $stmt = $pdo->prepare('
     SELECT asin
     FROM prices
-    WHERE last_updated < ?
     ORDER BY last_updated ASC
     LIMIT 250
 ');

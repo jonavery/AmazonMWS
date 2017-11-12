@@ -20,7 +20,7 @@
  * Creates Report request and submits to Amazon MWS
  */
 
-include_once ('../../includes.php'); 
+include_once (__DIR__ . '/../../includes.php'); 
 
 // IMPORTANT: Uncomment the appropriate line for the country you wish to
 // sell in:

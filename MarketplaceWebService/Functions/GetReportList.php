@@ -20,7 +20,7 @@
  * Get Report List overview from the previous 90 days
  */
 
-include_once ('../../includes.php'); 
+include_once (__DIR__ . '/../../includes.php'); 
 
 // IMPORTANT: Uncomment the approiate line for the country you wish to
 // sell in:

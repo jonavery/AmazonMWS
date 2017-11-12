@@ -9,8 +9,6 @@
 require_once(__DIR__ . '/RequestReport.php'); 
 require_once(__DIR__ . '/GetReportRequestList.php');
 require_once(__DIR__ . '/GetReport.php');
-require_once(__DIR__ . '/UpdatePricing.php');
-
 
 // Request a listings data report.
 $parameters = array(

@@ -21,7 +21,7 @@
  * for a given report type, such as order reports in particular.
  */
 
-include_once ('../../includes.php'); 
+include_once (__DIR__ . '/../../includes.php'); 
 
 // IMPORTANT: Uncomment the approiate line for the country you wish to
 // sell in:

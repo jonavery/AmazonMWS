@@ -19,7 +19,7 @@
  * Cancel Reports and returns canceled report count
  */
 
-include_once ('../../includes.php'); 
+include_once (__DIR__ . '/../../includes.php'); 
 
 // IMPORTANT: Uncomment the approiate line for the country you wish to
 // sell in:
