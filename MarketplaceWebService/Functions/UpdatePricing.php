@@ -52,8 +52,10 @@ $updatePrep = array_intersect_key($reportArray, $inter);
 echo "Loading list of SKU's to be skipped... ";
 $skipURL = "https://script.google.com/macros/s/AKfycbxDydTVlIpT5NEitTxMekuuuMX0eJABrcML3PigN8R4lF-Wm02e/exec";
 $skipJSON = file_get_contents($skipURL);
-$skipArray = array_slice(json_decode($skipJSON, true), 1);
+$skipArrayMulti = array_slice(json_decode($skipJSON, true), 1);
+$skipArray = array_merge(...$skipArrayMulti);
 echo "Success! \n\n";
+print_r($skipArray);
 
 // Rename/set fields, skipping pre-designated SKU's when appropriate.
 echo "Creating flat file...";
