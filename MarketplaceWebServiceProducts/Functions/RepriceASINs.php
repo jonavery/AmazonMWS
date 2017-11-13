@@ -17,57 +17,32 @@ if ($pdo->connect_errno) {
 } 
 echo "Connected successfully to MySQL database. \n";
 
-// Select all ASINs from price table that have not been updated in the last two hours.
-$updated = date('Y-m-d H:i:s', strtotime('-2 hours'));
+// Select all ASINs from price table that have not been updated in the last four hours.
+$updated = date('Y-m-d H:i:s', strtotime('-4 hours'));
 $stmt = $pdo->prepare('
     SELECT asin
     FROM prices
     WHERE last_updated < ?
     AND aer_designation = "A"
     ORDER BY last_updated DESC
-    LIMIT 400
+    LIMIT 400 
 ');
 $stmt->execute([$updated]);
 $asinPDOS = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Call GetLowestOfferListingsForASIN to get price, list condition, and fulfillment channel.
 echo "Updating prices... \n";
-$itemArray = [];
+$asinArray = [];
 foreach ($asinPDOS as $row) {
-    // Cache ASIN.
-    $asin = $row['asin'];
-
-    // Reset throttling parameter.
-    $requestCount = 0;
-
-    // Setup request to be passed to Amazon and increment counter.
-    $asinObject = new MarketplaceWebServiceProducts_Model_ASINListType();
-    $asinObject->setASIN($asin);
-    $requestPrice->setASINList($asinObject);
-    $requestCount++;
-
-    // Query Amazon and store returned information.
-    $xmlPrice = invokeGetLowestOfferListingsForASIN($service, $requestPrice);
-    $price = new SimpleXMLElement($xmlPrice);
-    $listings = $price->GetLowestOfferListingsForASINResult->Product->LowestOfferListings;
-    foreach($listings->LowestOfferListing as $listing) {
-        $itemArray[] = array(
-            "ASIN" => $asin,
-            "Price" => (string)$listing->Price->LandedPrice->Amount,
-            "ListCond" => (string)$listing->Qualifiers->ItemSubcondition,
-            "FulfilledBy" => (string)$listing->Qualifiers->FulfillmentChannel,
-            "FeedbackCount" => (int)$listing->SellerFeedbackCount
-        );
-        break;
-    }
-
-    // Sleep for required time to avoid throttling.
-    $time_end = microtime(true);
-    if ($requestCount > 19 && ($time_end - $time_start) < 200000) {
-        usleep(200000 - ($time_end - $time_start));
-    }
-    $time_start = microtime(true);
+    // Cache ASINs into array.
+    $asinArray[] = array(
+        "ASIN" => $row['asin'],
+        "Condition" => "UsedGood"
+    );
 }
+
+// Generate prices.
+$itemArray = parseOffers($asinArray, $request);
 
 // Run info through algorithm to set pricing.
 foreach($itemArray as $key => &$item) {
@@ -75,7 +50,7 @@ foreach($itemArray as $key => &$item) {
     $itemCond = 2;
     // Convert list condition to number form.
     $listCond = numCond($item["ListCond"]);
-    $price = $item["Price"];
+    $price = $item["ListPrice"];
     $asin = $item["ASIN"];
 
     // Set price of item.
@@ -87,8 +62,7 @@ foreach($itemArray as $key => &$item) {
         SET sale_price = ?
         WHERE asin = ?
     ');
-    $stmt->execute([$item["Price"], $item["ASIN"]]);
-    echo "ASIN: $asin \t PRICE: $price \n";
+    $stmt->execute([$price, $asin]);
 }
 echo "Database update complete.";
 
