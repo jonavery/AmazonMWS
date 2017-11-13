@@ -106,10 +106,11 @@ function parseOffers($itemArray, $requestPrice) {
         $price = new SimpleXMLElement($xmlPrice);
         $listings = $price->GetLowestOfferListingsForASINResult->Product->LowestOfferListings;
         foreach($listings->LowestOfferListing as $listing) {
+            $item["FeedbackCount"] = (int)$listing->SellerFeedbackCount;
+            if ($item["FeedbackCount"] < 2000) {continue;}
             $item["ListPrice"] = (float)$listing->Price->LandedPrice->Amount;
             $item["ListCond"] = (string)$listing->Qualifiers->ItemSubcondition;
             $item["FulfilledBy"] = (string)$listing->Qualifiers->FulfillmentChannel;
-            $item["FeedbackCount"] = (int)$listing->SellerFeedbackCount;
             break;
         }
 
