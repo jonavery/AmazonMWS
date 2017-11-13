@@ -35,7 +35,7 @@ while ($reportStatus[0] != '_DONE_') {
     echo "Waiting for Amazon to process report...\n";
     sleep(45);
     $reportStatus = invokeGetReportRequestList($service, $requestStatus, $reportRequestId);
-    if $reportStatus[0] == '_CANCELLED_' {
+    if ($reportStatus[0] == '_CANCELLED_') {
         echo "Please wait 30 minutes between report requests of the same type. \n";
         return;
     }
@@ -43,8 +43,13 @@ while ($reportStatus[0] != '_DONE_') {
 echo "\nReport complete!\n\n";
 
 // Get the completed report from Amazon.
+$path = __DIR__ . "/";
 $filename = 'AFN-report.txt';
-$handle = fopen($filename, 'x+');
+$handle = fopen($path.$filename, 'w+');
+if ($handle === false) {
+    echo "Opening '$filename' failed.";
+    exit;
+}
 
 $requestGetReport = new MarketplaceWebService_Model_GetReportRequest();
 $requestGetReport->setMerchant(MERCHANT_ID);
