@@ -17,15 +17,15 @@ if ($pdo->connect_errno) {
 } 
 echo "Connected successfully to MySQL database. \n";
 
-// Select all ASINs from price table that have not been updated in the last hour.
-$updated = date('Y-m-d H:i:s', strtotime('-1 hour'));
+// Select all ASINs from price table that have not been updated in the last two hours.
+$updated = date('Y-m-d H:i:s', strtotime('-2 hours'));
 $stmt = $pdo->prepare('
     SELECT asin
     FROM prices
-    WHERE aer_designation = "A"
-    AND last_updated < ?
-    ORDER BY last_updated ASC
-    LIMIT 250
+    WHERE last_updated < ?
+    AND aer_designation = "A"
+    ORDER BY last_updated DESC
+    LIMIT 400
 ');
 $stmt->execute([$updated]);
 $asinPDOS = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -58,7 +58,6 @@ foreach ($asinPDOS as $row) {
             "FulfilledBy" => (string)$listing->Qualifiers->FulfillmentChannel,
             "FeedbackCount" => (int)$listing->SellerFeedbackCount
         );
-        echo "ASIN: $asin \t PRICE: " . (string)$listing->Price->LandedPrice->Amount . "\n";
         break;
     }
 
@@ -76,13 +75,20 @@ foreach($itemArray as $key => &$item) {
     $itemCond = 2;
     // Convert list condition to number form.
     $listCond = numCond($item["ListCond"]);
+    $price = $item["Price"];
+    $asin = $item["ASIN"];
 
     // Set price of item.
-    $item["Price"] = pricer($item["Price"], $listCond, $itemCond, $item["FeedbackCount"]);
+    $price = pricer($price, $listCond, $itemCond, $item["FeedbackCount"]);
 
     // Save price in database.
-    $stmt = $pdo->prepare('UPDATE prices SET sale_price = :price WHERE asin = :asin');
+    $stmt = $pdo->prepare('
+        UPDATE prices
+        SET sale_price = ?
+        WHERE asin = ?
+    ');
     $stmt->execute([$item["Price"], $item["ASIN"]]);
+    echo "ASIN: $asin \t PRICE: $price \n";
 }
 echo "Database update complete.";
 
