@@ -55,6 +55,7 @@ foreach($itemArray as $key => &$item) {
 
     // Set price of item.
     $price = pricer($price, $listCond, $itemCond, $item["FeedbackCount"]);
+    if ($price == "MANUAL") {continue;}
 
     // Save price in database.
     $stmt = $pdo->prepare('

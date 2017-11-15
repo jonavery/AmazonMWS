@@ -16,7 +16,7 @@ function pricer($listPrice, $listCond, $itemCond, $feedback = 0) {
     // no price is set, or no list condition is set.
     if ($listPrice == "") {return "MANUAL";}
     if ($itemCond == "" ) {return "NO_CONDITION";}
-    if (gettype($listCond != "integer")) {$listCond = 3};
+    if (gettype($listCond != "integer")) {$listCond = 3;}
 
     // Set price using Klasrun algorithm.
     $priceMatrix = array(
