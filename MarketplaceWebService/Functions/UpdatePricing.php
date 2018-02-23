@@ -10,6 +10,7 @@
  * accordingly on Amazon.
  **********************************************************/
 
+exit;
 require_once(__DIR__ . '/../../MarketplaceWebServiceProducts/Functions/SetItemPrice.php');
 require_once(__DIR__ . '/SubmitFeed.php');
 

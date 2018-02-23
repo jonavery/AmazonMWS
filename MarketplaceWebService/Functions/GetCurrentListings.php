@@ -5,6 +5,7 @@
  * all items currently listed for sale by Klasrun.
  **********************************************************/
 
+exit;
 // Initialize needed files.
 require_once(__DIR__ . '/RequestReport.php'); 
 require_once(__DIR__ . '/GetReportRequestList.php');
