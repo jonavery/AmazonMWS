@@ -15,6 +15,12 @@
  * Finally, GetFeedSubmissionResult is used to confirm successful
  * processing.
  *******************************************************************/
+// Retrieve starting line from URL.
+if (array_key_exists("pass", $_GET)) {
+    $pass = htmlspecialchars($_GET["pass"]);
+    if ($pass !=PASSWORD) {exit;} 
+} 
+
 // Load SubmitFeed file.
 require_once(__DIR__ . '/SubmitFeed.php');
 
