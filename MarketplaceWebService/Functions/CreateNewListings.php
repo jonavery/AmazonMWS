@@ -18,9 +18,11 @@
 // Retrieve starting line from URL.
 if (array_key_exists("pass", $_GET)) {
     $pass = htmlspecialchars($_GET["pass"]);
-    if ($pass !=PASSWORD) {
-        exit;
-    } 
+} 
+
+// Check key against lock.
+if ($pass !=PASSWORD) {
+    exit;
 } 
 
 // Load SubmitFeed file.
