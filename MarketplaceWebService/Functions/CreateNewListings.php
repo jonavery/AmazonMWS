@@ -15,18 +15,22 @@
  * Finally, GetFeedSubmissionResult is used to confirm successful
  * processing.
  *******************************************************************/
+// Load SubmitFeed file.
+require_once(__DIR__ . '/SubmitFeed.php');
+
 // Retrieve starting line from URL.
 if (array_key_exists("pass", $_GET)) {
     $pass = htmlspecialchars($_GET["pass"]);
-} 
+} else {
+    echo "You are not authorized to run this code.\n\n";
+    $pass = 'unauthorized';
+}
 
 // Check key against lock.
 if ($pass !=PASSWORD) {
+    echo "Entered password does not activate proper permission level to run this code.\n\n";
     exit;
 } 
-
-// Load SubmitFeed file.
-require_once(__DIR__ . '/SubmitFeed.php');
 
 // Load urls to XML files.
 $prdctURL = "https://script.google.com/macros/s/AKfycbxWIIZ7hy2GM77s1QP4D6qWU5ZJE-5WBT4CZPC3rbQaXHNfsZY/exec";
