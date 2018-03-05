@@ -270,7 +270,7 @@ file_put_contents("shipID.json", $shipJSON);
 *************************************************************/
 
 // Cache URL containing feed XML file
-$urlFeed = "https://script.google.com/macros/s/AKfycbzHXqederIS02rf9FRR2uUSbBFTsPbt0mT-rSm5gyt05VvBQis/exec"; 
+$urlFeed = "https://script.google.com/macros/s/AKfycbxozOUDpHwr0-szEtn2J8luT7D7cImDevIjSRyZf72ODKGy0H0O/exec"; 
 
 // Call SubmitFeed to send shipped item information to Amazon
 $feed = file_get_contents($urlFeed);
