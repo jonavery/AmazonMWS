@@ -71,7 +71,7 @@ foreach($itemArray as $key => &$item) {
         $product = $result->Products->Product->children();
         $item["Rank"] = (string)$product->SalesRankings->SalesRank->Rank;
         $ns2 = $product->AttributeSets->children($ns["ns2"]);
-        $item["Weight"] = (string)$ns2->ItemAttributes->ItemDimensions->Weight;
+        $item["Weight"] = (string)$ns2->ItemAttributes->PackageDimensions->Weight;
     }
     
     // Sleep for required time to avoid throttling.
@@ -94,8 +94,15 @@ foreach($itemArray as $key => &$item) {
         $item["Price"] = (string)$listing->Price->LandedPrice->Amount;
         $item["Condition"] = (string)$listing->Qualifiers->ItemSubCondition;
         $item["FulfilledBy"] = (string)$listing->Qualifiers->FulfullmentChannel;
+        $item["FeedbackCount"] = (string)$listing->SellerFeedbackCount;
         break;
     }
+
+    // Set price using Klasrun algorithm.
+    $itemCond = 2;
+    $listCond = numCond($item["Condition"]);
+    $item["Price"] = pricer($item["Price"], $listCond, $itemCond, $item["FeedbackCount"]);
+
     // Sleep for required time to avoid throttling.
     $price_end = microtime(true);
     if ($priceCount > 19 && ($price_end - $price_start) < 200000) {
