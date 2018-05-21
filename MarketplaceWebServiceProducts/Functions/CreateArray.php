@@ -28,11 +28,7 @@ unset ($request);
 $type = htmlspecialchars($_GET["type"]);
 Switch($type) {
 	case 'e':
-		$url = "https://script.google.com/macros/s/AKfycbx8EuLlIqz8EPVXYV0kHDfgxLxUsoNL_4cZhtHlvcC0bl7IQG0/exec";
-		break;
 	case 'sp':
-		$url = "https://script.google.com/macros/s/AKfycby1w0X4NSMGISn-IMeqCLclr7sXueZlhzTp84GPktgaQubNtI8/exec";
-		break;
 	case 'o':
 		$url = "https://script.google.com/macros/s/AKfycby1w0X4NSMGISn-IMeqCLclr7sXueZlhzTp84GPktgaQubNtI8/exec";
 		break;
