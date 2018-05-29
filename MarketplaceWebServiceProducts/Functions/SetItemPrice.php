@@ -26,7 +26,7 @@ function pricer($listPrice, $listCond, $itemCond, $feedback = 0) {
        [1.75, 1.51, 1.35, 1, .875]
     );
     if ($listPrice == 0) {return "MANUAL";}
-    if ($itemCond = $listCond) {
+    if ($itemCond == $listCond) {
         $itemPrice = $listPrice * .95;
     } else {
         $itemPrice = $listPrice * $priceMatrix[$itemCond-1][$listCond-1];
