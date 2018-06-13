@@ -1,5 +1,4 @@
 <?php
-
 /***************************************************************
 * CreateArray.php queries the database and creates
 * an array containing the items ready for listing
@@ -8,35 +7,30 @@
 * The script then converts that array into an xml filee that
 * can be fed to Amazon via the script "SubmitFeed"
 ****************************************************************/
-
 // Match and request id for product
 require_once(__DIR__ . '/GetMatchingProductForId.php');
 $requestId = $request;
 unset($request);
-
 // Get the lowest price for product
 require_once(__DIR__ . '/GetLowestOfferListingsForASIN.php');
 $requestPrice = $request;
 unset($request);
-
 // Get the list
 require_once(__DIR__ . '/ListMatchingProducts.php');
 $requestMatch = $request;
 unset ($request);
-
 // List xml based on selection input (e, sp, o)
 $type = htmlspecialchars($_GET["type"]);
 Switch($type) {
 	case 'e':
 	case 'sp':
 	case 'o':
-		$url = "https://script.google.com/macros/s/AKfycbxoNDu7BM4PRE1DEDVyCTd5lkMK1cGPLV0C8KujXDgc3CKNqljU/exec";
+		$url = "https://script.google.com/macros/s/AKfycby1w0X4NSMGISn-IMeqCLclr7sXueZlhzTp84GPktgaQubNtI8/exec";
 		break;
 	default:
-		echo "No shipment type entered. Please make sure you have entered the url correctly.";
+		echo "No url entered. Please make sure you have entered the url correctly";
 		exit;
 }
-
 // Parse data from XML into an array
 $itemsXML = file_get_contents($url);
 $items = new SimpleXMLElement($itemsXML);
@@ -60,10 +54,8 @@ foreach ($items->item as $item) {
 }
 // Create an array to hold UPC's.
 $upcList = array();
-
 // Cache throttling parameter
-$requestCount = 0;
-
+$reqquestcount = 0;
 // Pass item array through for loop and format UPC
 echo "Creating array... \n";
 foreach($itemArray as $key => &$item) {
@@ -90,15 +82,12 @@ foreach($itemArray as $key => &$item) {
             continue 2;
     }
     $requestCount++;
-
     // Set the ID and ID type to be converted to an ASIN.
-	$requestId->setIdType('UPC');
+	$requestID->setIdType('UPC');
 	$upcObject = new MarketplaceWebserviceProducts_Model_IdListType();
 	$upcObject->SetId($item["UPC"]);
 	$requestId->setIdList($upcobject);
-
 	$xmlid = invokeGetMatchingProductForId($service, $requestId);
-
     // Parse the XML response and add ASINS to item array.
 	$asins = new SimpleXMLElement($xmlID);
 	$result = $asins->GetMatchingProductforIdResult;
@@ -106,7 +95,6 @@ foreach($itemArray as $key => &$item) {
 		$product = $result->Products->Product->children();
 		$item["ASIN"] = (string)$product->Identifiers->MarketplaceASIN->ASIN;
 	}
-
     // Sleep for required time to avoid throttling.
 	$time_end = microtime(true);
 	if ($requestCount > 19 && ($time_end - $time_start) < 200000) {
@@ -114,15 +102,11 @@ foreach($itemArray as $key => &$item) {
 	}
 	$time_start = microtime(true);
 }
-
-
 	echo "Generating prices... \n";
 	$itemArray = parseOffers($itemArray, $requestPrice);
 	print_r($itemArray);
-
     $itemJSON = json_encode($itemArray);
     file_put_contents("MWS.json", $itemJSON);
-
 // Based on the selection input (e, sp, o) show the following message
 $case = htmlspecialchars($_GET["type"]);
 Switch($type) {
@@ -140,3 +124,4 @@ Switch($type) {
 		break;
 }
 ?>
+
