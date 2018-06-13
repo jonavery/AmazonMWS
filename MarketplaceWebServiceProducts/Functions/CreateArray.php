@@ -62,7 +62,7 @@ foreach ($items->item as $item) {
 $upcList = array();
 
 // Cache throttling parameter
-$requestcount = 0;
+$requestCount = 0;
 
 // Pass item array through for loop and format UPC
 echo "Creating array... \n";
@@ -92,7 +92,7 @@ foreach($itemArray as $key => &$item) {
     $requestCount++;
 
     // Set the ID and ID type to be converted to an ASIN.
-	$requestID->setIdType('UPC');
+	$requestId->setIdType('UPC');
 	$upcObject = new MarketplaceWebserviceProducts_Model_IdListType();
 	$upcObject->SetId($item["UPC"]);
 	$requestId->setIdList($upcobject);
