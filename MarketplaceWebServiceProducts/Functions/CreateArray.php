@@ -21,7 +21,7 @@ $requestMatch = $request;
 unset ($request);
 // List xml based on selection input (e, sp, o)
 $type = htmlspecialchars($_GET["type"]);
-Switch($type) {
+switch($type) {
 	case 'e':
 	case 'sp':
 	case 'o':
