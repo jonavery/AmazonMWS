@@ -25,7 +25,7 @@ switch($type) {
 	case 'e':
 	case 'sp':
 	case 'o':
-		$url = "https://script.google.com/macros/s/AKfycby1w0X4NSMGISn-IMeqCLclr7sXueZlhzTp84GPktgaQubNtI8/exec";
+		$url = "https://script.google.com/macros/s/AKfycbxoNDu7BM4PRE1DEDVyCTd5lkMK1cGPLV0C8KujXDgc3CKNqljU/exec";
 		break;
 	default:
 		echo "No url entered. Please make sure you have entered the url correctly";
