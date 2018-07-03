@@ -74,6 +74,7 @@ foreach($chunkedSKUs as $chunk) {
         $i++;
     }
 }
+
     
 /****************************************************************
 * Call CreateInboundShipmentPlan to create shipment plans
@@ -102,7 +103,7 @@ foreach($chunkedMember as $key => $chunk) {
     // Enter parameters to be passed into CreateInboundShipmentPlan
     $parameters = array (
         'SellerId' => MERCHANT_ID,
-        'LabelPrepPreference' => 'SELLER_LABEL',
+        'LabelPrepPreference' => 'AMAZON_LABEL_ONLY',
         'ShipFromAddress' => $ShipFromAddress,
         'InboundShipmentPlanRequestItems' => array('member' => $chunk[$key])
     );
@@ -181,7 +182,7 @@ foreach($shipmentArray as $shipment) {
             'ShipFromAddress' => $ShipFromAddress,
             'DestinationFulfillmentCenterId' => $shipDest,
             'ShipmentStatus' => 'WORKING',
-            'LabelPrepPreference' => 'SELLER_LABEL',
+            'LabelPrepPreference' => 'AMAZON_LABEL_ONLY',
 	    'IntendedBoxContentsSource' => 'FEED'
         ),
         'InboundShipmentItems' => array('member' => $shipmentItems)
@@ -248,7 +249,7 @@ foreach($shipmentArray as $shipment) {
 //             'ShipFromAddress' => $ShipFromAddress,
 //             'DestinationFulfillmentCenterId' => $shipment['Destination'],
 //             'ShipmentStatus' => 'WORKING',
-//             'LabelPrepPreference' => 'SELLER_LABEL',
+//             'LabelPrepPreference' => 'AMAZON_LABEL_ONLY',
 //         ),
 //         'InboundShipmentItems' => array('member' => $shipmentItems)
 //     );
@@ -487,9 +488,6 @@ foreach ($itemShip->Message as $message) {
     $shipmentId = (String)$message->CartonContentsRequest->ShipmentId;
     $parameters = array (
         'SellerId' => MERCHANT_ID,
-        'ShipmentId' => $shipmentId
-    );
-    
     // Sleep for required time to avoid throttling.
     $end = microtime(true);
     if ($requestCount > 29 && ($end - $start) < 500000) {
