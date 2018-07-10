@@ -36,7 +36,7 @@ $skuArray = array();
 foreach ($items->Member as $member) {
     $memberArray['member'][] = array(
         "SellerSKU"=>(string)$member->SellerSKU,
-        "Quantity"=>(string)$member->Quantity,
+        "Quantity"=>(string)$member->Quantity
     );
     $skuArray[] = (string)$member->SellerSKU;
 }
@@ -136,9 +136,9 @@ foreach($chunkedMember as $key => $chunk) {
 * combination of Destination and LabelPrepType
 ****************************************************************/
 
-// // Initialize arrays for shipment filtering
-// $destinations = array();
-// $skipShips = array();
+// Initialize arrays for shipment filtering
+$destinations = array();
+$skipShips = array();
 
 foreach($shipmentArray as $shipment) {
 
@@ -146,14 +146,14 @@ foreach($shipmentArray as $shipment) {
     // are never created
     $shipmentId = $shipment['ShipmentId'];
     $shipDest = $shipment['Destination'];
-//    if (in_array($shipDest, $destinations)) {
-//        $skipShips[] = array (
-//            'ShipmentId' => $shipmentId,
-//            'Destination' => $shipDest
-//        );
-//        continue;
-//    }
-//    $destinations[] = $shipDest;
+    if (in_array($shipDest, $destinations)) {
+        $skipShips[] = array (
+            'ShipmentId' => $shipmentId,
+            'Destination' => $shipDest
+        );
+    //    continue;
+    }
+    $destinations[] = $shipDest;
 
     // Filter item array to only include items from this shipment
     $shipmentItems = array();
@@ -183,7 +183,7 @@ foreach($shipmentArray as $shipment) {
             'DestinationFulfillmentCenterId' => $shipDest,
             'ShipmentStatus' => 'WORKING',
             'LabelPrepPreference' => 'AMAZON_LABEL_ONLY',
-	    'IntendedBoxContentsSource' => 'FEED'
+            'IntendedBoxContentsSource' => 'FEED'
         ),
         'InboundShipmentItems' => array('member' => $shipmentItems)
     );
@@ -199,7 +199,7 @@ foreach($shipmentArray as $shipment) {
 *  Call UpdateInboundShipment to merge duplicate combinations
 *  of Destination and LabelPrepType into single shipments.
 *
-*  tested using sandbox: http://sandbox.onlinephpfunctions.com/code/9bc0ac26f13595b077854234b13d0d0538021b4a
+*  tested using sandbox: http://sandbox.onlinephpfunctions.com/code/91f73c0073ec0d1954d5ce8fc3925ca658a003b9
 *************************************************************/
 
 // $mergedShipments = array();
@@ -250,6 +250,7 @@ foreach($shipmentArray as $shipment) {
 //             'DestinationFulfillmentCenterId' => $shipment['Destination'],
 //             'ShipmentStatus' => 'WORKING',
 //             'LabelPrepPreference' => 'AMAZON_LABEL_ONLY',
+//             'IntendedBoxContentsSource' => 'FEED'
 //         ),
 //         'InboundShipmentItems' => array('member' => $shipmentItems)
 //     );
@@ -259,7 +260,7 @@ foreach($shipmentArray as $shipment) {
 //     unset($parameters);
 //     $xmlUpdate = invokeUpdateInboundShipment($service, $requestUpdate);
 // }
-// 
+
 // Save shipment information as a JSON file
 $shipJSON = json_encode($shipmentSKU);
 file_put_contents("shipID.json", $shipJSON);
