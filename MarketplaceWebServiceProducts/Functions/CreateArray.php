@@ -19,10 +19,12 @@ unset($request);
 require_once(__DIR__ . '/ListMatchingProducts.php');
 $requestMatch = $request;
 unset ($request);
+
 // List xml based on selection input (e, sp, o)
 $type = htmlspecialchars($_GET["type"]);
 switch($type) {
 	case 'e':
+        $url = "https://script.google.com/macros/s/AKfycbx8EuLlIqz8EPVXYV0kHDfgxLxUsoNL_4cZhtHlvcC0bl7IQG0/exec";
 	case 'sp':
 	case 'o':
 		$url = "https://script.google.com/macros/s/AKfycbxoNDu7BM4PRE1DEDVyCTd5lkMK1cGPLV0C8KujXDgc3CKNqljU/exec";
@@ -31,6 +33,7 @@ switch($type) {
 		echo "No url entered. Please make sure you have entered the url correctly";
 		exit;
 }
+
 // Parse data from XML into an array
 $itemsXML = file_get_contents($url);
 $items = new SimpleXMLElement($itemsXML);
@@ -52,6 +55,7 @@ foreach ($items->item as $item) {
 			"Width"=>(string)$item->Dimensions->Width,
 			"Height"=>(string)$item->Dimensions->Height));
 }
+
 // Create an array to hold UPC's.
 $upcList = array();
 // Cache throttling parameter
