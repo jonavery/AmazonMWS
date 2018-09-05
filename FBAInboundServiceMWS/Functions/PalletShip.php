@@ -22,7 +22,7 @@ require_once(__DIR__ . '/GetTransportContent.php');
 require_once(__DIR__ . '/ConfirmTransportRequest.php');
 require_once(__DIR__ . '/GetUniquePackageLabels.php');
 
-if ($_POST['value']!=PASSWORD) {exit;}
+if ($_POST['value']!=PASSWORD) {return "Please enter password.";}
 
 // Cache URL 
 $urlShip = "https://script.google.com/macros/s/AKfycbxBN9iOFmN5fJH5_iEPwEMK36a98SX7xFF4bfHaBfD0y29Ff7zN/exec";
@@ -411,6 +411,8 @@ foreach ($memberDimensionArray as $key => $member) {
     $xmlPut = invokePutTransportContent($service, $requestPut);
 }
 
+exit;
+
 /*************************************************************
 *  Call EstimateTransportRequest operation to request that an 
 *  estimate be generated for an Amazon-partnered carrier to 
@@ -481,7 +483,7 @@ foreach ($itemShip->Message as $message) {
 * to charge your account for the shipping cost, and request 
 * that the Amazon-partnered carrier ship your inbound shipment.
 *************************************************************/
-/* Commented out to avoid danger of unintentionall incurring charges.
+/* Commented out to avoid danger of unintentional incurring charges.
  * Uncomment when reinstating the GetUniquePackageLabels function below.
 $requestCount = 0;
 foreach ($itemShip->Message as $message) {

@@ -103,7 +103,7 @@ foreach($chunkedMember as $key => $chunk) {
     // Enter parameters to be passed into CreateInboundShipmentPlan
     $parameters = array (
         'SellerId' => MERCHANT_ID,
-        'LabelPrepPreference' => 'SELLER_LABEL',
+        'LabelPrepPreference' => 'AMAZON_LABEL_ONLY',
         'ShipFromAddress' => $ShipFromAddress,
         'InboundShipmentPlanRequestItems' => array('member' => $chunk[$key])
     );
@@ -137,8 +137,8 @@ foreach($chunkedMember as $key => $chunk) {
 ****************************************************************/
 
 // // Initialize arrays for shipment filtering
-// $destinations = array();
-// $skipShips = array();
+$destinations = array();
+$skipShips = array();
 
 foreach($shipmentArray as $shipment) {
 
@@ -146,14 +146,14 @@ foreach($shipmentArray as $shipment) {
     // are never created
     $shipmentId = $shipment['ShipmentId'];
     $shipDest = $shipment['Destination'];
-//    if (in_array($shipDest, $destinations)) {
-//        $skipShips[] = array (
-//            'ShipmentId' => $shipmentId,
-//            'Destination' => $shipDest
-//        );
-//        continue;
-//    }
-//    $destinations[] = $shipDest;
+    if (in_array($shipDest, $destinations)) {
+        $skipShips[] = array (
+            'ShipmentId' => $shipmentId,
+            'Destination' => $shipDest
+        );
+    //    continue;
+    }
+    $destinations[] = $shipDest;
 
     // Filter item array to only include items from this shipment
     $shipmentItems = array();
@@ -182,7 +182,7 @@ foreach($shipmentArray as $shipment) {
             'ShipFromAddress' => $ShipFromAddress,
             'DestinationFulfillmentCenterId' => $shipDest,
             'ShipmentStatus' => 'WORKING',
-            'LabelPrepPreference' => 'SELLER_LABEL',
+            'LabelPrepPreference' => 'AMAZON_LABEL_ONLY',
 	    'IntendedBoxContentsSource' => 'FEED'
         ),
         'InboundShipmentItems' => array('member' => $shipmentItems)
