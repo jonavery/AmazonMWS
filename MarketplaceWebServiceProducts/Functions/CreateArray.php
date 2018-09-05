@@ -25,6 +25,7 @@ $type = htmlspecialchars($_GET["type"]);
 switch($type) {
 	case 'e':
         $url = "https://script.google.com/macros/s/AKfycbx8EuLlIqz8EPVXYV0kHDfgxLxUsoNL_4cZhtHlvcC0bl7IQG0/exec";
+        break;
 	case 'sp':
 	case 'o':
 		$url = "https://script.google.com/macros/s/AKfycbxoNDu7BM4PRE1DEDVyCTd5lkMK1cGPLV0C8KujXDgc3CKNqljU/exec";
@@ -45,7 +46,7 @@ foreach ($items->item as $item) {
  	$itemArray[] = array(
 		"SellerSKU"=>(string)$item->SKU,
 		"Title"=>(string)$item->Title,
-		"UPC"=>(string)$item->ASIN,
+		"ASIN"=>(string)$item->ASIN,
 		"Condition"=>(string)$item->Condition,
 		"Comment"=>(string)$item->Comment,
 		"Defect"=>(string)$item->Defect,
@@ -62,12 +63,13 @@ $upcList = array();
 $requestCount = 0;
 // Pass item array through for loop and format UPC
 echo "Creating array... \n";
+/*
 foreach($itemArray as $key => &$item) {
     switch(strlen($item["UPC"])) {
         case 11:
             $item["UPC"] = "0".$item["UPC"];
             break;
-	case 12:
+        case 12:
             break;
         case 10:
             $item["ASIN"] = $item["UPC"];
@@ -106,11 +108,14 @@ foreach($itemArray as $key => &$item) {
 	}
 	$time_start = microtime(true);
 }
-	echo "Generating prices... \n";
-	$itemArray = parseOffers($itemArray, $requestPrice);
-	print_r($itemArray);
-    $itemJSON = json_encode($itemArray);
-    file_put_contents("MWS.json", $itemJSON);
+ */
+
+echo "Generating prices... \n";
+$itemArray = parseOffers($itemArray, $requestPrice);
+print_r($itemArray);
+$itemJSON = json_encode($itemArray);
+file_put_contents("MWS.json", $itemJSON);
+
 // Based on the selection input (e, sp, o) show the following message
 $case = htmlspecialchars($_GET["type"]);
 Switch($type) {
