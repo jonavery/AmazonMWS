@@ -300,17 +300,64 @@ $items = new SimpleXMLElement($itemsXML);
 switch($type) {
 	case 'e':
         electronicPutTransport($shipmentArray, $items, $service);
-        break;
+        echo "Success! Electronic shipments created. Go to SellerCentral to print labels.";
+        exit;
 	case 'sp':
-        spPutTransport($memberDimensionArray, $items, $service);
-        break;
     case 'ltl':
-        palletPutTransport($memberDimensionArray, $items, $service);
-		break;
+        break;
 	default:
 		echo "No url entered. Please make sure you have entered the url correctly";
 		exit;
 }
+
+// Create dimension array of all items from XML data
+$memberDimensionArray = array();
+foreach($items->Member as $member) {
+    $memberDimensionArray[(string)$member->ShipmentId][(string)$member->SellerSKU] = array(
+        'Weight' => array(
+            'Value'=>(string)$member->Dimensions->Weight,
+            'Unit' => 'pounds'
+        ),
+        'Dimensions' => array(
+            'Length'=>(string)$member->Dimensions->Length,
+            'Width'=>(string)$member->Dimensions->Width,
+            'Height'=>(string)$member->Dimensions->Height,
+            'Unit' => 'inches'
+        )
+    );
+}
+
+$spCount = 0;
+$palCount = 0;
+foreach ($memberDimensionArray as $key => $member) {
+    $shipmentId = $key;
+
+   // Calculate total weight &  box count
+   $totalWeight = 0;
+   $boxCount = 0;
+   $palletList = array();
+   foreach ($member as $value) {
+       $totalWeight = (float)$totalWeight + $value['Weight']['Value'];
+       $boxCount++;
+   }
+   $boxWeight = $totalWeight/$boxCount;
+   if ($boxWeight < 20 || $totalWeight < 115) {$type = 'sp';}
+   else {$type = 'ltl';}
+   switch($type) {
+       case 'sp':
+           spPutTransport();
+           $spCount++;
+           break;
+       case 'ltl':
+           palletPutTransport();
+           $palCount++;
+           break;
+       default:
+           echo "An error has occurred. No shipments have been created. Please check you have entered the url correctly.";
+   }
+}
+
+echo "Success! ".$spCount." small parcel and ".$palCount." palleted shipments created. Go to SellerCentral to print labels."; 
 
 
 

@@ -51,79 +51,53 @@ function freightClass($height, $weight) {
     }
 }
 
-function palletPutTransport($memberDimensionArray, $items, $service) {
-    // Create dimension array of all items from XML data
-    $memberDimensionArray = array();
-    foreach ($items->Member as $member) {
-        $memberDimensionArray[(string)$member->ShipmentId][(string)$member->SellerSKU] = array(
-            'Weight' => array(
-                'Value'=>(string)$member->Dimensions->Weight,
-                'Unit' => 'pounds'
-            ),
-            'Dimensions' => array(
-                'Length'=>(string)$member->Dimensions->Length,
-                'Width'=>(string)$member->Dimensions->Width,
-                'Height'=>(string)$member->Dimensions->Height,
-                'Unit' => 'inches'
-            )
-        );
-    }
+function palletPutTransport($member, $key, $totalWeight, $boxCount, $service) {
 
-    foreach ($memberDimensionArray as $key => $member) {
-        $shipmentId = $key;
+    // Calculate pallet count, and shipping date of shipment
+    $palletList = array();
+    $palletCount = ceil($boxCount/6);
+    $palletList = array(
+        'Dimensions' => array(
+            'Unit' => 'inches',
+            'Length' => '40',
+            'Width' => '48',
+            'Height' => '72'
+        ),
+        'IsStacked' => false,
+        'Weight' => array(
+            'Unit' => 'pounds',
+            'Value' => ($totalWeight/$palletCount)+35
+        )
+    );
+    $shipDate = date('Y-m-d', strtotime(date('Y-m-d') . ' +2 Weekday'));
 
-        // Calculate total weight, box count, pallet count, and shipping date of shipment
-        $totalWeight = 0;
-        $boxCount = 0;
-        $palletList = array();
-        foreach ($member as $value) {
-            $totalWeight = (float)$totalWeight + $value['Weight']['Value'];
-            $boxCount++;
-        }
-        $palletCount = ceil($boxCount/6);
-        $palletList = array(
-            'Dimensions' => array(
-                'Unit' => 'inches',
-                'Length' => '40',
-                'Width' => '48',
-                'Height' => '72'
-            ),
-            'IsStacked' => false,
-            'Weight' => array(
-                'Unit' => 'pounds',
-                'Value' => ($totalWeight/$palletCount)+35
-            )
-        );
-        $shipDate = date('Y-m-d', strtotime(date('Y-m-d') . ' +2 Weekday'));
-
-        // Enter parameters to be passed into PutTransportContent
-        $parameters = array (
-            'SellerId' => MERCHANT_ID,
-            'ShipmentId' => $shipmentId,
-            'IsPartnered' => true,
-            'ShipmentType' => 'LTL',
-            'TransportDetails' => array(
-                'PartneredLtlData' => array(
-                    'Contact' => array(
-                        'Name' => 'Kevin Carozza',
-                        'Phone' => '(914)217-7622',
-                        'Email' => 'klasrunbooks4000@gmail.com',
-                        'Fax' => 'n/a'),
-                    'BoxCount' => $boxCount,
-                    // 'SellerFreightClass' => freightClass('72',$totalWeight),
-                    'FreightReadyDate' => $shipDate,
-                    'PalletList' => array('member' => $palletList),
-                    'TotalWeight' => array(
-                        'Unit' => 'pounds',
-                        'Value' => $totalWeight + 35*sizeof($palletList)
-                    )
+    // Enter parameters to be passed into PutTransportContent
+    $parameters = array (
+        'SellerId' => MERCHANT_ID,
+        'ShipmentId' => $shipmentId,
+        'IsPartnered' => true,
+        'ShipmentType' => 'LTL',
+        'TransportDetails' => array(
+            'PartneredLtlData' => array(
+                'Contact' => array(
+                    'Name' => 'Kevin Carozza',
+                    'Phone' => '(914)217-7622',
+                    'Email' => 'klasrunbooks4000@gmail.com',
+                    'Fax' => 'n/a'),
+                'BoxCount' => $boxCount,
+                // 'SellerFreightClass' => freightClass('72',$totalWeight),
+                'FreightReadyDate' => $shipDate,
+                'PalletList' => array('member' => $palletList),
+                'TotalWeight' => array(
+                    'Unit' => 'pounds',
+                    'Value' => $totalWeight + 35*sizeof($palletList)
                 )
             )
-        );
+        )
+    );
 
-        // Send pallet information to Amazon
-        $requestPut = new FBAInboundServiceMWS_Model_PutTransportContentRequest($parameters);
-        unset($parameters);
-        $xmlPut = invokePutTransportContent($service, $requestPut);
-    }
+    // Send pallet information to Amazon
+    $requestPut = new FBAInboundServiceMWS_Model_PutTransportContentRequest($parameters);
+    unset($parameters);
+    $xmlPut = invokePutTransportContent($service, $requestPut);
 }
